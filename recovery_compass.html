@@ -4,21 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ECAC Recovery Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: oklch(97% 0.012 80);
-      --surface: oklch(99% 0.005 80);
-      --fg: oklch(20% 0.02 60);
-      --muted: oklch(48% 0.015 60);
-      --border: oklch(89% 0.012 80);
+      --bg: oklch(97.5% 0.003 220);
+      --surface: oklch(99.5% 0.002 220);
+      --fg: oklch(18% 0.01 240);
+      --muted: oklch(50% 0.008 220);
+      --border: oklch(91% 0.005 220);
       --accent: #BF4646;
       --accent-glow: #d47a7a;
       --down: #537D96;
       --dead: #9aa0a8;
-      --ref-ring: oklch(82% 0.015 110);
-      --font-display: 'Iowan Old Style', Charter, Georgia, serif;
-      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+      --ref-ring: oklch(84% 0.006 220);
+      --font-display: 'Cinzel', Georgia, serif;
+      --font-body: 'Crimson Pro', Georgia, serif;
+      --font-mono: 'Courier Prime', 'Courier New', monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { background: var(--bg); color: var(--fg); font-family: var(--font-body); height: 100%; overflow: hidden; }
@@ -35,12 +38,12 @@
     }
 
     .header { padding: 14px 0 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .eyebrow { color: var(--accent); font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; margin-bottom: 6px; text-transform: uppercase; }
-    .header h1 { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 34px); font-weight: 500; line-height: 1.05; margin-bottom: 5px; max-width: none; }
-    .header .deck { max-width: 680px; color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .byline { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
+    .eyebrow { color: var(--accent); font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; margin-bottom: 6px; text-transform: uppercase; }
+    .header h1 { font-family: var(--font-display); font-size: clamp(24px, 2.9vw, 42px); font-weight: 500; line-height: 1.05; margin-bottom: 5px; max-width: none; }
+    .header .deck { max-width: 680px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .byline { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
 
-    .loader { display: flex; align-items: center; justify-content: center; flex-direction: column; flex: 1; gap: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .loader { display: flex; align-items: center; justify-content: center; flex-direction: column; flex: 1; gap: 12px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
     .loader .bar { width: 160px; height: 1px; background: color-mix(in oklch, var(--border), transparent 30%); overflow: hidden; }
     .loader .bar::after { content: ""; display: block; height: 100%; width: var(--p,0%); background: var(--accent); transition: width .25s ease; }
     .loader.hidden { display: none; }
@@ -52,12 +55,12 @@
     .dash-sidebar { width: 192px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
     .legend-wrap { display: flex; flex-direction: column; gap: 14px; }
     .leg-block {}
-    .leg-title { font-family: var(--font-mono); font-size: 8px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; text-align: center;}
-    .leg-bar { height: 5px; border-radius: 2px; margin-bottom: 3px; }
+    .leg-title { font-family: var(--font-mono); font-size: 12px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; text-align: center;}
+    .leg-bar { height: 8px; border-radius: 3px; margin-bottom: 5px; }
     .leg-ticks { display: flex; justify-content: space-between; }
-    .leg-ticks span { font-family: var(--font-mono); font-size: 7px; color: #8a7e70; }
+    .leg-ticks span { font-family: var(--font-mono); font-size: 11px; color: #8a7e70; }
     .leg-size-row { display: flex; align-items: center; gap: 7px; margin: 3px 0; }
-    .leg-size-label { font-family: var(--font-mono); font-size: 8px; color: #8a7e70; }
+    .leg-size-label { font-family: var(--font-mono); font-size: 12px; color: #8a7e70; }
 
     .compass-wrap { position: relative; display: flex; justify-content: center; align-items: center; flex: 1; min-height: 0; margin-bottom: 4px; }
     .compass-wrap svg { display: block; width: 100%; height: 100%; max-width: 100%; max-height: 100%; }
@@ -68,33 +71,34 @@
       max-width: 180px; pointer-events: none;
     }
     .yr-caption .yc-year {
-      font-family: var(--font-display); font-size: 13px; font-weight: 500;
+      font-family: var(--font-display); font-size: 16px; font-weight: 500;
       color: var(--fg); opacity: 0.55; line-height: 1; margin-bottom: 5px;
     }
     .yr-caption .yc-text {
-      font-family: var(--font-body); font-size: 11px; line-height: 1.5;
+      font-family: var(--font-body); font-size: 13px; line-height: 1.5;
       color: var(--muted);
     }
 
-    .metrics-row { display: grid; grid-template-columns: 1fr; gap: 1px; border: 1px solid var(--border); background: var(--border); }
-    .metric { background: var(--surface); padding: 12px 14px; }
-    .metric .m-lbl { font-family: var(--font-mono); font-size: 8px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
-    .metric .m-val { font-family: var(--font-display); font-size: 26px; font-weight: 500; line-height: 1; }
-    .metric .m-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+    .metrics-row { display: flex; flex-direction: column; border: none; background: none; border-top: 1px solid var(--border); }
+    .metric { background: none; padding: 10px 0; display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid color-mix(in oklch, var(--border), transparent 50%); }
+    .metric .m-info { flex: 1; min-width: 0; }
+    .metric .m-lbl { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+    .metric .m-val { font-family: var(--font-display); font-size: 22px; font-weight: 500; line-height: 1; flex-shrink: 0; text-align: right; }
+    .metric .m-sub { font-size: 11px; color: var(--muted); }
 
     .tooltip {
       position: absolute; pointer-events: none; z-index: 10;
       background: var(--surface); border: 1px solid var(--border);
-      padding: 10px 14px; font-size: 12px; line-height: 1.55;
+      padding: 10px 14px; font-size: 14px; line-height: 1.55;
       box-shadow: 0 2px 10px rgba(0,0,0,.07);
       opacity: 0; transition: opacity .15s;
     }
     .tooltip.on { opacity: 1; }
     .tooltip .tt-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .tooltip .tt-flag { font-size: 22px; line-height: 1; flex-shrink: 0; }
-    .tooltip .tt-name { font-family: var(--font-display); font-size: 16px; color: var(--fg); line-height: 1.15; }
-    .tooltip .tt-iso  { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: .05em; margin-top: 1px; }
-    .tooltip .tt-row { color: var(--muted); font-size: 11px; }
+    .tooltip .tt-flag { font-size: 26px; line-height: 1; flex-shrink: 0; }
+    .tooltip .tt-name { font-family: var(--font-display); font-size: 19px; color: var(--fg); line-height: 1.15; }
+    .tooltip .tt-iso  { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .05em; margin-top: 1px; }
+    .tooltip .tt-row { color: var(--muted); font-size: 13px; }
     .tooltip .tt-row b { color: var(--fg); font-weight: 600; }
 
     .footer { display: none; }
@@ -112,9 +116,9 @@
       margin: 0 0 6px; padding: 5px 0; flex-shrink: 0;
       font-family: var(--font-mono); color: var(--muted);
     }
-    .year-row .yr-label { font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+    .year-row .yr-label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
     .year-row .yr-val {
-      font-family: var(--font-display); font-size: 20px; font-weight: 500;
+      font-family: var(--font-display); font-size: 24px; font-weight: 500;
       color: var(--fg); min-width: 2.2ch; text-align: center; line-height: 1;
     }
     .year-row input[type=range] {
@@ -150,7 +154,6 @@
 <body>
   <div class="container">
     <header class="header">
-      <div class="eyebrow">European aviation, 2019–2024</div>
       <h1>Europe's Aviation Recovery Compass</h1>
       <p class="deck">Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p>
     </header>
@@ -414,9 +417,9 @@ let currentYear = 2019;
 
     // Background glow
     const glow = defs.append('radialGradient').attr('id','glow');
-    glow.append('stop').attr('offset','0%').attr('stop-color','#f5efe2').attr('stop-opacity',1);
-    glow.append('stop').attr('offset','60%').attr('stop-color','#f5efe2').attr('stop-opacity',0.5);
-    glow.append('stop').attr('offset','100%').attr('stop-color','#f5efe2').attr('stop-opacity',0);
+    glow.append('stop').attr('offset','0%').attr('stop-color','#f4f5f7').attr('stop-opacity',1);
+    glow.append('stop').attr('offset','60%').attr('stop-color','#f4f5f7').attr('stop-opacity',0.5);
+    glow.append('stop').attr('offset','100%').attr('stop-color','#f4f5f7').attr('stop-opacity',0);
     g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',420).attr('fill','url(#glow)');
 
     // ── Reference rings ──
@@ -435,7 +438,7 @@ let currentYear = 2019;
       if (rd.label) {
         g.append('text').attr('x',CX+rd.r+6).attr('y',CY-12)
           .attr('fill','#9a8e7e').style('font-family','var(--font-mono)')
-          .style('font-size','9px').style('letter-spacing','.04em').text(rd.label);
+          .style('font-size','11px').style('letter-spacing','.04em').text(rd.label);
       }
     });
 
@@ -475,7 +478,7 @@ let currentYear = 2019;
       const ey = CY - roseR * Math.cos(d.b);
       g.append('text').attr('x',ex+d.dx).attr('y',ey+d.dy)
         .attr('text-anchor','middle').attr('fill','#b0a594')
-        .style('font-family','var(--font-display)').style('font-size','13px')
+        .style('font-family','var(--font-display)').style('font-size','16px')
         .style('letter-spacing','.06em').text(d.label);
     });
 
@@ -491,7 +494,7 @@ let currentYear = 2019;
     g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',4)
       .attr('fill','#5c5046').attr('opacity',0.7);
     g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',1.5)
-      .attr('fill','#f5efe2');
+      .attr('fill','#f4f5f7');
 
     // ── Country shapes (or fallback circles) ──
     const shapeGroups = g.selectAll('.shape-g').data(items).join('g')
@@ -669,9 +672,9 @@ let currentYear = 2019;
       const tp = yt.f/yt19.f*100, cp = yt.c/yt19.c*100;
       const fm = n => (n>=100?n.toFixed(0):n.toFixed(1))+'%';
       document.getElementById('metrics').innerHTML =
-        `<div class="metric"><div class="m-lbl">Traffic, ${year} vs 2019</div><div class="m-val" style="color:${tp>=100?'var(--accent)':'var(--down)'}">${fm(tp)}</div><div class="m-sub">ECAC cruise-phase flights</div></div>`+
-        `<div class="metric"><div class="m-lbl">CO₂, ${year} vs 2019</div><div class="m-val" style="color:${cp>=100?'var(--accent)':'var(--down)'}">${fm(cp)}</div><div class="m-sub">${(cp>=100?'+':'')+(cp-100).toFixed(0)} pp vs traffic</div></div>`+
-        `<div class="metric"><div class="m-lbl">Carbon Bill, ${year}</div><div class="m-val" style="color:var(--accent)">€${(yt.bill/1e9).toFixed(1)}bn</div><div class="m-sub">${(yt.bill/yt19.bill*100).toFixed(0)}% of 2019</div></div>`;
+        `<div class="metric"><div class="m-info"><div class="m-lbl">Traffic vs 2019</div><div class="m-sub">ECAC cruise-phase flights</div></div><div class="m-val" style="color:${tp>=100?'var(--accent)':'var(--down)'}">${fm(tp)}</div></div>`+
+        `<div class="metric"><div class="m-info"><div class="m-lbl">CO₂ vs 2019</div><div class="m-sub">${(cp>=100?'+':'')+(cp-100).toFixed(0)} pp vs traffic</div></div><div class="m-val" style="color:${cp>=100?'var(--accent)':'var(--down)'}">${fm(cp)}</div></div>`+
+        `<div class="metric"><div class="m-info"><div class="m-lbl">Carbon Bill</div><div class="m-sub">${(yt.bill/yt19.bill*100).toFixed(0)}% of 2019</div></div><div class="m-val" style="color:var(--accent)">€${(yt.bill/1e9).toFixed(1)}bn</div></div>`;
 
       // Animate spokes
       spokes.transition().duration(400).ease(d3.easeCubicInOut)
