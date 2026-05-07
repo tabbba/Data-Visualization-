@@ -13,3 +13,6 @@ uv run python scripts/preprocess.py
 
 Active exploratory notebooks live in `notebooks/` and load the cleaned CSVs from
 `data/clean/`.
+
+## D3 Visualization
+Start a local server, for example using `python3 -m http.server`, open `localhost:8000` from the browser and select `recovery_compass.html`
