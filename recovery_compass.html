@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ECAC Recovery Atlas</title>
+  <style>
+    :root {
+      --bg: oklch(97% 0.012 80);
+      --surface: oklch(99% 0.005 80);
+      --fg: oklch(20% 0.02 60);
+      --muted: oklch(48% 0.015 60);
+      --border: oklch(89% 0.012 80);
+      --accent: #BF4646;
+      --accent-glow: #d47a7a;
+      --down: #537D96;
+      --dead: #9aa0a8;
+      --ref-ring: oklch(82% 0.015 110);
+      --font-display: 'Iowan Old Style', Charter, Georgia, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); color: var(--fg); font-family: var(--font-body); height: 100%; overflow: hidden; }
+    body {
+      height: 100%; overflow: hidden;
+      background:
+        linear-gradient(90deg, color-mix(in oklch, var(--border), transparent 72%) 1px, transparent 1px) 0 0 / 92px 92px,
+        linear-gradient(180deg, color-mix(in oklch, var(--border), transparent 80%) 1px, transparent 1px) 0 0 / 92px 92px,
+        var(--bg);
+    }
+    .container {
+      max-width: 960px; margin: 0 auto; padding: 0 32px;
+      height: 100%; display: flex; flex-direction: column;
+    }
+
+    .header { padding: 14px 0 10px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .eyebrow { color: var(--accent); font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; margin-bottom: 6px; text-transform: uppercase; }
+    .header h1 { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 34px); font-weight: 500; line-height: 1.05; margin-bottom: 5px; max-width: none; }
+    .header .deck { max-width: 680px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .byline { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: .05em; text-transform: uppercase; }
+
+    .loader { display: flex; align-items: center; justify-content: center; flex-direction: column; flex: 1; gap: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .loader .bar { width: 160px; height: 1px; background: color-mix(in oklch, var(--border), transparent 30%); overflow: hidden; }
+    .loader .bar::after { content: ""; display: block; height: 100%; width: var(--p,0%); background: var(--accent); transition: width .25s ease; }
+    .loader.hidden { display: none; }
+
+    .dashboard { display: none; flex: 1; min-height: 0; flex-direction: row; gap: 14px; padding: 8px 0 0; }
+    .dashboard.ready { display: flex; }
+
+    .dash-main { flex: 1; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+    .dash-sidebar { width: 192px; flex-shrink: 0; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+    .legend-wrap { display: flex; flex-direction: column; gap: 14px; }
+    .leg-block {}
+    .leg-title { font-family: var(--font-mono); font-size: 8px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; text-align: center;}
+    .leg-bar { height: 5px; border-radius: 2px; margin-bottom: 3px; }
+    .leg-ticks { display: flex; justify-content: space-between; }
+    .leg-ticks span { font-family: var(--font-mono); font-size: 7px; color: #8a7e70; }
+    .leg-size-row { display: flex; align-items: center; gap: 7px; margin: 3px 0; }
+    .leg-size-label { font-family: var(--font-mono); font-size: 8px; color: #8a7e70; }
+
+    .compass-wrap { position: relative; display: flex; justify-content: center; align-items: center; flex: 1; min-height: 0; margin-bottom: 4px; }
+    .compass-wrap svg { display: block; width: 100%; height: 100%; max-width: 100%; max-height: 100%; }
+
+    /* ── Year caption ── */
+    .yr-caption {
+      position: absolute; bottom: 18px; left: 10px;
+      max-width: 180px; pointer-events: none;
+    }
+    .yr-caption .yc-year {
+      font-family: var(--font-display); font-size: 13px; font-weight: 500;
+      color: var(--fg); opacity: 0.55; line-height: 1; margin-bottom: 5px;
+    }
+    .yr-caption .yc-text {
+      font-family: var(--font-body); font-size: 11px; line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .metrics-row { display: grid; grid-template-columns: 1fr; gap: 1px; border: 1px solid var(--border); background: var(--border); }
+    .metric { background: var(--surface); padding: 12px 14px; }
+    .metric .m-lbl { font-family: var(--font-mono); font-size: 8px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+    .metric .m-val { font-family: var(--font-display); font-size: 26px; font-weight: 500; line-height: 1; }
+    .metric .m-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+    .tooltip {
+      position: absolute; pointer-events: none; z-index: 10;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 10px 14px; font-size: 12px; line-height: 1.55;
+      box-shadow: 0 2px 10px rgba(0,0,0,.07);
+      opacity: 0; transition: opacity .15s;
+    }
+    .tooltip.on { opacity: 1; }
+    .tooltip .tt-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .tooltip .tt-flag { font-size: 22px; line-height: 1; flex-shrink: 0; }
+    .tooltip .tt-name { font-family: var(--font-display); font-size: 16px; color: var(--fg); line-height: 1.15; }
+    .tooltip .tt-iso  { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: .05em; margin-top: 1px; }
+    .tooltip .tt-row { color: var(--muted); font-size: 11px; }
+    .tooltip .tt-row b { color: var(--fg); font-weight: 600; }
+
+    .footer { display: none; }
+
+    @media (max-height: 600px) { .header .deck { display: none; } }
+
+    .shape-g { cursor: grab; }
+    .shape-g:active { cursor: grabbing; }
+    .shape-g path, .shape-g circle { transition: stroke 0.2s, stroke-opacity 0.2s; }
+    .shape-g:hover path, .shape-g:hover circle { stroke: #2d2418 !important; stroke-opacity: 0.9 !important; }
+
+    /* ── Year slider ── */
+    .year-row {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      margin: 0 0 6px; padding: 5px 0; flex-shrink: 0;
+      font-family: var(--font-mono); color: var(--muted);
+    }
+    .year-row .yr-label { font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
+    .year-row .yr-val {
+      font-family: var(--font-display); font-size: 20px; font-weight: 500;
+      color: var(--fg); min-width: 2.2ch; text-align: center; line-height: 1;
+    }
+    .year-row input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      width: 240px; height: 3px;
+      background: linear-gradient(90deg, #537D96, #7a9aae, #c8b8a8, #d4a888, #BF4646);
+      border-radius: 2px; outline: none; cursor: pointer;
+    }
+    .year-row input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--surface); border: 2px solid var(--fg);
+      cursor: pointer; transition: transform .15s;
+    }
+    .year-row input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    .year-row input[type=range]::-moz-range-thumb {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--surface); border: 2px solid var(--fg); cursor: pointer;
+    }
+
+    /* ── Play button ── */
+    .btn-play {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 1.5px solid var(--fg); background: var(--surface);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--fg); transition: background .15s, transform .15s;
+      flex-shrink: 0; padding: 0;
+    }
+    .btn-play:hover { background: var(--fg); color: var(--surface); transform: scale(1.08); }
+    .btn-play svg { width: 10px; height: 10px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="eyebrow">European aviation, 2019–2024</div>
+      <h1>Europe's Aviation Recovery Compass</h1>
+      <p class="deck">Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p>
+    </header>
+
+    <div class="loader" id="loader">
+      <div id="loader-msg">Loading datasets…</div>
+      <div class="bar" id="loader-bar"></div>
+    </div>
+
+    <div class="dashboard" id="dash">
+      <div class="dash-main">
+        <div class="compass-wrap" id="compass-wrap">
+          <div class="tooltip" id="tt"></div>
+          <div class="yr-caption" id="yr-caption">
+            <div class="yc-year" id="yc-year"></div>
+            <div class="yc-text" id="yc-text"></div>
+          </div>
+        </div>
+        <div class="year-row">
+          <button class="btn-play" id="btn-play" title="Play / Pause">
+            <svg id="play-icon" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>
+          </button>
+          <span class="yr-label">Year</span>
+          <input type="range" id="year-slider" min="2019" max="2024" step="1" value="2019" orient="horizontal">
+          <span class="yr-val" id="year-disp">2019</span>
+        </div>
+      </div>
+      <div class="dash-sidebar">
+        <div class="legend-wrap" id="legend"></div>
+        <div class="metrics-row" id="metrics"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+  (async function () {
+    const $loader = document.getElementById('loader');
+    const $bar = document.getElementById('loader-bar');
+    const $msg = document.getElementById('loader-msg');
+    const $dash = document.getElementById('dash');
+    function prog(p,m) { $bar.style.setProperty('--p',p+'%'); if(m)$msg.textContent=m; }
+
+    const centroids = { AL:[41.0,20.0],AZ:[40.1,47.6],BE:[50.5,4.5],BG:[42.7,25.5],CH:[46.8,8.2],CY:[35.1,33.4],CZ:[49.8,15.5],DE:[51.2,10.4],DK:[56.0,10.0],EE:[58.6,25.0],ES:[40.5,-3.7],FI:[64.0,26.0],FR:[46.2,2.2],GB:[54.0,-2.0],GE:[42.3,43.4],GR:[39.0,22.0],HR:[45.1,15.2],HU:[47.2,19.5],IE:[53.4,-8.0],IL:[31.0,34.9],IS:[64.9,-19.0],IT:[42.5,12.5],LT:[55.2,23.9],LU:[49.8,6.1],LV:[56.9,24.1],MA:[31.8,-7.1],MD:[47.4,28.4],ME:[42.7,19.3],MK:[41.6,21.7],MT:[35.9,14.4],NL:[52.1,5.3],NO:[60.5,8.5],PL:[51.9,19.1],PT:[39.5,-8.0],RO:[45.9,24.9],RS:[44.0,21.0],SE:[60.1,18.6],SI:[46.1,14.8],SK:[48.7,19.7],TR:[39.0,35.0],UA:[48.4,31.2],DZ:[36.8,3.0],LB:[33.9,35.5],TN:[35.0,9.5],EG:[26.8,30.0] };
+    const iso23 = { AL:'008',AT:'040',AZ:'031',BE:'056',BG:'100',CH:'756',CY:'196',CZ:'203',DE:'276',DK:'208',DZ:'012',EE:'233',EG:'818',ES:'724',FI:'246',FR:'250',GB:'826',GE:'268',GR:'300',HR:'191',HU:'348',IE:'372',IL:'376',IS:'352',IT:'380',LB:'422',LT:'440',LU:'442',LV:'428',MA:'504',MD:'498',ME:'499',MK:'807',MT:'470',NL:'528',NO:'578',PL:'616',PT:'620',RO:'642',RS:'688',SE:'752',SI:'705',SK:'703',TN:'788',TR:'792',UA:'804' };
+    const iso32 = {}; for (const [k,v] of Object.entries(iso23)) iso32[v] = k;
+
+    function csvLine(l) { const o=[],n=l.length; let c='',q=0; for(let i=0;i<n;i++){ const ch=l[i]; if(ch==='"'){ if(q&&l[i+1]==='"'){c+='"';i++;} else q=!q; } else if(ch===','&&!q){o.push(c);c='';} else c+=ch; } o.push(c); return o; }
+    async function loadCSV(pth) { const r=await fetch(pth); if(!r.ok) throw new Error(pth+' '+r.status); const t=await r.text(); const ln=t.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n'); const hd=csvLine(ln.shift()||''); const rows=[]; for(const l of ln){ if(!l)continue; const p=csvLine(l); if(p.length!==hd.length)continue; const o={}; for(let i=0;i<hd.length;i++)o[hd[i]]=p[i]; rows.push(o); } return rows; }
+
+    // ── Load ──
+    prog(5,'Loading carbon price…');
+    const priceRows = await loadCSV('data/clean/carbon_price_monthly_cleaned.csv');
+    const priceYM = {}; for(const r of priceRows) priceYM[r.YEAR+'-'+r.MONTH]=+r.EUA_PRICE_EUR;
+
+    prog(14,'Loading ECAC network…');
+    const net = await loadCSV('data/clean/emission_network_clean.csv');
+
+    prog(38,'Loading state emissions…');
+    const st = await loadCSV('data/clean/emission_state_clean.csv');
+
+    prog(50,'Loading country geometries…');
+    let worldData = null;
+    try { const tr = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'); if (tr.ok) { const t = await tr.json(); worldData = topojson.feature(t, t.objects.countries); } } catch(_){}
+
+    prog(60,'Aggregating…');
+
+    // ── ECAC monthly ──
+    const ecac = {};
+    for(const r of net) {
+      const k=r.YEAR+'-'+r.MONTH; if(!ecac[k]) ecac[k]={f:0,c:0,y:+r.YEAR,m:+r.MONTH};
+      ecac[k].c += +r.CO2_KG||0;
+      if(r.FLIGHT_PHASE==='cruise') ecac[k].f += +r.NB_FLIGHTS||0;
+    }
+    const base={};
+    for(let m=1;m<=12;m++){ const k='2019-'+m; base[m]={f:ecac[k].f,c:ecac[k].c}; }
+
+    // ── Country recovery (all years) ──
+    const stAgg={}, stCO2={};
+    for(const r of st) {
+      if(r.FLIGHT_PHASE!=='cruise') continue;
+      const y=+r.YEAR; if(y<2019||y>2024) continue;
+      const a=r.AREA;
+      if(!stAgg[a]) stAgg[a]={};
+      stAgg[a][y] = (stAgg[a][y]||0) + (+r.NB_FLIGHTS||0);
+      if(!stCO2[a]) stCO2[a]={};
+      stCO2[a][y] = (stCO2[a][y]||0) + (+r.CO2_KG||0);
+    }
+    const cty={};
+    for(const [a,ys] of Object.entries(stAgg)) {
+      if(!centroids[a]||!ys[2019]||ys[2019]<5000) continue;
+      cty[a]={iso:a,years:ys,f19:ys[2019],f24:ys[2024]||0,co2:stCO2[a]||{}};
+    }
+
+    // ── Precompute yearly totals ──
+    const yearlyTotals={};
+    for(let y=2019;y<=2024;y++) {
+      yearlyTotals[y]={f:0,c:0,bill:0};
+      for(let m=1;m<=12;m++) {
+        const k=y+'-'+m; const cur=ecac[k]; if(!cur) continue;
+        const ct=cur.c/1000; const p=priceYM[k]||0;
+        yearlyTotals[y].f+=cur.f;
+        yearlyTotals[y].c+=cur.c;
+        yearlyTotals[y].bill+=ct*p;
+      }
+    }
+
+    prog(75,'Composing compass…');
+
+    // ────────────────────────────────────────────────
+    //  RECOVERY COMPASS
+    // ────────────────────────────────────────────────
+    const cLat = 50 * Math.PI/180, cLon = 15 * Math.PI/180;
+    function bearing(lat, lon) {
+      const la=lat*Math.PI/180, lo=lon*Math.PI/180;
+      const cosC=Math.sin(cLat)*Math.sin(la)+Math.cos(cLat)*Math.cos(la)*Math.cos(lo-cLon);
+      const cosCc=Math.max(-1,Math.min(1,cosC));
+      const c=Math.acos(cosCc);
+      const sinC=Math.sin(c);
+      if(sinC<1e-5) return 0;
+      const cb=(Math.sin(la)-Math.sin(cLat)*cosC)/Math.cos(cLat)/sinC;
+      let b=Math.acos(Math.max(-1,Math.min(1,cb)));
+      if(Math.sin(lo-cLon)<0) b=-b;
+      return b;
+    }
+
+    const R = 290;
+    const CX = 400, CY = 400;
+    const SVGW = 800, SVGH = 800;
+
+    function polar(b, rate) {
+      let r;
+      if (rate >= 100) {
+        r = R * (1 + Math.log2(rate/100) * 0.6);
+      } else if (rate < 5) {
+        r = R * 0.06;
+      } else {
+        r = R * (1 - (100 - rate)/100 * 0.78);
+      }
+      r = Math.max(3, Math.min(R * 1.3, r));
+      return [
+        CX + r * Math.sin(b),
+        CY - r * Math.cos(b)
+      ];
+    }
+
+let currentYear = 2019;
+
+    const items = Object.values(cty).map(d => {
+      const rate    = (d.years[2019]||0) / d.years[2019] * 100;
+      const b = bearing(...centroids[d.iso]);
+      const [ax, ay] = polar(b, rate);
+      return { ...d, rate, bearing: b, ax, ay, px: ax, py: ay };
+    });
+
+    // ── Country full-name lookup ──
+    const countryNames = {
+      AL:'Albania',AZ:'Azerbaijan',BE:'Belgium',BG:'Bulgaria',CH:'Switzerland',
+      CY:'Cyprus',CZ:'Czech Republic',DE:'Germany',DK:'Denmark',DZ:'Algeria',
+      EE:'Estonia',EG:'Egypt',ES:'Spain',FI:'Finland',FR:'France',
+      GB:'United Kingdom',GE:'Georgia',GR:'Greece',HR:'Croatia',HU:'Hungary',
+      IE:'Ireland',IL:'Israel',IS:'Iceland',IT:'Italy',LB:'Lebanon',
+      LT:'Lithuania',LU:'Luxembourg',LV:'Latvia',MA:'Morocco',MD:'Moldova',
+      ME:'Montenegro',MK:'North Macedonia',MT:'Malta',NL:'Netherlands',NO:'Norway',
+      PL:'Poland',PT:'Portugal',RO:'Romania',RS:'Serbia',SE:'Sweden',
+      SI:'Slovenia',SK:'Slovakia',TN:'Tunisia',TR:'Turkey',UA:'Ukraine'
+    };
+
+    // Color — teal (#537D96) for below recovery, red (#BF4646) for above
+    function bubColor(rate) {
+      if (rate < 5) return '#c4c0ba';
+      if (rate < 100) return d3.interpolateRgb('#3a6070','#c8b8a8')(rate/100);
+      return d3.interpolateRgb('#c88a82','#8a2525')(Math.min((rate-100)/100,1));
+    }
+
+    // Size scale (capped at 32px radius to reduce clutter)
+    const maxF = d3.max(items, d=>d.f24);
+    const rScale = d3.scaleSqrt().domain([0,maxF]).range([10, 54]);
+
+    // ── Force-based de-overlap ──
+    // Nudges bubbles so none overlap, while pulling each back toward its true
+    // polar position (ax, ay). Stores result in d.px, d.py.
+    function runForce() {
+      // In 2019 every country is at rate=100 (same radius). Running force and
+      // projecting back to the ring produces unpredictable angle jumps because
+      // 40+ countries are maximally dense. Skip force; natural bearings are
+      // correct and a bit of ring-overlap is acceptable.
+      const allBaseline = items.every(d => Math.abs(d.rate - 100) < 0.01);
+      if (allBaseline) {
+        items.forEach(d => { d.px = d.ax; d.py = d.ay; });
+        return;
+      }
+
+      items.forEach(d => { d.x = d.ax; d.y = d.ay; });
+      const sim = d3.forceSimulation(items)
+        .force('cx', d3.forceX(d => d.ax).strength(0.35))
+        .force('cy', d3.forceY(d => d.ay).strength(0.35))
+        .force('collide', d3.forceCollide(d => rScale(d.f24) + 8).iterations(8))
+        .stop();
+      for (let i = 0; i < 300; i++) sim.tick();
+      // Project each bubble back onto its correct radius so radial distance
+      // (= recovery rate) is never distorted — only angular position shifts.
+      items.forEach(d => {
+        const targetR = Math.hypot(d.ax - CX, d.ay - CY);
+        const dist = Math.hypot(d.x - CX, d.y - CY);
+        if (dist > 0.1) {
+          const s = targetR / dist;
+          d.px = CX + (d.x - CX) * s;
+          d.py = CY + (d.y - CY) * s;
+        } else {
+          d.px = d.ax; d.py = d.ay;
+        }
+      });
+    }
+    runForce();
+
+    // ── Pre-process country shapes ──
+    const tempProj = d3.geoMercator().scale(140).translate([0,0]);
+    const tempPath = d3.geoPath(tempProj);
+    const countryShapes = {}; // iso2 → { d, diag, cx, cy }
+    if (worldData) {
+      worldData.features.forEach(f => {
+        const iso2 = iso32[f.id]; if (!iso2 || !cty[iso2]) return;
+        const d = tempPath(f); if (!d) return;
+        const b = tempPath.bounds(f);
+        const diag = Math.hypot(b[1][0]-b[0][0], b[1][1]-b[0][1]);
+        if (diag < 1) return;
+        countryShapes[iso2] = {
+          d,
+          diag,
+          cx: (b[0][0]+b[1][0])/2,
+          cy: (b[0][1]+b[1][1])/2
+        };
+      });
+    }
+
+    // ── SVG ──
+    const svg = d3.select('#compass-wrap').append('svg').attr('viewBox',[0,0,SVGW,SVGH]);
+    const g = svg.append('g');
+
+    // ── Wind-rose background filter ──
+    // Tweak the feColorMatrix values to change the tint colour and intensity.
+    //   • First  row (R): base → tint-red    (currently 0.08 = muted)
+    //   • Second row (G): base → tint-green   (currently 0.14 = teal-green)
+    //   • Third  row (B): base → tint-blue    (currently 0.12 = teal-blue)
+    //   • Fourth row (A): opacity of the result (currently 0.07 = ~7%)
+    // Higher opacity → more visible.  Change the RGB values for a different tint.
+    const defs = svg.append('defs');
+    const roseFilter = defs.append('filter').attr('id','rose-tint');
+    roseFilter.append('feColorMatrix')
+      .attr('type','matrix')
+      .attr('values','0.5 0 0 0 0.08  0 0.42 0 0 0.14  0 0 0.38 0 0.12  0 0 0 0.92 0');
+
+    const roseR = R * 0.98;
+    g.insert('image',':first-child')
+      .attr('href','assets/simple-wind-rose.svg')
+      .attr('x', CX - roseR).attr('y', CY - roseR)
+      .attr('width', roseR * 2).attr('height', roseR * 2)
+      .attr('preserveAspectRatio','xMidYMid meet')
+      .attr('filter','url(#rose-tint)');
+
+    // Background glow
+    const glow = defs.append('radialGradient').attr('id','glow');
+    glow.append('stop').attr('offset','0%').attr('stop-color','#f5efe2').attr('stop-opacity',1);
+    glow.append('stop').attr('offset','60%').attr('stop-color','#f5efe2').attr('stop-opacity',0.5);
+    glow.append('stop').attr('offset','100%').attr('stop-color','#f5efe2').attr('stop-opacity',0);
+    g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',420).attr('fill','url(#glow)');
+
+    // ── Reference rings ──
+    const ringData = [
+      {r:R*0.4, label:'', op:0.15, dash:''},
+      {r:R*0.7, label:'', op:0.2, dash:''},
+      {r:R, label:'2019 baseline', op:0.55, dash:''},
+      {r:R*1.3, label:'', op:0.15, dash:'3,6'},
+    ];
+    ringData.forEach(rd => {
+      g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',rd.r)
+        .attr('fill','none').attr('stroke','var(--ref-ring)')
+        .attr('stroke-width', rd.r===R?1.2:0.5)
+        .attr('stroke-dasharray', rd.dash||'')
+        .attr('opacity', rd.op);
+      if (rd.label) {
+        g.append('text').attr('x',CX+rd.r+6).attr('y',CY-12)
+          .attr('fill','#9a8e7e').style('font-family','var(--font-mono)')
+          .style('font-size','9px').style('letter-spacing','.04em').text(rd.label);
+      }
+    });
+
+    // ── Wind rose (muted background) ──
+    const roseTiers = [
+      { step: 90,  len: 1.10, sw: 1.2, op: 0.55, color: '#bcc4c0', offset: 0 },
+      { step: 90,  len: 0.95, sw: 0.8, op: 0.40, color: '#c8d0cc', offset: 45 },
+      { step: 45,  len: 0.80, sw: 0.5, op: 0.28, color: '#d4dcd8', offset: 22.5 },
+    ];
+
+    roseTiers.forEach(tier => {
+      const n = Math.round(360 / tier.step);
+      for (let i = 0; i < n; i++) {
+        const b = ((tier.offset || 0) + i * tier.step) * Math.PI / 180;
+        // Wrap bearing to [-π, π] and flip (N=0 top)
+        const bb = b > Math.PI ? b - 2*Math.PI : b;
+        const ex = CX + R * tier.len * Math.sin(bb);
+        const ey = CY - R * tier.len * Math.cos(bb);
+        g.append('line')
+          .attr('x1', CX).attr('y1', CY)
+          .attr('x2', ex).attr('y2', ey)
+          .attr('stroke', tier.color)
+          .attr('stroke-width', tier.sw)
+          .attr('opacity', tier.op);
+      }
+    });
+
+    // ── Compass direction lines + labels (N/E/S/W only) ──
+    const dirs = [
+      {b:0,label:'N',dx:0,dy:-18},
+      {b:Math.PI/2,label:'E',dx:14,dy:4},
+      {b:Math.PI,label:'S',dx:0,dy:18},
+      {b:-Math.PI/2,label:'W',dx:-14,dy:4},
+    ];
+    dirs.forEach(d => {
+      const ex = CX + roseR * Math.sin(d.b);
+      const ey = CY - roseR * Math.cos(d.b);
+      g.append('text').attr('x',ex+d.dx).attr('y',ey+d.dy)
+        .attr('text-anchor','middle').attr('fill','#b0a594')
+        .style('font-family','var(--font-display)').style('font-size','13px')
+        .style('letter-spacing','.06em').text(d.label);
+    });
+
+    // ── Spoke lines (from center to bubble) ──
+    const spokes = g.selectAll('.spoke').data(items).join('line')
+      .attr('x1',CX).attr('y1',CY)
+      .attr('x2',d=>d.px).attr('y2',d=>d.py)
+      .attr('stroke', d => d.rate < 100 ? '#a8b8b8' : '#c8b0b0')
+      .attr('stroke-width', 0.3)
+      .attr('opacity', 0.45);
+
+    // ── Center dot ──
+    g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',4)
+      .attr('fill','#5c5046').attr('opacity',0.7);
+    g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',1.5)
+      .attr('fill','#f5efe2');
+
+    // ── Country shapes (or fallback circles) ──
+    const shapeGroups = g.selectAll('.shape-g').data(items).join('g')
+      .attr('class','shape-g')
+      .attr('transform', d => `translate(${d.px},${d.py}) scale(0)`);
+    shapeGroups.each(function(d) {
+      const el = this;
+      const s = countryShapes[d.iso];
+      if (s) {
+        d3.select(el).append('path')
+          .attr('d', s.d)
+          .attr('transform', `translate(${-s.cx},${-s.cy})`)
+          .attr('fill', bubColor(d.rate))
+          .attr('fill-opacity', 0.82)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 0.5)
+          .attr('stroke-opacity', 0.5)
+          .attr('vector-effect', 'non-scaling-stroke');
+        el._scale = rScale(d.f24) / (s.diag / 2);
+      } else {
+        d3.select(el).append('circle')
+          .attr('r', 8)
+          .attr('fill', bubColor(d.rate))
+          .attr('fill-opacity', 0.82)
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 0.5)
+          .attr('stroke-opacity', 0.5);
+        el._scale = rScale(d.f24) / 8;
+      }
+    });
+
+    // Animate in
+    shapeGroups.transition().duration(800).delay((_,i)=>i*12).ease(d3.easeBackOut.overshoot(1.8))
+      .attr('transform', function(d) { return `translate(${d.px},${d.py}) scale(${this._scale})`; });
+
+    // ── Carbon rings — separate layer in absolute SVG coordinates.
+    //    Positioned at (d.px, d.py) so no _scale coordinate transform needed.
+    // ── Country labels ──
+    const labels = g.selectAll('.lbl').data(items).join('text')
+      .attr('x',d=>d.px).attr('y',d=>d.py)
+      .attr('dy','0.35em')
+      .attr('text-anchor','middle')
+      .attr('fill','rgba(255,255,255,0.95)')
+      .style('font-family','var(--font-mono)')
+      .style('font-weight','500')
+      .style('font-size', d => Math.max(7, Math.min(rScale(d.f24) * 0.52, 11)) + 'px')
+      .style('letter-spacing','0.06em')
+      .style('pointer-events','none')
+      .style('stroke','rgba(0,0,0,0.45)')
+      .style('stroke-width','2.5px')
+      .style('stroke-linejoin','round')
+      .style('paint-order','stroke fill')
+      .text(d=>d.iso);
+
+    // ── Tooltips ──
+    const $tt = document.getElementById('tt');
+    const $wrap = document.getElementById('compass-wrap');
+    shapeGroups.on('mouseenter', function(e,d) {
+      shapeGroups.style('opacity', 0.18);
+      labels.style('opacity', 0.12);
+      spokes.style('opacity', 0.12);
+      d3.select(this).style('opacity', 1).raise();
+      d3.select(this).select('path,circle').attr('stroke-opacity',0.9).attr('stroke','#2d2418');
+      labels.filter(l => l.iso === d.iso).style('opacity', 1).raise();
+      const flag = d.iso.toUpperCase().replace(/./g, c =>
+        String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65));
+      $tt.innerHTML = `
+        <div class="tt-head">
+          <div>
+            <div class="tt-name">${countryNames[d.iso]||d.iso}</div>
+          </div>
+          <span class="tt-flag">${flag}</span>
+        </div>
+        <div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div>
+        <div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div>
+        <div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[currentYear]||0)}</b></div>`;
+      $tt.classList.add('on');
+    });
+    shapeGroups.on('mousemove', function(e) {
+      const r = $wrap.getBoundingClientRect();
+      $tt.style.left = (e.clientX-r.left+16)+'px';
+      $tt.style.top  = (e.clientY-r.top-55)+'px';
+    });
+    shapeGroups.on('mouseleave', function() {
+      if (isDragging) return;
+      shapeGroups.style('opacity', 1);
+      labels.style('opacity', 1);
+      spokes.style('opacity', 0.45);
+      d3.select(this).select('path,circle').attr('stroke-opacity',0.5).attr('stroke','#fff');
+      $tt.classList.remove('on');
+    });
+
+    // ── Drag to reposition ──
+    let isDragging = false;
+    const svgNode = svg.node();
+    function toSVG(clientX, clientY) {
+      const pt = svgNode.createSVGPoint();
+      pt.x = clientX; pt.y = clientY;
+      return pt.matrixTransform(svgNode.getScreenCTM().inverse());
+    }
+
+    shapeGroups.call(d3.drag()
+      .on('start', function(event, d) {
+        isDragging = true;
+        stopPlay();
+        d3.select(this).raise();
+        labels.filter(l => l.iso === d.iso).raise();
+        $tt.classList.remove('on');
+      })
+      .on('drag', function(event, d) {
+        const p = toSVG(event.sourceEvent.clientX, event.sourceEvent.clientY);
+        // Lock radius to the bubble's recovery-rate radius; only angle follows the mouse
+        const r = Math.hypot(d.ax - CX, d.ay - CY);
+        const angle = Math.atan2(p.x - CX, -(p.y - CY));
+        d.px = CX + r * Math.sin(angle);
+        d.py = CY - r * Math.cos(angle);
+        d3.select(this).attr('transform', `translate(${d.px},${d.py}) scale(${this._scale})`);
+        spokes.filter(s => s.iso === d.iso).attr('x2', d.px).attr('y2', d.py);
+        labels.filter(l => l.iso === d.iso).attr('x', d.px).attr('y', d.py);
+      })
+      .on('end', function() {
+        isDragging = false;
+      })
+    );
+
+    const flights = items.map(d=>d.f24);
+
+    // ── Legends (HTML sidebar) ──
+    (function buildLegend() {
+      const legVals = [0, 50, 100, 150, 200];
+      const gradStops = legVals.map(v => bubColor(v)).join(', ');
+      const ticksHtml = legVals.map(v => `<span>${v}%</span>`).join('');
+
+      const szVals = [d3.quantile(flights,.25), d3.median(flights), d3.quantile(flights,.75)];
+      const maxR = d3.max(szVals, s => rScale(s));
+      const szHtml = szVals.map((s, i) => {
+        const r = rScale(s);
+        const overlap = i === 0 ? 0 : -Math.round(r * 0.55);
+        return `<div class="leg-size-row" style="margin-top:${overlap}px">
+          <svg width="${maxR*2+2}" height="${r*2+2}" style="overflow:visible;flex-shrink:0">
+            <circle cx="${maxR+1}" cy="${r+1}" r="${r}" fill="none" stroke="#b0a594" stroke-width="0.5"/>
+          </svg>
+          <span class="leg-size-label">${d3.format('.2s')(s)}</span>
+        </div>`;
+      }).join('');
+
+      document.getElementById('legend').innerHTML = `
+        <div class="leg-block">
+          <div class="leg-title">Recovery</div>
+          <div class="leg-bar" style="background:linear-gradient(90deg,${gradStops})"></div>
+          <div class="leg-ticks">${ticksHtml}</div>
+        </div>
+        <div class="leg-block">
+          <div class="leg-title">Traffic (2024)</div>
+          <div style="display:flex;flex-direction:column;align-items:center;padding-left:28px">${szHtml}</div>
+        </div>
+        `;
+    })();
+
+    // ── Year scrubber update function ──
+    function update(year) {
+      currentYear = year;
+
+      // Recompute true polar positions, then re-run force layout
+      items.forEach(d => {
+        d.rate = (d.years[year]||0) / d.years[2019] * 100;
+        const b = bearing(...centroids[d.iso]);
+        const [ax, ay] = polar(b, d.rate);
+        d.ax = ax; d.ay = ay; d.bearing = b;
+      });
+      runForce();
+
+      // Update metrics
+      const yt = yearlyTotals[year], yt19 = yearlyTotals[2019];
+      const tp = yt.f/yt19.f*100, cp = yt.c/yt19.c*100;
+      const fm = n => (n>=100?n.toFixed(0):n.toFixed(1))+'%';
+      document.getElementById('metrics').innerHTML =
+        `<div class="metric"><div class="m-lbl">Traffic, ${year} vs 2019</div><div class="m-val" style="color:${tp>=100?'var(--accent)':'var(--down)'}">${fm(tp)}</div><div class="m-sub">ECAC cruise-phase flights</div></div>`+
+        `<div class="metric"><div class="m-lbl">CO₂, ${year} vs 2019</div><div class="m-val" style="color:${cp>=100?'var(--accent)':'var(--down)'}">${fm(cp)}</div><div class="m-sub">${(cp>=100?'+':'')+(cp-100).toFixed(0)} pp vs traffic</div></div>`+
+        `<div class="metric"><div class="m-lbl">Carbon Bill, ${year}</div><div class="m-val" style="color:var(--accent)">€${(yt.bill/1e9).toFixed(1)}bn</div><div class="m-sub">${(yt.bill/yt19.bill*100).toFixed(0)}% of 2019</div></div>`;
+
+      // Animate spokes
+      spokes.transition().duration(400).ease(d3.easeCubicInOut)
+        .attr('x2', d => d.px).attr('y2', d => d.py)
+        .attr('stroke', d => d.rate < 100 ? '#a8b8b8' : '#c8b0b0');
+
+      // Animate bubbles (force positions) + colours
+      shapeGroups.transition().duration(400).ease(d3.easeCubicInOut)
+        .attr('transform', function(d) { return `translate(${d.px},${d.py}) scale(${this._scale})`; })
+        .each(function(d) {
+          d3.select(this).select('path,circle')
+            .transition().duration(400)
+            .attr('fill', bubColor(d.rate));
+        });
+
+      // Animate labels to force positions
+      labels.data(items)
+        .transition().duration(400).ease(d3.easeCubicInOut)
+        .attr('x', d => d.px).attr('y', d => d.py);
+
+      document.getElementById('year-disp').textContent = year;
+      setCaption(year);
+    }
+
+    // ── Year captions ──
+    const CAPTIONS = {
+      2019: { text: 'The baseline. European aviation at its pre-pandemic peak: 10.7 million cruise-phase flights across ECAC airspace.' },
+      2020: { text: 'COVID-19 collapses air traffic. Borders close overnight. Some states see traffic fall below 10% of 2019 levels.' },
+      2021: { text: 'A fragile restart. Vaccinations unlock leisure travel but business routes stay grounded and restrictions linger.' },
+      2022: { text: 'Pent-up demand surges. Southern Europe bounces past 2019. Ukraine war reroutes eastern corridors permanently.' },
+      2023: { text: 'Recovery consolidates. Turkey, North Africa and the Gulf corridor become new growth engines for the network.' },
+      2024: { text: 'Most of Europe has recovered: but not equally. Eastern states and smaller markets still trail their 2019 baselines.' },
+    };
+    function setCaption(year) {
+      const c = CAPTIONS[year] || {};
+      document.getElementById('yc-year').textContent = year;
+      document.getElementById('yc-text').textContent = c.text || '';
+    }
+    setCaption(2019);
+
+    // ── Slider + keyboard binding ──
+    const $slider = document.getElementById('year-slider');
+    const $yearDisp = document.getElementById('year-disp');
+    $slider.addEventListener('input', () => { stopPlay(); update(+$slider.value); });
+
+    // ── Autoplay ──
+    const STEP_MS   = 1100;  // normal step duration
+    const ICON_PLAY = `<svg viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>`;
+    const ICON_PAUS = `<svg viewBox="0 0 10 10" fill="currentColor"><rect x="1.5" y="1" width="2.8" height="8" rx="0.5"/><rect x="5.7" y="1" width="2.8" height="8" rx="0.5"/></svg>`;
+
+    let playTimer = null;
+
+    function stopPlay() {
+      if (playTimer) { clearTimeout(playTimer); playTimer = null; }
+      document.getElementById('btn-play').innerHTML = ICON_PLAY;
+    }
+
+    function scheduleNext(fromYear) {
+      const next = fromYear + 1;
+      if (next > 2024) { stopPlay(); return; }
+      const delay = STEP_MS;  // linger on the pre-crash 2019 baseline
+      playTimer = setTimeout(() => {
+        $slider.value = next;
+        update(next);
+        playTimer = setTimeout(() => scheduleNext(next), STEP_MS);
+      }, delay);
+    }
+
+    function startPlay() {
+      document.getElementById('btn-play').innerHTML = ICON_PAUS;
+      if (currentYear >= 2024) { $slider.value = 2019; update(2019); }
+      scheduleNext(currentYear);
+    }
+
+    document.getElementById('btn-play').addEventListener('click', () => {
+      if (playTimer) { stopPlay(); } else { startPlay(); }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') {
+        if (currentYear < 2024) { $slider.value = currentYear + 1; update(currentYear + 1); e.preventDefault(); }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentYear > 2019) { $slider.value = currentYear - 1; update(currentYear - 1); e.preventDefault(); }
+      }
+    });
+
+    update(2019);
+
+    prog(100,'Ready.');
+    $loader.classList.add('hidden');
+    $dash.classList.add('ready');
+  })().catch(err => {
+    console.error(err);
+    document.getElementById('loader-msg').textContent = 'Error: '+(err.message||String(err));
+  });
+  </script>
+</body>
+</html>
