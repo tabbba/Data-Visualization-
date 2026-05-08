@@ -358,6 +358,151 @@ h2{
 .shape-g{cursor:grab}
 .shape-g:active{cursor:grabbing}
 
+.plain-card{
+  border:1px solid var(--line);
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.plain-top{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 280px;
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#fff,var(--soft));
+}
+.plain-stage{
+  position:relative;
+  min-height:430px;
+  padding:34px 34px 28px;
+  overflow:hidden;
+}
+.plain-stage::before{
+  content:"";
+  position:absolute;
+  left:34px;right:34px;top:108px;height:1px;
+  background:linear-gradient(90deg,rgba(83,125,150,.2),rgba(191,70,70,.32));
+}
+.plain-plane{
+  position:absolute;
+  left:34px;top:76px;
+  font-size:34px;
+  color:var(--dark);
+  filter:drop-shadow(0 12px 18px rgba(36,38,40,.16));
+  transition:transform .55s cubic-bezier(.2,.8,.2,1);
+}
+.plain-copy{position:relative;z-index:1;margin-top:112px;max-width:650px}
+.plain-year{
+  font-family:var(--mono);
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--blue);
+  margin-bottom:12px;
+}
+.plain-big{
+  font-size:clamp(2.2rem,5vw,5rem);
+  line-height:.9;
+  letter-spacing:-.06em;
+  font-weight:700;
+  color:var(--dark);
+  max-width:720px;
+}
+.plain-big strong{color:var(--red)}
+.plain-sentence{
+  margin-top:18px;
+  color:var(--muted);
+  font-size:1rem;
+  line-height:1.75;
+  max-width:620px;
+}
+.plain-sentence strong{color:var(--dark)}
+.plain-side{
+  border-left:1px solid var(--line);
+  padding:26px 24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:16px;
+  background:#fff;
+}
+.plain-score{
+  border-top:1px solid var(--line);
+  padding-top:16px;
+}
+.plain-score:first-child{border-top:0;padding-top:0}
+.plain-score-label{
+  font-family:var(--mono);
+  font-size:.66rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:8px;
+}
+.plain-score-value{
+  font-size:2.35rem;
+  line-height:.95;
+  letter-spacing:-.05em;
+  font-weight:700;
+  color:var(--dark);
+}
+.plain-score-value.red{color:var(--red)}
+.plain-score-value.blue{color:var(--blue)}
+.plain-score-sub{margin-top:6px;font-size:.78rem;line-height:1.55;color:var(--muted)}
+.plain-bottom{
+  padding:24px 30px 28px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 240px;
+  gap:30px;
+  align-items:center;
+}
+.plain-bars{display:grid;gap:16px}
+.plain-bar-row{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr) 62px;
+  gap:14px;
+  align-items:center;
+}
+.plain-bar-label{
+  font-family:var(--mono);
+  font-size:.68rem;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:var(--muted);
+  font-weight:700;
+}
+.plain-bar-track{height:16px;background:var(--soft);border:1px solid var(--line);position:relative}
+.plain-bar-fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--blue);transition:width .55s cubic-bezier(.2,.8,.2,1)}
+.plain-bar-fill.red{background:var(--red)}
+.plain-bar-value{
+  font-family:var(--mono);
+  font-size:.72rem;
+  color:var(--dark);
+  font-weight:700;
+  text-align:right;
+}
+.plain-control{
+  border-left:1px solid var(--line);
+  padding-left:24px;
+}
+.plain-control label{
+  display:flex;
+  justify-content:space-between;
+  font-family:var(--mono);
+  font-size:.68rem;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:12px;
+}
+.plain-control strong{font-size:.9rem;color:var(--dark)}
+.plain-control input[type=range]{appearance:none;width:100%;height:3px;background:linear-gradient(90deg,var(--blue),#c9c9c9,var(--red));outline:none;cursor:pointer}
+.plain-control input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;background:#fff;border:2px solid var(--dark);border-radius:50%}
+.plain-control input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#fff;border:2px solid var(--dark);border-radius:50%}
+.plain-years{display:flex;justify-content:space-between;margin-top:9px;font-family:var(--mono);font-size:.62rem;color:var(--muted)}
+
 
 .ethics-grid{
   display:grid;
@@ -449,6 +594,13 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
   .atlas-dashboard{grid-template-columns:1fr;min-height:auto}
   .atlas-main{border-right:0}.atlas-side{border-left:0;border-top:1px solid var(--line)}
   .compass-wrap svg{min-height:480px}
+  .plain-top,.plain-bottom{grid-template-columns:1fr}
+  .plain-side,.plain-control{border-left:0;border-top:1px solid var(--line)}
+  .plain-control{padding-left:0;padding-top:20px}
+  .plain-stage{min-height:390px;padding:28px 22px}
+  .plain-stage::before{left:22px;right:22px}
+  .plain-plane{left:22px}
+  .plain-bar-row{grid-template-columns:82px minmax(0,1fr) 56px}
   footer{flex-direction:column;gap:8px;text-align:center}
 }
 </style>
@@ -517,28 +669,73 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
 
   <div class="divider" id="viz"><div class="divider-line"></div><span class="divider-label">Interactive Visualisations</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Connected visual storytelling sequence">
-  <div class="story-bridge"><strong>Reading path:</strong> first measure the recovery gap, then test the policy signal, locate the emissions geographically, compare country trajectories, summarise the time pattern, and finally evaluate how design choices can change interpretation.</div>
+  <div class="story-bridge"><strong>Reading path:</strong> start with the plain-language recovery gap, then inspect the analytical charts, test the policy signal, locate emissions geographically, compare country trajectories, summarise the time pattern, and finally evaluate how design choices can change interpretation.</div>
 
-  <div class="viz-block horizontal" id="viz-recovery" data-step="01">
-    <div class="viz-head"><div><span class="viz-tag">01: Recovery Gap</span><h2>Flights Came Back, Emissions Came Back Faster</h2><p class="viz-desc">The story starts with the central gap. Flight activity returned close to its pre-pandemic level, but total CO₂ rose faster than traffic. This establishes the core problem: recovery did not equal efficiency.</p></div><div class="insight"><h4>Key Insight</h4><p>By 2024, flights were <strong>only +1.9% above 2019</strong>, but CO₂ was <strong>+14.1% above 2019</strong>.</p></div></div>
+  <div class="viz-block" id="viz-plain" data-step="01">
+    <div class="viz-head"><div><span class="viz-tag">01: Plain-English Takeaway</span><h2>The Recovery Gap, Without the Jargon</h2><p class="viz-desc">This opening view is built for a non-expert audience. Move the year slider and compare two simple quantities: how much flying returned, and how much CO₂ returned with it.</p></div><div class="insight"><h4>How to Read It</h4><p>If the red CO₂ bar is longer than the blue traffic bar, aviation is emitting more pollution than its traffic recovery alone would suggest.</p></div></div>
+    <div class="plain-card" aria-label="Interactive plain-language recovery gap chart">
+      <div class="plain-top">
+        <div class="plain-stage">
+          <div class="plain-plane" id="plain-plane" aria-hidden="true">✈</div>
+          <div class="plain-copy">
+            <div class="plain-year" id="plain-year">2019 baseline</div>
+            <div class="plain-big" id="plain-headline">Before COVID, flights and CO₂ are both set to <strong>100%</strong>.</div>
+            <p class="plain-sentence" id="plain-sentence">Use 2019 as the reference point. Every later year is compared with this pre-pandemic baseline.</p>
+          </div>
+        </div>
+        <div class="plain-side">
+          <div class="plain-score">
+            <div class="plain-score-label">Flights</div>
+            <div class="plain-score-value blue" id="plain-flights">100%</div>
+            <div class="plain-score-sub" id="plain-flights-sub">vs 2019</div>
+          </div>
+          <div class="plain-score">
+            <div class="plain-score-label">CO₂</div>
+            <div class="plain-score-value red" id="plain-co2">100%</div>
+            <div class="plain-score-sub" id="plain-co2-sub">vs 2019</div>
+          </div>
+          <div class="plain-score">
+            <div class="plain-score-label">CO₂ per flight</div>
+            <div class="plain-score-value" id="plain-intensity">100%</div>
+            <div class="plain-score-sub" id="plain-intensity-sub">same as baseline</div>
+          </div>
+        </div>
+      </div>
+      <div class="plain-bottom">
+        <div class="plain-bars">
+          <div class="plain-bar-row"><div class="plain-bar-label">Flights</div><div class="plain-bar-track"><div class="plain-bar-fill" id="plain-flight-bar"></div></div><div class="plain-bar-value" id="plain-flight-bar-value">100%</div></div>
+          <div class="plain-bar-row"><div class="plain-bar-label">CO₂</div><div class="plain-bar-track"><div class="plain-bar-fill red" id="plain-co2-bar"></div></div><div class="plain-bar-value" id="plain-co2-bar-value">100%</div></div>
+        </div>
+        <div class="plain-control">
+          <label for="plain-year-slider"><span>Year</span><strong id="plain-year-value">2019</strong></label>
+          <input type="range" id="plain-year-slider" min="2019" max="2024" step="1" value="2019">
+          <div class="plain-years"><span>2019</span><span>2024</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Source: EUROCONTROL EIA | State-level annual totals from cleaned project data</p>
+  </div>
+
+  <div class="viz-block horizontal" id="viz-recovery" data-step="02">
+    <div class="viz-head"><div><span class="viz-tag">02: Recovery Gap</span><h2>Flights Came Back, Emissions Came Back Faster</h2><p class="viz-desc">After the plain-language view, the analytical chart measures the same gap more formally. Flight activity returned close to its pre-pandemic level, but total CO₂ rose faster than traffic.</p></div><div class="insight"><h4>Key Insight</h4><p>By 2024, flights were <strong>only +1.9% above 2019</strong>, but CO₂ was <strong>+14.1% above 2019</strong>.</p></div></div>
     <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778076877942' style='position:relative'><noscript><a href='#'><img alt='Recovery' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
     <p class="caption">Source: EUROCONTROL EIA | Annual aggregates</p>
   </div>
 
-  <div class="viz-block horizontal" id="viz-carbon" data-step="02">
-    <div class="viz-head"><div><span class="viz-tag">02: Policy Signal</span><h2>Carbon Price Rose, Aviation Emissions Rebounded Anyway</h2><p class="viz-desc">The next question is whether the carbon market constrained the rebound. The chart compares rising EUA prices with aviation emissions and shows that the price signal alone did not stop emissions from returning.</p></div><div class="insight" style="border-left-color:var(--red)"><h4>Central Finding</h4><p><strong>Market-based carbon pricing alone proved insufficient</strong> to prevent aviation's emissions rebound.</p></div></div>
+  <div class="viz-block horizontal" id="viz-carbon" data-step="03">
+    <div class="viz-head"><div><span class="viz-tag">03: Policy Signal</span><h2>Carbon Price Rose, Aviation Emissions Rebounded Anyway</h2><p class="viz-desc">The next question is whether the carbon market constrained the rebound. The chart compares rising EUA prices with aviation emissions and shows that the price signal alone did not stop emissions from returning.</p></div><div class="insight" style="border-left-color:var(--red)"><h4>Central Finding</h4><p><strong>Market-based carbon pricing alone proved insufficient</strong> to prevent aviation's emissions rebound.</p></div></div>
     <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778076181159' style='position:relative'><noscript><a href='#'><img alt='Carbon' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
     <p class="caption">Source: EUROCONTROL EIA + EUA prices | Monthly data</p>
   </div>
 
-  <div class="viz-block" id="viz-map" data-step="03">
-    <div class="viz-head"><div><span class="viz-tag">03: Geographic Concentration</span><h2>Where Are Aviation Emissions Concentrated?</h2><p class="viz-desc">After identifying the recovery gap, the map shows where the emissions burden is concentrated across Europe. This shifts the story from time to geography.</p></div><div class="insight"><h4>Key Insight</h4><p>Large western European markets dominate total emissions, while Turkey signals a shifting centre of gravity in aviation growth.</p></div></div>
+  <div class="viz-block" id="viz-map" data-step="04">
+    <div class="viz-head"><div><span class="viz-tag">04: Geographic Concentration</span><h2>Where Are Aviation Emissions Concentrated?</h2><p class="viz-desc">After identifying the recovery gap, the map shows where the emissions burden is concentrated across Europe. This shifts the story from time to geography.</p></div><div class="insight"><h4>Key Insight</h4><p>Large western European markets dominate total emissions, while Turkey signals a shifting centre of gravity in aviation growth.</p></div></div>
     <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778075893716' style='position:relative'><noscript><a href='#'><img alt='Map' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
     <p class="caption">Source: EUROCONTROL EIA | 2019-2024</p>
   </div>
 
-  <div class="viz-block" id="viz-compass" data-step="04">
-    <div class="viz-head"><div><span class="viz-tag">04: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
+  <div class="viz-block" id="viz-compass" data-step="05">
+    <div class="viz-head"><div><span class="viz-tag">05: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
     <div class="atlas-card">
       <div class="atlas-shell">
         <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Move the year slider or press play. Hover over each country to inspect its recovery rate and flight volume.</p></div></div>
@@ -555,16 +752,16 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
     <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
   </div>
 
-  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="05">
-    <div class="viz-head"><div><span class="viz-tag">05: Temporal Fingerprint</span><h2>Aviation Recovery as a Temporal Fingerprint</h2><p class="viz-desc">The stripes compress the pandemic collapse and post-pandemic rebound into a compact sequence. They help the reader see the recovery as a temporal pattern rather than as isolated yearly values.</p></div><div class="insight"><h4>Key Insight</h4><p>The recovery did not unfold as a simple return to normal: the post-2020 rebound carries a different emissions profile than the pre-pandemic baseline.</p></div></div>
+  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="06">
+    <div class="viz-head"><div><span class="viz-tag">06: Temporal Fingerprint</span><h2>Aviation Recovery as a Temporal Fingerprint</h2><p class="viz-desc">The stripes compress the pandemic collapse and post-pandemic rebound into a compact sequence. They help the reader see the recovery as a temporal pattern rather than as isolated yearly values.</p></div><div class="insight"><h4>Key Insight</h4><p>The recovery did not unfold as a simple return to normal: the post-2020 rebound carries a different emissions profile than the pre-pandemic baseline.</p></div></div>
     <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778164427596' style='position: relative'><noscript><a href='#'><img alt='Traffic Recovery' src='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='EnvStripes_17781643738830/Foglio1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div></div>
     <p class="caption">Source: Tableau Public | Traffic Recovery</p>
   </div>
 
-  <div class="viz-block" id="viz-ethics" data-step="06">
+  <div class="viz-block" id="viz-ethics" data-step="07">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">06: Visualisation Ethics</span>
+        <span class="viz-tag">07: Visualisation Ethics</span>
         <h2>Same Data, Different Story</h2>
         <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same data, but one preserves proportional comparison while the other distorts perception through misleading design.</p>
       </div>
@@ -683,6 +880,85 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.16 });
 document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(block));
+
+// Plain-language opener
+(function initPlainGap(){
+  const slider = document.getElementById("plain-year-slider");
+  if (!slider) return;
+  const data = {
+    2019:{flights:123346359, co2:176848590100.00003},
+    2020:{flights:48707225, co2:74997304400.00002},
+    2021:{flights:63395712, co2:98813006100.00005},
+    2022:{flights:105945359, co2:162358513999.99997},
+    2023:{flights:117952361, co2:185134595400.00003},
+    2024:{flights:124942013, co2:201480139300.0}
+  };
+  const baseline = data[2019];
+  const els = {
+    plane:document.getElementById("plain-plane"),
+    year:document.getElementById("plain-year"),
+    headline:document.getElementById("plain-headline"),
+    sentence:document.getElementById("plain-sentence"),
+    flights:document.getElementById("plain-flights"),
+    co2:document.getElementById("plain-co2"),
+    intensity:document.getElementById("plain-intensity"),
+    flightsSub:document.getElementById("plain-flights-sub"),
+    co2Sub:document.getElementById("plain-co2-sub"),
+    intensitySub:document.getElementById("plain-intensity-sub"),
+    flightBar:document.getElementById("plain-flight-bar"),
+    co2Bar:document.getElementById("plain-co2-bar"),
+    flightBarValue:document.getElementById("plain-flight-bar-value"),
+    co2BarValue:document.getElementById("plain-co2-bar-value"),
+    yearValue:document.getElementById("plain-year-value")
+  };
+  const fmtPct = v => `${Math.round(v)}%`;
+  const fmtSigned = v => `${v >= 0 ? "+" : ""}${v.toFixed(1)}%`;
+  function updatePlain(year){
+    const row = data[year];
+    const flightPct = row.flights / baseline.flights * 100;
+    const co2Pct = row.co2 / baseline.co2 * 100;
+    const intensityPct = co2Pct / flightPct * 100;
+    const flightChange = flightPct - 100;
+    const co2Change = co2Pct - 100;
+    const intensityChange = intensityPct - 100;
+    const progress = (year - 2019) / 5;
+    els.yearValue.textContent = year;
+    els.year.textContent = year === 2019 ? "2019 baseline" : `${year} compared with 2019`;
+    els.flights.textContent = fmtPct(flightPct);
+    els.co2.textContent = fmtPct(co2Pct);
+    els.intensity.textContent = fmtPct(intensityPct);
+    els.flightsSub.textContent = `${fmtSigned(flightChange)} flights`;
+    els.co2Sub.textContent = `${fmtSigned(co2Change)} CO₂`;
+    els.intensitySub.textContent = intensityChange >= 0 ? `${fmtSigned(intensityChange)} CO₂ per flight` : `${fmtSigned(intensityChange)} CO₂ per flight`;
+    els.flightBar.style.width = `${Math.min(100, flightPct / 1.2)}%`;
+    els.co2Bar.style.width = `${Math.min(100, co2Pct / 1.2)}%`;
+    els.flightBarValue.textContent = fmtPct(flightPct);
+    els.co2BarValue.textContent = fmtPct(co2Pct);
+    if (els.plane) {
+      const stage = els.plane.closest(".plain-stage");
+      const travel = stage ? Math.max(120, stage.clientWidth - 120) : 520;
+      els.plane.style.transform = `translateX(${progress * travel}px) rotate(7deg)`;
+    }
+    if (year === 2019) {
+      els.headline.innerHTML = "Before COVID, flights and CO₂ are both set to <strong>100%</strong>.";
+      els.sentence.innerHTML = "Use 2019 as the reference point. Every later year is compared with this pre-pandemic baseline.";
+    } else if (year <= 2021) {
+      els.headline.innerHTML = `Aviation shrank fast: flights fell to <strong>${fmtPct(flightPct)}</strong> of 2019.`;
+      els.sentence.innerHTML = `The pandemic collapse is visible immediately. CO₂ also dropped, but this was a shutdown effect, not a cleaner recovery.`;
+    } else if (year === 2023) {
+      els.headline.innerHTML = `Traffic was still below 2019, but CO₂ was already back at <strong>${fmtPct(co2Pct)}</strong>.`;
+      els.sentence.innerHTML = `This is the turning point: pollution recovered faster than the amount of flying.`;
+    } else if (year === 2024) {
+      els.headline.innerHTML = `By 2024, flying was almost back, but CO₂ rose to <strong>${fmtPct(co2Pct)}</strong>.`;
+      els.sentence.innerHTML = `For a non-expert reader, this is the whole story: similar traffic, more emissions, and about ${fmtPct(intensityPct)} CO₂ per flight compared with 2019.`;
+    } else {
+      els.headline.innerHTML = `The rebound begins: CO₂ climbs faster than flights.`;
+      els.sentence.innerHTML = `As travel reopened, the red bar started catching up more quickly than the blue bar.`;
+    }
+  }
+  slider.addEventListener("input", () => updatePlain(Number(slider.value)));
+  updatePlain(2019);
+})();
 
 // Recovery compass
 (function initCompass(){
