@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Did European Aviation Recover Sustainably After COVID-19?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#537D96;
+  --red:#BF4646;
+  --dark:#2C2F33;
+  --ink:#242628;
+  --muted:#72777C;
+  --line:#E3E6E8;
+  --soft:#F6F8F9;
+  --white:#FFFFFF;
+  --shadow:0 18px 52px rgba(36,38,40,.09);
+  --radius:18px;
+  --sans:'IBM Plex Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono:'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#fff}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:#fff;
+  overflow-x:hidden;
+  text-rendering:optimizeLegibility;
+}
+a{color:inherit}
+nav{
+  position:fixed; inset:18px 26px auto; z-index:1000;
+  height:54px; padding:0 18px 0 22px;
+  display:flex; align-items:center; justify-content:space-between; gap:18px;
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(44,47,51,.11);
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 30px rgba(36,38,40,.08);
+}
+.nav-logo{
+  font-family:var(--mono);
+  font-size:.76rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--dark);
+}
+.nav-logo span{color:var(--blue)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{
+  display:block;text-decoration:none;font-family:var(--mono);
+  font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--muted);padding:8px 10px;border-radius:2px;transition:.18s
+}
+.nav-links a:hover{background:var(--dark);color:#fff}
+.hero{
+  min-height:100vh;
+  display:grid;
+  align-items:center;
+  padding:126px 30px 82px;
+  position:relative;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  right:6vw; top:18vh;
+  width:33vw; height:33vw;
+  border:1px solid rgba(83,125,150,.22);
+  border-radius:50%;
+  background:
+    radial-gradient(circle, rgba(83,125,150,.08), transparent 62%),
+    conic-gradient(from 18deg, transparent 0 31%, rgba(191,70,70,.18) 31% 33%, transparent 33% 69%, rgba(83,125,150,.2) 69% 71%, transparent 71%);
+  opacity:.9;
+}
+.hero-inner{
+  max-width:1240px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:minmax(0,1.15fr) 360px;gap:70px;align-items:end;
+  position:relative;z-index:1;
+}
+.eyebrow,.viz-tag,.divider-label{
+  font-family:var(--mono);
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)
+}
+.hero h1{
+  font-size:clamp(3.6rem,8vw,8.6rem);
+  line-height:.82;
+  letter-spacing:-.085em;
+  font-weight:700;
+  color:var(--dark);
+  margin:20px 0 30px;
+  max-width:920px;
+}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero-sub{
+  font-size:1.08rem;line-height:1.75;color:var(--muted);max-width:650px;
+}
+.hero-card{
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  padding:18px;
+  position:relative;
+}
+.hero-card::before{
+  content:"";
+  position:absolute;left:-1px;top:-1px;bottom:-1px;width:5px;
+  background:linear-gradient(var(--blue),var(--red));
+}
+.hero-stats{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--line)}
+.hero-stat{
+  padding:22px 18px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.hero-stat-num{
+  font-size:3.1rem;line-height:.9;color:var(--red);font-weight:700;letter-spacing:-.05em
+}
+.hero-stat-num.blue{color:var(--blue)}
+.hero-stat-label{
+  margin-top:8px;color:var(--muted);font-size:.78rem;line-height:1.5;font-weight:500
+}
+.gap-controls{margin-top:16px;display:flex;align-items:center;gap:10px}
+.gap-btn,.metric-btn{
+  border:1px solid var(--dark);background:#fff;color:var(--dark);
+  padding:10px 14px;font-family:var(--mono);font-weight:700;font-size:.68rem;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:.18s
+}
+.gap-btn:hover,.metric-btn:hover{background:var(--dark);color:#fff}
+.gap-btn.active,.metric-btn.active{background:var(--dark);color:#fff}
+.gap-text{max-height:0;overflow:hidden;opacity:0;color:var(--muted);font-size:.88rem;line-height:1.7;transition:.35s}
+.gap-text.visible{max-height:220px;opacity:1;margin-top:14px}
+.gap-text strong{color:var(--dark)}
+.mini-plane{width:78px;height:18px;position:relative}
+.mini-plane::before{content:"✈";position:absolute;left:0;top:-5px;color:var(--blue);font-size:18px;animation:flyAcross 3s ease-in-out infinite}
+.mini-plane::after{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:linear-gradient(to right,transparent,rgba(83,125,150,.5),transparent)}
+@keyframes flyAcross{0%{transform:translateX(0) rotate(4deg);opacity:.2}45%{opacity:1}100%{transform:translateX(60px) rotate(4deg);opacity:.2}}
+
+.page{max-width:1180px;margin:0 auto;padding:0 36px}
+.divider{display:flex;align-items:center;gap:16px;padding:78px 0 44px}
+.divider-line{flex:1;height:1px;background:var(--line)}
+.intro{padding-bottom:72px;border-bottom:1px solid var(--line)}
+.intro-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:58px;align-items:start}
+h2{
+  font-size:clamp(2rem,4vw,3.5rem);
+  line-height:.98;
+  letter-spacing:-.055em;
+  font-weight:700;
+  color:var(--dark);
+}
+.intro h2,.datasets h2{margin-bottom:22px}
+.intro p,.datasets>p,.viz-desc{
+  font-size:.98rem;line-height:1.8;color:var(--muted);font-weight:400
+}
+.intro p{margin-bottom:16px}
+.intro strong,.viz-desc strong{color:var(--dark)}
+.question-box{
+  background:var(--dark);
+  color:#fff;
+  padding:32px;
+  min-height:260px;
+  display:flex;align-items:flex-end;
+  position:relative;overflow:hidden;
+}
+.question-box::before{
+  content:"";
+  position:absolute;inset:18px;
+  border:1px solid rgba(255,255,255,.13);
+}
+.question-box::after{
+  content:"Q";
+  position:absolute;right:-10px;top:-28px;
+  font-size:13rem;font-weight:700;letter-spacing:-.12em;color:rgba(83,125,150,.2)
+}
+.question-box p{font-size:1.2rem;line-height:1.55;position:relative;z-index:1}
+.tags{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+.tag{
+  font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.04em;
+  padding:7px 10px;border:1px solid var(--line);color:var(--dark);background:#fff
+}
+.datasets{padding:74px 0;border-bottom:1px solid var(--line)}
+.ds-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:34px}
+.ds-card{background:#fff;padding:24px 20px;min-height:210px;transition:.2s}
+.ds-card:hover{background:var(--soft);transform:translateY(-2px)}
+.ds-icon{width:34px;height:34px;background:var(--dark);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.ds-icon svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round}
+.ds-card h3{font-size:1rem;color:var(--dark);margin-bottom:5px}
+.ds-file{font-family:var(--mono);font-size:.68rem;color:var(--blue);display:block;margin-bottom:10px}
+.ds-card p{font-size:.8rem;line-height:1.6;color:var(--muted)}
+.ds-meta{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.ds-meta span{font-family:var(--mono);font-size:.62rem;background:var(--soft);color:var(--muted);padding:4px 7px}
+.limits{border:1px solid var(--line);border-left:5px solid var(--red);padding:20px 24px;margin-top:22px;background:#fff}
+.limits h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.limits ul{padding-left:16px}
+.limits li{font-size:.82rem;line-height:1.75;color:var(--muted)}
+
+
+/* Subtle interactive flight path: lightweight, not a dashboard */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;width:100%;z-index:2000;
+  background:linear-gradient(90deg,var(--blue),var(--red));
+  transform:scaleX(0);transform-origin:left center;
+}
+.airline-trace{
+  width:min(560px,80vw);
+  height:46px;
+  position:relative;
+  margin:0 0 16px;
+  color:var(--blue);
+}
+.airline-trace::before{
+  content:"";
+  position:absolute;left:0;right:0;top:24px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(83,125,150,.55),rgba(191,70,70,.35),transparent);
+}
+.airline-trace::after{
+  content:"";
+  position:absolute;left:19%;top:20px;width:8px;height:8px;border-radius:50%;
+  background:var(--blue);box-shadow:150px 0 0 rgba(44,47,51,.28),310px 0 0 var(--red);
+}
+.hero-plane{
+  position:absolute;left:0;top:2px;
+  font-size:22px;line-height:1;
+  color:var(--dark);
+  filter:drop-shadow(0 8px 12px rgba(36,38,40,.14));
+  animation:heroPlaneFloat 5.8s ease-in-out infinite;
+}
+@keyframes heroPlaneFloat{
+  0%,100%{transform:translate(0,6px) rotate(7deg)}
+  45%{transform:translate(430px,-2px) rotate(7deg)}
+  55%{transform:translate(430px,-2px) rotate(7deg)}
+}
+.story-flow{
+  position:relative;
+  margin-top:34px;
+}
+.story-flow .viz-block{
+  position:relative;
+  padding-left:54px;
+}
+.story-flow .viz-block::before{
+  content:attr(data-step);
+  position:absolute;
+  left:0;
+  top:92px;
+  width:28px;
+  height:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#fff;
+  border:2px solid var(--blue);
+  color:var(--dark);
+  font-family:var(--mono);
+  font-size:.62rem;
+  font-weight:700;
+  z-index:2;
+  box-shadow:0 8px 20px rgba(36,38,40,.08);
+}
+.story-flow .viz-block:nth-of-type(2n)::before{border-color:var(--red)}
+.story-bridge{
+  margin:22px 0 0 54px;
+  padding:18px 22px;
+  border:1px solid var(--line);
+  border-left:5px solid var(--blue);
+  background:var(--soft);
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.92rem;
+}
+.story-bridge strong{color:var(--dark)}
+
+.viz-block{
+  opacity:0;transform:translateY(22px);
+  transition:opacity .65s ease, transform .65s ease;
+}
+.viz-block.is-visible{opacity:1;transform:none}
+
+.viz-block{padding:86px 0;border-bottom:1px solid var(--line)}
+.viz-block:last-child{border-bottom:none}
+.viz-head{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:52px;align-items:start;margin-bottom:28px}
+.viz-tag{display:block;margin-bottom:12px}
+.viz-block h2{margin-bottom:16px}
+.insight{
+  border:1px solid var(--line);
+  border-top:5px solid var(--blue);
+  background:#fff;
+  padding:22px 24px;
+}
+.insight h4{
+  font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:10px
+}
+.insight p{font-size:.86rem;line-height:1.72;color:var(--muted)}
+.insight strong{color:var(--dark)}
+.tableau-frame,.atlas-card{
+  border:1px solid var(--line);
+  background:#fff;
+  box-shadow:0 10px 30px rgba(36,38,40,.07);
+  overflow:hidden;
+}
+.viz-block.horizontal{
+  width:min(1440px, calc(100vw - 48px));
+  margin-left:calc(50% - min(720px, calc(50vw - 24px)));
+}
+.viz-block.horizontal .viz-head{
+  grid-template-columns:minmax(0,1.25fr) 340px;
+}
+.viz-block.horizontal .tableau-frame{min-height:520px}
+.viz-block.horizontal.stripes .tableau-frame{min-height:390px}
+.caption{
+  font-family:var(--mono);
+  font-size:.68rem;
+  color:#9AA0A5;
+  margin-top:12px;
+  text-align:right;
+}
+
+.atlas-card{background:#fff}
+.atlas-shell{padding:0}
+.atlas-header{display:flex;justify-content:space-between;gap:20px;padding:22px 26px;border-bottom:1px solid var(--line);background:#fff}
+.atlas-title h3{font-size:1.45rem;color:var(--dark);letter-spacing:-.03em}
+.atlas-title p{margin-top:6px;font-size:.86rem;color:var(--muted);line-height:1.65}
+.atlas-loader{height:580px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.atlas-dashboard{display:none;grid-template-columns:minmax(0,1fr) 220px;gap:0;min-height:680px}
+.atlas-dashboard.ready{display:grid}
+.atlas-main{min-width:0;display:flex;flex-direction:column;border-right:1px solid var(--line)}
+.atlas-side{padding:26px 22px;background:#fff;display:flex;flex-direction:column;gap:22px;justify-content:center;border-left:1px solid var(--line)}
+.compass-wrap{position:relative;display:flex;justify-content:center;align-items:center;flex:1;min-height:0;background:#fff}
+.compass-wrap svg{display:block;width:100%;height:100%;min-height:590px}
+.yr-caption{position:absolute;left:22px;bottom:24px;max-width:230px;pointer-events:none}
+.yc-year{font-size:1.5rem;color:var(--dark);font-weight:700;line-height:1;margin-bottom:6px}
+.yc-text{font-size:.86rem;line-height:1.55;color:var(--muted)}
+.year-row{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px;border-top:1px solid var(--line);font-family:var(--mono);color:var(--muted)}
+.year-row input[type=range]{appearance:none;width:260px;height:3px;background:linear-gradient(90deg,var(--blue),#c9c9c9,var(--red));border-radius:0;outline:none;cursor:pointer}
+.year-row input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;background:#fff;border:2px solid var(--dark);border-radius:50%}
+.year-row input[type=range]::-moz-range-thumb{width:15px;height:15px;background:#fff;border:2px solid var(--dark);border-radius:50%}
+.yr-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
+.yr-val{font-size:1rem;color:var(--dark);font-weight:700;min-width:44px}
+.btn-play{width:30px;height:30px;border:1px solid var(--dark);background:#fff;color:var(--dark);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.btn-play:hover{background:var(--dark);color:#fff}
+.leg-title,.m-lbl{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px
+}
+.leg-bar{height:8px;margin-bottom:7px}
+.leg-ticks{display:flex;justify-content:space-between}
+.leg-ticks span,.m-sub{font-size:.72rem;color:var(--muted)}
+.metric{padding:14px 0;border-top:1px solid var(--line)}
+.m-val{font-size:1.9rem;font-weight:700;letter-spacing:-.05em;color:var(--dark);line-height:1}
+.atlas-tooltip{position:absolute;pointer-events:none;z-index:10;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:12px 14px;font-size:.85rem;line-height:1.5;opacity:0;transition:.15s}
+.atlas-tooltip.on{opacity:1}
+.atlas-tooltip .tt-name{font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:6px}
+.atlas-tooltip .tt-row{color:var(--muted)}
+.atlas-tooltip b{color:var(--dark)}
+.shape-g{cursor:grab}
+.shape-g:active{cursor:grabbing}
+
+
+.ethics-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:28px;
+  margin-top:30px;
+}
+.ethics-card{
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:.25s;
+}
+.ethics-card:hover{transform:translateY(-4px)}
+.ethics-card img{
+  width:100%;
+  display:block;
+  border-bottom:1px solid var(--line);
+  background:var(--soft);
+}
+.ethics-content{padding:24px}
+.ethics-content h3{
+  margin-bottom:12px;
+  font-size:1.2rem;
+  color:var(--dark);
+}
+.ethics-content p{
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.92rem;
+}
+.ethics-card.white{border-top:5px solid var(--blue)}
+.ethics-card.black{border-top:5px solid var(--red)}
+.ethics-note{
+  margin-top:26px;
+  border:1px solid var(--line);
+  background:var(--soft);
+  padding:22px 24px;
+}
+.ethics-note h4{
+  font-family:var(--mono);
+  font-size:.68rem;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--dark);
+  margin-bottom:8px;
+}
+.ethics-note p{
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.9rem;
+}
+.ethics-note strong{color:var(--dark)}
+
+.conclusion{background:var(--dark);padding:86px 0;color:#fff}
+.conclusion-inner{max-width:1180px;margin:0 auto;padding:0 36px}
+.conclusion h2{color:#fff;margin-bottom:42px}
+.conclusion h2 em{font-style:normal;color:var(--red)}
+.findings{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);margin-bottom:44px}
+.finding{background:var(--dark);padding:28px 24px;min-height:190px}
+.finding-n{font-family:var(--mono);font-size:.8rem;color:var(--blue);margin-bottom:18px;font-weight:700}
+.finding h3{font-size:1.05rem;margin-bottom:10px}
+.finding p,.conclusion-text{font-size:.9rem;line-height:1.75;color:rgba(255,255,255,.6)}
+.conclusion-text{max-width:780px;border-top:1px solid rgba(255,255,255,.14);padding-top:34px}
+.conclusion-text strong{color:#fff}
+footer{background:#fff;border-top:1px solid var(--line);padding:26px 36px;display:flex;justify-content:space-between;align-items:center}
+footer p,footer a{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+footer a{text-decoration:none;color:var(--blue);font-weight:700}
+
+
+@media (max-width:860px){
+.airline-trace{width:100%;height:36px}
+  @keyframes heroPlaneFloat{0%,100%{transform:translate(0,4px) rotate(7deg)}45%,55%{transform:translate(220px,-1px) rotate(7deg)}}
+}
+
+@media(max-width:960px){
+  nav{inset:12px 12px auto}
+
+  .story-flow .viz-block{padding-left:0}
+  .story-flow .viz-block::before{display:none}
+  .story-bridge{margin-left:0}
+.nav-links{display:none}
+  .hero-inner,.intro-grid,.viz-head{grid-template-columns:1fr;gap:28px}
+  .hero{padding:110px 20px 70px}.hero::after{display:none}
+  .page,.conclusion-inner{padding:0 20px}
+  .ds-grid,.findings,.ethics-grid{grid-template-columns:1fr}
+  .viz-block.horizontal{width:auto;margin-left:0}
+  .atlas-dashboard{grid-template-columns:1fr;min-height:auto}
+  .atlas-main{border-right:0}.atlas-side{border-left:0;border-top:1px solid var(--line)}
+  .compass-wrap svg{min-height:480px}
+  footer{flex-direction:column;gap:8px;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<nav>
+  <div class="nav-logo">European Aviation <span>2019-2024</span></div>
+  <ul class="nav-links">
+    <li><a href="#intro">Introduction</a></li>
+    <li><a href="#data">Data</a></li>
+    <li><a href="#viz">Visualisations</a></li>
+    <li><a href="#viz-ethics">Ethics</a></li>
+    <li><a href="#conclusion">Findings</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">Data Visualisation 2026 | Group Project</p>
+      <div class="airline-trace" aria-hidden="true"><span class="hero-plane">✈</span></div>
+      <h1>Did European Aviation Recover <em>Sustainably</em>?</h1>
+      <p class="hero-sub">Aviation traffic returned after COVID-19, but the climate story did not recover as cleanly. This visual analysis compares flights, emissions, carbon pricing and geography to test whether the rebound was environmentally efficient.</p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num blue" data-target="1.9">+0.0%</div><div class="hero-stat-label">Flights in 2024 vs 2019</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" data-target="14.1">+0.0%</div><div class="hero-stat-label">CO₂ emissions in 2024 vs 2019</div></div>
+        <div class="hero-stat"><div class="hero-stat-num" data-target="11.9">+0.0%</div><div class="hero-stat-label">CO₂ per flight in 2024 vs 2019</div></div>
+      </div>
+      <div class="gap-controls"><button id="gapBtn" class="gap-btn" type="button">Explain the gap</button><div class="mini-plane" aria-hidden="true"></div></div>
+      <p id="gapText" class="gap-text">Traffic returned almost to pre-pandemic levels, but emissions increased much faster. This means the recovery was <strong>not environmentally efficient</strong>: each flight emitted more CO₂ on average in 2024 than in 2019.</p>
+    </div>
+  </div>
+</section>
+
+<div class="page">
+  <div class="divider" id="intro"><div class="divider-line"></div><span class="divider-label">Introduction & Research Question</span><div class="divider-line"></div></div>
+  <section class="intro">
+    <div class="intro-grid">
+      <div>
+        <h2>The Question We Set Out to Answer</h2>
+        <p>The COVID-19 pandemic caused the sharpest collapse in aviation history. As the world reopened, European skies filled again: but did the recovery happen in a way that is compatible with climate commitments?</p>
+        <p>Our central finding is striking: 2024 flights are just <strong>+1.9% above 2019</strong>, yet CO₂ emissions are <strong>+14.1% above 2019</strong>, and CO₂ per flight is <strong>+11.9% higher</strong>. Traffic barely grew. Emissions surged.</p>
+        <div class="tags"><span class="tag">Policy analysts</span><span class="tag">Environmental NGOs</span><span class="tag">Climate researchers</span><span class="tag">Informed citizens</span></div>
+      </div>
+      <div class="question-box">
+        <p>How has European air traffic recovered since COVID-19, and has that recovery been environmentally efficient: or has aviation returned with higher emissions intensity?</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" id="data"><div class="divider-line"></div><span class="divider-label">Data Sources</span><div class="divider-line"></div></div>
+  <section class="datasets">
+    <h2>Four Datasets, One Story</h2>
+    <p>Public data covering European aviation activity, emissions, and carbon pricing from 2019 to 2024. Cleaned and integrated using Python.</p>
+    <div class="ds-grid">
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>Airport Traffic</h3><span class="ds-file">airport_clean.csv</span><p>Daily flight movements for 400+ airports across ECAC member states.</p><div class="ds-meta"><span>EUROCONTROL</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></div><h3>Network Emissions</h3><span class="ds-file">emission_network_clean.csv</span><p>Monthly CO₂ by market segment and flight phase at ECAC level.</p><div class="ds-meta"><span>EUROCONTROL EIA</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/></svg></div><h3>State Emissions</h3><span class="ds-file">emission_state_clean.csv</span><p>Emissions disaggregated by country for cross-national analysis.</p><div class="ds-meta"><span>Country level</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>EU Carbon Price</h3><span class="ds-file">carbon_price_monthly.csv</span><p>Monthly EUA prices used to assess the influence of carbon-market signals.</p><div class="ds-meta"><span>ICE / Investing.com</span></div></div>
+    </div>
+    <div class="limits"><h4>Data Limitations</h4><ul><li>Emission figures are model-based EUROCONTROL estimates, not direct aircraft measurements.</li><li>Airport data covers IFR flights only.</li><li>Carbon price reflects market prices, not necessarily the effective cost paid by each airline.</li><li>Passenger load factor is unavailable at this granularity.</li></ul></div>
+  </section>
+
+  <div class="divider" id="viz"><div class="divider-line"></div><span class="divider-label">Interactive Visualisations</span><div class="divider-line"></div></div>
+<section class="story-flow" aria-label="Connected visual storytelling sequence">
+  <div class="story-bridge"><strong>Reading path:</strong> first measure the recovery gap, then test the policy signal, locate the emissions geographically, compare country trajectories, summarise the time pattern, and finally evaluate how design choices can change interpretation.</div>
+
+  <div class="viz-block horizontal" id="viz-recovery" data-step="01">
+    <div class="viz-head"><div><span class="viz-tag">01: Recovery Gap</span><h2>Flights Came Back, Emissions Came Back Faster</h2><p class="viz-desc">The story starts with the central gap. Flight activity returned close to its pre-pandemic level, but total CO₂ rose faster than traffic. This establishes the core problem: recovery did not equal efficiency.</p></div><div class="insight"><h4>Key Insight</h4><p>By 2024, flights were <strong>only +1.9% above 2019</strong>, but CO₂ was <strong>+14.1% above 2019</strong>.</p></div></div>
+    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778076877942' style='position:relative'><noscript><a href='#'><img alt='Recovery' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
+    <p class="caption">Source: EUROCONTROL EIA | Annual aggregates</p>
+  </div>
+
+  <div class="viz-block horizontal" id="viz-carbon" data-step="02">
+    <div class="viz-head"><div><span class="viz-tag">02: Policy Signal</span><h2>Carbon Price Rose, Aviation Emissions Rebounded Anyway</h2><p class="viz-desc">The next question is whether the carbon market constrained the rebound. The chart compares rising EUA prices with aviation emissions and shows that the price signal alone did not stop emissions from returning.</p></div><div class="insight" style="border-left-color:var(--red)"><h4>Central Finding</h4><p><strong>Market-based carbon pricing alone proved insufficient</strong> to prevent aviation's emissions rebound.</p></div></div>
+    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778076181159' style='position:relative'><noscript><a href='#'><img alt='Carbon' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
+    <p class="caption">Source: EUROCONTROL EIA + EUA prices | Monthly data</p>
+  </div>
+
+  <div class="viz-block" id="viz-map" data-step="03">
+    <div class="viz-head"><div><span class="viz-tag">03: Geographic Concentration</span><h2>Where Are Aviation Emissions Concentrated?</h2><p class="viz-desc">After identifying the recovery gap, the map shows where the emissions burden is concentrated across Europe. This shifts the story from time to geography.</p></div><div class="insight"><h4>Key Insight</h4><p>Large western European markets dominate total emissions, while Turkey signals a shifting centre of gravity in aviation growth.</p></div></div>
+    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778075893716' style='position:relative'><noscript><a href='#'><img alt='Map' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
+    <p class="caption">Source: EUROCONTROL EIA | 2019-2024</p>
+  </div>
+
+  <div class="viz-block" id="viz-compass" data-step="04">
+    <div class="viz-head"><div><span class="viz-tag">04: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
+    <div class="atlas-card">
+      <div class="atlas-shell">
+        <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Move the year slider or press play. Hover over each country to inspect its recovery rate and flight volume.</p></div></div>
+        <div class="atlas-loader" id="atlas-loader">Preparing compass...</div>
+        <div class="atlas-dashboard" id="atlas-dash">
+          <div class="atlas-main">
+            <div class="compass-wrap" id="compass-wrap"><div class="atlas-tooltip" id="atlas-tt"></div><div class="yr-caption"><div class="yc-year" id="yc-year"></div><div class="yc-text" id="yc-text"></div></div></div>
+            <div class="year-row"><button class="btn-play" id="btn-play" title="Play / Pause"><svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg></button><span class="yr-label">Year</span><input type="range" id="atlas-year-slider" min="2019" max="2024" step="1" value="2019"><span class="yr-val" id="year-disp">2019</span></div>
+          </div>
+          <div class="atlas-side"><div id="atlas-legend"></div><div id="atlas-metrics"></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
+  </div>
+
+  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="05">
+    <div class="viz-head"><div><span class="viz-tag">05: Temporal Fingerprint</span><h2>Aviation Recovery as a Temporal Fingerprint</h2><p class="viz-desc">The stripes compress the pandemic collapse and post-pandemic rebound into a compact sequence. They help the reader see the recovery as a temporal pattern rather than as isolated yearly values.</p></div><div class="insight"><h4>Key Insight</h4><p>The recovery did not unfold as a simple return to normal: the post-2020 rebound carries a different emissions profile than the pre-pandemic baseline.</p></div></div>
+    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778164427596' style='position: relative'><noscript><a href='#'><img alt='Traffic Recovery' src='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='EnvStripes_17781643738830/Foglio1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div></div>
+    <p class="caption">Source: Tableau Public | Traffic Recovery</p>
+  </div>
+
+  <div class="viz-block" id="viz-ethics" data-step="06">
+    <div class="viz-head">
+      <div>
+        <span class="viz-tag">06: Visualisation Ethics</span>
+        <h2>Same Data, Different Story</h2>
+        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same data, but one preserves proportional comparison while the other distorts perception through misleading design.</p>
+      </div>
+      <div class="insight" style="border-top-color:var(--red)">
+        <h4>Critical Insight</h4>
+        <p>Visualisation choices are analytical choices. Axis scaling, breaks, spacing, and proportionality can make the same dataset appear objective, exaggerated, or deceptive.</p>
+      </div>
+    </div>
+
+    <div class="ethics-grid">
+      <article class="ethics-card white">
+        <img src="figures/whitehat_a.png" alt="White-hat bar chart showing proportional aviation CO2 emissions by country">
+        <div class="ethics-content">
+          <h3>White Hat: Honest Encoding</h3>
+          <p>This chart uses a continuous proportional axis and direct value labels. The reader can compare countries fairly because the bar lengths correspond to the actual CO₂ totals.</p>
+        </div>
+      </article>
+
+      <article class="ethics-card black">
+        <img src="figures/blackhat_a.png" alt="Black-hat bar chart showing a misleading version of the same aviation CO2 emissions data">
+        <div class="ethics-content">
+          <h3>Black Hat: Misleading Encoding</h3>
+          <p>This chart uses broken axis segments and altered visual proportions. The underlying values are the same, but the design exaggerates similarity and difference, making the ranking harder to interpret correctly.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="ethics-note">
+      <h4>Why this matters</h4>
+      <p>A chart can be technically based on real data and still be misleading. In this case, the black-hat version does not change the dataset; it changes the <strong>reader's perception</strong> by manipulating the visual scale.</p>
+    </div>
+
+  </div>
+  </section>
+</div>
+
+<section class="conclusion" id="conclusion"><div class="conclusion-inner"><h2>The Answer: <em>No</em>, Not Sustainably.</h2><div class="findings"><div class="finding"><div class="finding-n">01</div><h3>Emissions intensity worsened</h3><p>CO₂ per flight rose between 2019 and 2024: the recovery was not cleaner on average.</p></div><div class="finding"><div class="finding-n">02</div><h3>Carbon pricing was not enough</h3><p>The carbon signal increased, but aviation emissions still rebounded strongly.</p></div><div class="finding"><div class="finding-n">03</div><h3>Recovery was uneven</h3><p>Growth is geographically uneven, with different regional patterns after COVID-19.</p></div></div><p class="conclusion-text">European aviation returned to pre-pandemic levels by 2023-2024, but it did so <strong>without meaningfully improving its environmental footprint</strong>. A genuinely sustainable aviation sector will require complementary policy instruments beyond carbon pricing.</p></div></section>
+<footer>
+  <p>European Aviation Recovery Analysis · 2019–2024</p>
+</footer>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3"></script>
+<script>
+const EMBEDDED_COUNTRY_DATA = {"AL":{"iso":"AL","years":{"2019":223138.0,"2020":102884.0,"2021":156866.0,"2022":254163.0,"2023":307523.0,"2024":375887.0},"co2":{"2019":420090800.0,"2020":208937099.99999997,"2021":280163700.0,"2022":440626800.0,"2023":524446499.99999994,"2024":639491299.9999999}},"AZ":{"iso":"AZ","years":{"2019":38538.0,"2020":17690.0,"2021":60889.0,"2022":166127.0,"2023":233261.0,"2024":306032.0},"co2":{"2019":199054900.00000003,"2020":109918600.0,"2021":477628100.00000006,"2022":1241013499.9999998,"2023":1744762000.0000005,"2024":2458476900.0}},"BE":{"iso":"BE","years":{"2019":1226638.0,"2020":534298.0,"2021":629680.0,"2022":1016475.0,"2023":1152045.0,"2024":1196048.0},"co2":{"2019":2322153499.9999976,"2020":1081494399.9999995,"2021":1184420799.9999998,"2022":1947888299.9999979,"2023":2230310899.9999976,"2024":2299564699.999997}},"BG":{"iso":"BG","years":{"2019":874028.0,"2020":374277.0,"2021":513987.0,"2022":819168.0,"2023":972110.0,"2024":1049982.0},"co2":{"2019":3714271399.9999995,"2020":1638020500.0000005,"2021":1976372799.9999988,"2022":3428812599.9999976,"2023":4160255100.0000014,"2024":4449648900.000004}},"CH":{"iso":"CH","years":{"2019":1189953.0,"2020":481610.0,"2021":627659.0,"2022":1052417.0,"2023":1100725.0,"2024":1202246.0},"co2":{"2019":1820661499.9999986,"2020":690122700.0000001,"2021":885455399.9999999,"2022":1531359199.9999983,"2023":1640745199.9999983,"2024":1853220799.9999988}},"CY":{"iso":"CY","years":{"2019":413839.0,"2020":165015.0,"2021":251222.0,"2022":342455.0,"2023":401225.0,"2024":377569.0},"co2":{"2019":1772846799.9999998,"2020":782450000.0000002,"2021":1107765200.0,"2022":1502393899.9999995,"2023":1760281800.0,"2024":1610193100.0}},"CZ":{"iso":"CZ","years":{"2019":868295.0,"2020":341967.0,"2021":406879.0,"2022":625537.0,"2023":714551.0,"2024":794241.0},"co2":{"2019":2611828200.0,"2020":1023194700.0000004,"2021":1114993600.0,"2022":1567662199.9999988,"2023":1736191399.9999993,"2024":2047153899.9999993}},"DE":{"iso":"DE","years":{"2019":3454073.0,"2020":1492101.0,"2021":1733038.0,"2022":2767500.0,"2023":2998606.0,"2024":3158240.0},"co2":{"2019":15117074900.000004,"2020":6829551700.000003,"2021":7570036100.000001,"2022":11984153200.000004,"2023":13064666300.000004,"2024":13573553900.000013}},"DK":{"iso":"DK","years":{"2019":668980.0,"2020":274296.0,"2021":300120.0,"2022":505733.0,"2023":564187.0,"2024":642620.0},"co2":{"2019":1532050799.9999998,"2020":663347300.0,"2021":719669400.0,"2022":1148701000.0,"2023":1413291899.9999995,"2024":2715066600.0}},"EE":{"iso":"EE","years":{"2019":226642.0,"2020":95864.0,"2021":108944.0,"2022":141104.0,"2023":148274.0,"2024":169857.0},"co2":{"2019":857358200.0000004,"2020":408916900.0,"2021":456230200.00000006,"2022":396342700.0,"2023":415474999.99999994,"2024":523852200.0}},"ES":{"iso":"ES","years":{"2019":2156784.0,"2020":857970.0,"2021":1191439.0,"2022":1980202.0,"2023":2194380.0,"2024":2361949.0},"co2":{"2019":12817612100.000002,"2020":4913852100.0,"2021":6685489000.0,"2022":11617695800.0,"2023":13062142899.999998,"2024":13943366700.000002}},"FI":{"iso":"FI","years":{"2019":278103.0,"2020":114648.0,"2021":119178.0,"2022":202354.0,"2023":221965.0,"2024":239171.0},"co2":{"2019":1030414700.0,"2020":461099200.00000006,"2021":486276400.0,"2022":593788200.0,"2023":666391600.0,"2024":742649500.0}},"FR":{"iso":"FR","years":{"2019":3423262.0,"2020":1406145.0,"2021":1825487.0,"2022":3015623.0,"2023":3284032.0,"2024":3483374.0},"co2":{"2019":19006074400.000004,"2020":7588299600.0,"2021":9654922100.000002,"2022":16179295199.999996,"2023":18047406399.99999,"2024":19218965399.99999}},"GB":{"iso":"GB","years":{"2019":2643965.0,"2020":1049685.0,"2021":1105866.0,"2022":2214625.0,"2023":2483969.0,"2024":2598095.0},"co2":{"2019":18308123000.0,"2020":7408740000.0,"2021":10708143999.999998,"2022":20987914499.999996,"2023":23537855799.999992,"2024":24252320799.99999}},"GE":{"iso":"GE","years":{"2019":70503.0,"2020":24994.0,"2021":70787.0,"2022":145824.0,"2023":230538.0,"2024":296466.0},"co2":{"2019":200585700.0,"2020":74896100.0,"2021":305667800.0,"2022":777166400.0,"2023":1245066199.9999995,"2024":1806847599.9999995}},"GR":{"iso":"GR","years":{"2019":871380.0,"2020":376062.0,"2021":562629.0,"2022":888012.0,"2023":993283.0,"2024":1066920.0},"co2":{"2019":5249009100.0,"2020":2504031499.9999995,"2021":3601795500.0,"2022":5524612799.999999,"2023":6239857400.000001,"2024":6647098600.000001}},"HR":{"iso":"HR","years":{"2019":720129.0,"2020":303516.0,"2021":463085.0,"2022":718326.0,"2023":820780.0,"2024":929737.0},"co2":{"2019":1840163900.000001,"2020":786840800.0,"2021":1226141800.0000017,"2022":1806900400.0000024,"2023":2065853300.0000026,"2024":2454978199.9999995}},"HU":{"iso":"HU","years":{"2019":901304.0,"2020":383476.0,"2021":496618.0,"2022":907581.0,"2023":1047946.0,"2024":1119133.0},"co2":{"2019":2876675000.000001,"2020":1297445400.0000005,"2021":1504226299.9999993,"2022":2835112900.0000014,"2023":3332815100.000001,"2024":3479171500.0000024}},"IE":{"iso":"IE","years":{"2019":555348.0,"2020":224420.0,"2021":255344.0,"2022":506857.0,"2023":573862.0,"2024":589289.0},"co2":{"2019":2956767000.0000005,"2020":1247651000.0,"2021":1497709400.0,"2022":2649350700.0000005,"2023":2880172100.0,"2024":2973281500.0000005}},"IL":{"iso":"IL","years":{"2019":183227.0,"2020":57799.0,"2021":90846.0,"2022":172774.0,"2023":185052.0,"2024":116025.0},"co2":{"2019":364055599.9999999,"2020":127558699.99999999,"2021":209029700.0,"2022":367935900.0,"2023":411255499.99999994,"2024":240841800.0}},"IS":{"iso":"IS","years":{"2019":8394.0,"2020":4653.0,"2021":10285.0,"2022":16347.0,"2023":29455.0,"2024":177749.0},"co2":{"2019":26207599.999999993,"2020":15915400.0,"2021":78278500.00000004,"2022":81088900.00000003,"2023":350328500.00000036,"2024":3506592900.0000005}},"IT":{"iso":"IT","years":{"2019":1979579.0,"2020":787891.0,"2021":1118219.0,"2022":1808402.0,"2023":2014960.0,"2024":2196059.0},"co2":{"2019":9306270100.000002,"2020":3653061099.9999995,"2021":5114269800.000001,"2022":8504780500.000003,"2023":9509699800.000008,"2024":10501207800.000006}},"LT":{"iso":"LT","years":{"2019":298538.0,"2020":136727.0,"2021":174964.0,"2022":180056.0,"2023":185275.0,"2024":207194.0},"co2":{"2019":574495300.0,"2020":311336000.0,"2021":396418100.0,"2022":333118400.0,"2023":357291400.00000006,"2024":401019800.00000006}},"LU":{"iso":"LU","years":{"2019":307514.0,"2020":127070.0,"2021":157541.0,"2022":239367.0,"2023":273085.0,"2024":279724.0},"co2":{"2019":177833699.99999994,"2020":77235699.99999999,"2021":95847199.99999997,"2022":146486799.99999994,"2023":183146800.00000003,"2024":188809600.0000001}},"LV":{"iso":"LV","years":{"2019":294205.0,"2020":128394.0,"2021":161939.0,"2022":184265.0,"2023":194583.0,"2024":221542.0},"co2":{"2019":861755200.0000001,"2020":415718700.0,"2021":511083600.0,"2022":418021500.00000006,"2023":417706200.00000006,"2024":512940700.00000006}},"MA":{"iso":"MA","years":{"2019":398391.0,"2020":161821.0,"2021":242925.0,"2022":419150.0,"2023":473474.0,"2024":529427.0},"co2":{"2019":2603339400.0,"2020":1042947900.0000002,"2021":1506079699.9999998,"2022":2603659599.9999995,"2023":2943858199.9999995,"2024":3254948800.0000005}},"MD":{"iso":"MD","years":{"2019":68634.0,"2020":28945.0,"2021":41139.0,"2022":22115.0,"2023":24057.0,"2024":32439.0},"co2":{"2019":81004400.0,"2020":33128200.000000004,"2021":47846800.0,"2022":28064300.000000004,"2023":32248900.000000004,"2024":48615900.0}},"ME":{"iso":"ME","years":{"2019":134943.0,"2020":60118.0,"2021":89076.0,"2022":144497.0,"2023":171166.0,"2024":194860.0},"co2":{"2019":186982500.00000006,"2020":82723900.0,"2021":110564900.0,"2022":180160300.0000001,"2023":215869000.00000003,"2024":249251000.0}},"MK":{"iso":"MK","years":{"2019":221446.0,"2020":95426.0,"2021":154757.0,"2022":233892.0,"2023":267709.0,"2024":285862.0},"co2":{"2019":303959999.99999994,"2020":144754600.0,"2021":221572200.00000003,"2022":329837800.0,"2023":380018400.0000001,"2024":411795100.0000001}},"MT":{"iso":"MT","years":{"2019":128834.0,"2020":55140.0,"2021":71266.0,"2022":100006.0,"2023":131747.0,"2024":147062.0},"co2":{"2019":937474800.0,"2020":375363100.0,"2021":475320499.99999994,"2022":626755500.0,"2023":907533600.0,"2024":1028206200.0}},"NL":{"iso":"NL","years":{"2019":1356733.0,"2020":604315.0,"2021":662988.0,"2022":1114286.0,"2023":1218871.0,"2024":1281525.0},"co2":{"2019":3388643700.0,"2020":1575154899.9999998,"2021":1682566199.9999998,"2022":2592012699.999998,"2023":2817097199.9999967,"2024":2960568099.9999976}},"NO":{"iso":"NO","years":{"2019":579875.0,"2020":334721.0,"2021":367217.0,"2022":520164.0,"2023":544308.0,"2024":549464.0},"co2":{"2019":2358999900.0000005,"2020":1173338200.0,"2021":1383468100.0,"2022":1990451600.0,"2023":2240742300.0000005,"2024":2388843300.0}},"PL":{"iso":"PL","years":{"2019":910692.0,"2020":375813.0,"2021":471196.0,"2022":626192.0,"2023":696599.0,"2024":758942.0},"co2":{"2019":4472426300.000002,"2020":1981331399.9999998,"2021":2316455899.9999995,"2022":2843562299.9999995,"2023":3184655300.0,"2024":3420816399.9999995}},"RO":{"iso":"RO","years":{"2019":744397.0,"2020":318176.0,"2021":451242.0,"2022":654330.0,"2023":768340.0,"2024":819315.0},"co2":{"2019":4926145200.0,"2020":2155913000.0,"2021":2627773000.000001,"2022":4571635000.0,"2023":5590960100.000002,"2024":5939671200.0}},"RS":{"iso":"RS","years":{"2019":708299.0,"2020":312285.0,"2021":445899.0,"2022":721631.0,"2023":831135.0,"2024":906336.0},"co2":{"2019":1887309599.9999971,"2020":824496199.9999993,"2021":1069110899.999998,"2022":1839919499.9999971,"2023":2121010699.999999,"2024":2305082300.0000005}},"SE":{"iso":"SE","years":{"2019":827198.0,"2020":350793.0,"2021":381177.0,"2022":587636.0,"2023":638981.0,"2024":662733.0},"co2":{"2019":3473713500.0000005,"2020":1528876299.9999998,"2021":1619456599.9999995,"2022":2144403899.9999998,"2023":2329166199.9999995,"2024":2504589899.9999995}},"SI":{"iso":"SI","years":{"2019":465220.0,"2020":198310.0,"2021":282082.0,"2022":457455.0,"2023":504950.0,"2024":550243.0},"co2":{"2019":499655899.9999999,"2020":213837999.99999997,"2021":285710799.99999994,"2022":465814399.9999998,"2023":530788599.99999976,"2024":560578800.0}},"SK":{"iso":"SK","years":{"2019":557098.0,"2020":198990.0,"2021":269160.0,"2022":468713.0,"2023":530242.0,"2024":601001.0},"co2":{"2019":1153781000.0000002,"2020":427022199.9999999,"2021":528806300.0,"2022":825084099.9999996,"2023":917351999.9999994,"2024":1045231399.9999994}},"TR":{"iso":"TR","years":{"2019":1025442.0,"2020":426167.0,"2021":914441.0,"2022":1378865.0,"2023":1630582.0,"2024":1703030.0},"co2":{"2019":10831462199.999994,"2020":4795733500.0,"2021":9027373800.0,"2022":15224139099.999994,"2023":18470341099.999992,"2024":18807011099.99998}},"UA":{"iso":"UA","years":{"2019":334783.0,"2020":134391.0,"2021":214956.0,"2022":31526.0,"2023":24564.0,"2024":12066.0},"co2":{"2019":1667883500.0000002,"2020":696600800.0,"2021":1097594000.0,"2022":161641800.00000006,"2023":31807700.0,"2024":30841400.0}}};
+const EMBEDDED_YEARLY_TOTALS = {"2019":{"f":69827668.0,"c":1049608679900.008},"2020":{"f":30824703.0,"c":446293891600.00073},"2021":{"f":39330358.0,"c":570174280500.0029},"2022":{"f":59893287.0,"c":924801720500.0061},"2023":{"f":65763738.0,"c":1048550343200.0079},"2024":{"f":69367672.0,"c":1141751365900.0083}};
+
+const TABLEAU_RATIOS = {
+  viz1778075893716: { ratio: 0.64, min: 520 },
+  viz1778076877942: { ratio: 0.60, min: 820 },
+  viz1778076181159: { ratio: 0.34, min: 420 },
+  viz1778164427596: { ratio: 0.30, min: 390 }
+};
+function sizeTableau(div) {
+  const viz = div.getElementsByTagName('object')[0];
+  if (!viz) return;
+  const cfg = TABLEAU_RATIOS[div.id] || { ratio: 0.58, min: 500 };
+  viz.style.width = '100%';
+  viz.style.height = Math.max(cfg.min, div.offsetWidth * cfg.ratio) + 'px';
+}
+function initTableauEmbeds() {
+  document.querySelectorAll('.tableauPlaceholder').forEach((div) => {
+    const viz = div.getElementsByTagName('object')[0];
+    if (!viz) return;
+    sizeTableau(div);
+    if (div.dataset.loaded) return;
+    div.dataset.loaded = 'true';
+    const script = document.createElement('script');
+    script.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+    viz.parentNode.insertBefore(script, viz);
+  });
+}
+window.addEventListener('load', initTableauEmbeds);
+window.addEventListener('resize', () => document.querySelectorAll('.tableauPlaceholder').forEach(sizeTableau));
+
+function animateCounter(element, target, suffix = "%") {
+  const duration = 1300; const startTime = performance.now();
+  function updateCounter(currentTime) {
+    const progress = Math.min((currentTime - startTime) / duration, 1);
+    const value = target * (1 - Math.pow(1 - progress, 3));
+    element.textContent = "+" + value.toFixed(1) + suffix;
+    if (progress < 1) requestAnimationFrame(updateCounter);
+  }
+  requestAnimationFrame(updateCounter);
+}
+const heroStats = document.querySelector(".hero-stats");
+const counters = document.querySelectorAll(".hero-stat-num");
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) { counters.forEach((counter) => animateCounter(counter, Number(counter.dataset.target))); counterObserver.disconnect(); }
+  });
+}, { threshold: 0.45 });
+if (heroStats) counterObserver.observe(heroStats);
+const gapBtn = document.getElementById("gapBtn"), gapText = document.getElementById("gapText");
+if (gapBtn && gapText) gapBtn.addEventListener("click", () => {
+  const isOpen = gapText.classList.toggle("visible");
+  gapBtn.classList.toggle("active", isOpen);
+  gapBtn.textContent = isOpen ? "Hide explanation" : "Explain the gap";
+});
+
+
+
+// Subtle JavaScript enhancements: scroll progress, section reveal, and flight-path navigation
+const scrollProgress = document.getElementById("scrollProgress");
+function updateScrollProgress(){
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const p = max > 0 ? window.scrollY / max : 0;
+  if (scrollProgress) scrollProgress.style.transform = `scaleX(${Math.max(0, Math.min(1, p))})`;
+}
+window.addEventListener("scroll", updateScrollProgress, { passive:true });
+updateScrollProgress();
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add("is-visible");
+  });
+}, { threshold: 0.16 });
+document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(block));
+
+// Recovery compass
+(function initCompass(){
+  if (!window.d3) return;
+  const loader=document.getElementById('atlas-loader'), dash=document.getElementById('atlas-dash');
+  const centroids={AL:[41.0,20.0],AZ:[40.1,47.6],BE:[50.5,4.5],BG:[42.7,25.5],CH:[46.8,8.2],CY:[35.1,33.4],CZ:[49.8,15.5],DE:[51.2,10.4],DK:[56.0,10.0],EE:[58.6,25.0],ES:[40.5,-3.7],FI:[64.0,26.0],FR:[46.2,2.2],GB:[54.0,-2.0],GE:[42.3,43.4],GR:[39.0,22.0],HR:[45.1,15.2],HU:[47.2,19.5],IE:[53.4,-8.0],IL:[31.0,34.9],IS:[64.9,-19.0],IT:[42.5,12.5],LT:[55.2,23.9],LU:[49.8,6.1],LV:[56.9,24.1],MA:[31.8,-7.1],MD:[47.4,28.4],ME:[42.7,19.3],MK:[41.6,21.7],MT:[35.9,14.4],NL:[52.1,5.3],NO:[60.5,8.5],PL:[51.9,19.1],PT:[39.5,-8.0],RO:[45.9,24.9],RS:[44.0,21.0],SE:[60.1,18.6],SI:[46.1,14.8],SK:[48.7,19.7],TR:[39.0,35.0],UA:[48.4,31.2],DZ:[36.8,3.0],LB:[33.9,35.5],TN:[35.0,9.5],EG:[26.8,30.0]};
+  const countryNames={AL:'Albania',AZ:'Azerbaijan',BE:'Belgium',BG:'Bulgaria',CH:'Switzerland',CY:'Cyprus',CZ:'Czech Republic',DE:'Germany',DK:'Denmark',DZ:'Algeria',EE:'Estonia',EG:'Egypt',ES:'Spain',FI:'Finland',FR:'France',GB:'United Kingdom',GE:'Georgia',GR:'Greece',HR:'Croatia',HU:'Hungary',IE:'Ireland',IL:'Israel',IS:'Iceland',IT:'Italy',LB:'Lebanon',LT:'Lithuania',LU:'Luxembourg',LV:'Latvia',MA:'Morocco',MD:'Moldova',ME:'Montenegro',MK:'North Macedonia',MT:'Malta',NL:'Netherlands',NO:'Norway',PL:'Poland',PT:'Portugal',RO:'Romania',RS:'Serbia',SE:'Sweden',SI:'Slovenia',SK:'Slovakia',TN:'Tunisia',TR:'Turkey',UA:'Ukraine'};
+  const cLat=50*Math.PI/180,cLon=15*Math.PI/180,R=290,CX=400,CY=400,SVGW=800,SVGH=800;
+  function bearing(lat,lon){ const la=lat*Math.PI/180,lo=lon*Math.PI/180; const cosC=Math.sin(cLat)*Math.sin(la)+Math.cos(cLat)*Math.cos(la)*Math.cos(lo-cLon); const c=Math.acos(Math.max(-1,Math.min(1,cosC))); const sinC=Math.sin(c); if(sinC<1e-5)return 0; const cb=(Math.sin(la)-Math.sin(cLat)*cosC)/Math.cos(cLat)/sinC; let b=Math.acos(Math.max(-1,Math.min(1,cb))); if(Math.sin(lo-cLon)<0)b=-b; return b; }
+  function polar(b,rate){ let r=rate>=100?R*(1+Math.log2(rate/100)*.6):(rate<5?R*.06:R*(1-(100-rate)/100*.78)); r=Math.max(3,Math.min(R*1.3,r)); return [CX+r*Math.sin(b), CY-r*Math.cos(b)]; }
+  function color(rate){ if(rate<5)return '#c4c0ba'; if(rate<100)return d3.interpolateRgb('#537D96','#d0c1b1')(rate/100); return d3.interpolateRgb('#d6a09a','#BF4646')(Math.min((rate-100)/100,1)); }
+  let currentYear=2019, isDragging=false, playTimer=null;
+  const items=Object.values(EMBEDDED_COUNTRY_DATA).map(d=>{ const rate=(d.years['2019']/d.years['2019'])*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,rate); return {...d,rate,bearing:b,ax,ay,px:ax,py:ay,f19:d.years['2019'],f24:d.years['2024']||0}; });
+  const maxF=d3.max(items,d=>d.f24), rScale=d3.scaleSqrt().domain([0,maxF]).range([9,52]);
+  function runForce(){ const allBaseline=items.every(d=>Math.abs(d.rate-100)<.01); if(allBaseline){ items.forEach(d=>{d.px=d.ax;d.py=d.ay}); return; } items.forEach(d=>{d.x=d.ax;d.y=d.ay}); const sim=d3.forceSimulation(items).force('cx',d3.forceX(d=>d.ax).strength(.35)).force('cy',d3.forceY(d=>d.ay).strength(.35)).force('collide',d3.forceCollide(d=>rScale(d.f24)+8).iterations(8)).stop(); for(let i=0;i<260;i++)sim.tick(); items.forEach(d=>{ const targetR=Math.hypot(d.ax-CX,d.ay-CY), dist=Math.hypot(d.x-CX,d.y-CY); if(dist>.1){const s=targetR/dist; d.px=CX+(d.x-CX)*s; d.py=CY+(d.y-CY)*s;} else {d.px=d.ax;d.py=d.ay;} }); }
+  runForce();
+  const svg=d3.select('#compass-wrap').append('svg').attr('viewBox',[0,0,SVGW,SVGH]);
+  const defs=svg.append('defs'); const glow=defs.append('radialGradient').attr('id','atlas-glow'); glow.append('stop').attr('offset','0%').attr('stop-color','#fff').attr('stop-opacity',1); glow.append('stop').attr('offset','65%').attr('stop-color','#f6f7f8').attr('stop-opacity',.7); glow.append('stop').attr('offset','100%').attr('stop-color','#f6f7f8').attr('stop-opacity',0);
+  const g=svg.append('g'); g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',430).attr('fill','url(#atlas-glow)');
+  [{r:R*.4,op:.18},{r:R*.7,op:.22},{r:R,op:.62,label:'2019 baseline'},{r:R*1.3,op:.18,dash:'3,6'}].forEach(rd=>{ g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',rd.r).attr('fill','none').attr('stroke','#cfd6db').attr('stroke-width',rd.r===R?1.3:.6).attr('stroke-dasharray',rd.dash||'').attr('opacity',rd.op); if(rd.label)g.append('text').attr('x',CX+rd.r+6).attr('y',CY-12).attr('fill','#8b939b').style('font-family','Inter').style('font-size','11px').style('font-weight',700).text(rd.label); });
+  for(let deg=0; deg<360; deg+=22.5){ const b=deg*Math.PI/180, len=deg%90===0?1.12:(deg%45===0?.96:.82); g.append('line').attr('x1',CX).attr('y1',CY).attr('x2',CX+R*len*Math.sin(b)).attr('y2',CY-R*len*Math.cos(b)).attr('stroke',deg%90===0?'#aebbc3':'#cbd3d8').attr('stroke-width',deg%90===0?1.2:.45).attr('opacity',deg%90===0?.55:.28); }
+  [{b:0,l:'N',dx:0,dy:-18},{b:Math.PI/2,l:'E',dx:16,dy:5},{b:Math.PI,l:'S',dx:0,dy:22},{b:-Math.PI/2,l:'W',dx:-16,dy:5}].forEach(d=>{ g.append('text').attr('x',CX+R*1.05*Math.sin(d.b)+d.dx).attr('y',CY-R*1.05*Math.cos(d.b)+d.dy).attr('text-anchor','middle').attr('fill','#8b939b').style('font-family','var(--serif)').style('font-size','18px').style('font-weight',700).text(d.l); });
+  const spokes=g.selectAll('.spoke').data(items).join('line').attr('x1',CX).attr('y1',CY).attr('x2',d=>d.px).attr('y2',d=>d.py).attr('stroke',d=>d.rate<100?'#9fb7c4':'#cba09d').attr('stroke-width',.35).attr('opacity',.45);
+  g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',4).attr('fill','#2C2F33').attr('opacity',.72);
+  const shapeGroups=g.selectAll('.shape-g').data(items).join('g').attr('class','shape-g').attr('transform',d=>`translate(${d.px},${d.py}) scale(0)`);
+  shapeGroups.append('circle').attr('r',d=>rScale(d.f24)).attr('fill',d=>color(d.rate)).attr('fill-opacity',.88).attr('stroke','#fff').attr('stroke-width',1.4);
+  shapeGroups.transition().duration(800).delay((_,i)=>i*10).ease(d3.easeBackOut.overshoot(1.5)).attr('transform',d=>`translate(${d.px},${d.py}) scale(1)`);
+  const labels=g.selectAll('.atlas-lbl').data(items).join('text').attr('x',d=>d.px).attr('y',d=>d.py).attr('dy','.35em').attr('text-anchor','middle').attr('fill','#fff').style('font-family','Inter').style('font-weight',800).style('font-size',d=>Math.max(7,Math.min(rScale(d.f24)*.48,11))+'px').style('pointer-events','none').style('stroke','rgba(0,0,0,.38)').style('stroke-width','2.5px').style('paint-order','stroke fill').text(d=>d.iso);
+  const tt=document.getElementById('atlas-tt'), wrap=document.getElementById('compass-wrap');
+  shapeGroups.on('mouseenter',function(e,d){ shapeGroups.style('opacity',.18); labels.style('opacity',.14); spokes.style('opacity',.12); d3.select(this).style('opacity',1).raise(); labels.filter(l=>l.iso===d.iso).style('opacity',1).raise(); tt.innerHTML=`<div class="tt-name">${countryNames[d.iso]||d.iso}</div><div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div><div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div><div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[String(currentYear)]||0)}</b></div>`; tt.classList.add('on'); }).on('mousemove',function(e){ const r=wrap.getBoundingClientRect(); tt.style.left=(e.clientX-r.left+16)+'px'; tt.style.top=(e.clientY-r.top-55)+'px'; }).on('mouseleave',function(){ if(isDragging)return; shapeGroups.style('opacity',1); labels.style('opacity',1); spokes.style('opacity',.45); tt.classList.remove('on'); });
+  const svgNode=svg.node(); function toSVG(clientX,clientY){ const pt=svgNode.createSVGPoint(); pt.x=clientX; pt.y=clientY; return pt.matrixTransform(svgNode.getScreenCTM().inverse()); }
+  function stopPlay(){ if(playTimer){clearTimeout(playTimer);playTimer=null;} document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>'; }
+  shapeGroups.call(d3.drag().on('start',function(event,d){ isDragging=true; stopPlay(); d3.select(this).raise(); }).on('drag',function(event,d){ const p=toSVG(event.sourceEvent.clientX,event.sourceEvent.clientY); const r=Math.hypot(d.ax-CX,d.ay-CY); const angle=Math.atan2(p.x-CX,-(p.y-CY)); d.px=CX+r*Math.sin(angle); d.py=CY-r*Math.cos(angle); d3.select(this).attr('transform',`translate(${d.px},${d.py}) scale(1)`); spokes.filter(s=>s.iso===d.iso).attr('x2',d.px).attr('y2',d.py); labels.filter(l=>l.iso===d.iso).attr('x',d.px).attr('y',d.py); }).on('end',()=>{ isDragging=false; }));
+  function buildLegend(){ const vals=[0,50,100,150,200]; document.getElementById('atlas-legend').innerHTML=`<div class="leg-title">Recovery</div><div class="leg-bar" style="background:linear-gradient(90deg,${vals.map(color).join(',')})"></div><div class="leg-ticks">${vals.map(v=>`<span>${v}%</span>`).join('')}</div><div style="height:20px"></div><div class="leg-title">Traffic size</div><p style="font-size:.76rem">Circle area reflects each country’s 2024 cruise-flight volume.</p>`; }
+  const CAPTIONS={2019:'The baseline: European aviation at its pre-pandemic peak.',2020:'COVID-19 collapses air traffic across almost every country.',2021:'A fragile restart: leisure travel returns before business travel.',2022:'Pent-up demand surges, especially in tourism-heavy markets.',2023:'Recovery consolidates, with a changed geographic pattern.',2024:'Most of Europe has recovered, but not evenly.'};
+  function setCaption(y){ document.getElementById('yc-year').textContent=y; document.getElementById('yc-text').textContent=CAPTIONS[y]||''; }
+  function update(year){ currentYear=year; items.forEach(d=>{ d.rate=(d.years[String(year)]||0)/d.years['2019']*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,d.rate); d.ax=ax; d.ay=ay; }); runForce(); const yt=EMBEDDED_YEARLY_TOTALS[String(year)], y19=EMBEDDED_YEARLY_TOTALS['2019']; const tp=yt.f/y19.f*100, cp=yt.c/y19.c*100, gap=cp-tp; document.getElementById('atlas-metrics').innerHTML=`<div class="metric"><div class="m-lbl">Traffic vs 2019</div><div class="m-val" style="color:${tp>=100?'var(--red)':'var(--blue)'}">${tp>=100?tp.toFixed(0):tp.toFixed(1)}%</div><div class="m-sub">ECAC cruise flights</div></div><div class="metric"><div class="m-lbl">CO₂ vs 2019</div><div class="m-val" style="color:${cp>=100?'var(--red)':'var(--blue)'}">${cp>=100?cp.toFixed(0):cp.toFixed(1)}%</div><div class="m-sub">${gap>=0?'+':''}${gap.toFixed(1)} pp vs traffic</div></div><div class="metric"><div class="m-lbl">Countries above baseline</div><div class="m-val">${items.filter(d=>d.rate>=100).length}</div><div class="m-sub">out of ${items.length} countries</div></div>`;
+    spokes.transition().duration(420).attr('x2',d=>d.px).attr('y2',d=>d.py).attr('stroke',d=>d.rate<100?'#9fb7c4':'#cba09d');
+    shapeGroups.transition().duration(420).attr('transform',d=>`translate(${d.px},${d.py}) scale(1)`).select('circle').attr('fill',d=>color(d.rate));
+    labels.transition().duration(420).attr('x',d=>d.px).attr('y',d=>d.py);
+    document.getElementById('year-disp').textContent=year; setCaption(year);
+  }
+  buildLegend(); update(2019); loader.style.display='none'; dash.classList.add('ready');
+  const slider=document.getElementById('atlas-year-slider'); slider.addEventListener('input',()=>{ stopPlay(); update(+slider.value); });
+  const STEP=1100; function schedule(y){ const next=y+1; if(next>2024){stopPlay();return;} playTimer=setTimeout(()=>{ slider.value=next; update(next); schedule(next); },STEP); }
+  document.getElementById('btn-play').addEventListener('click',()=>{ if(playTimer) stopPlay(); else { document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><rect x="1.5" y="1" width="2.8" height="8" rx=".5"/><rect x="5.7" y="1" width="2.8" height="8" rx=".5"/></svg>'; if(currentYear>=2024){slider.value=2019;update(2019);} schedule(currentYear); } });
+})();
+</script>
+</body>
+</html>
