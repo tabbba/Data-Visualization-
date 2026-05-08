@@ -554,6 +554,21 @@ h2{
 }
 .ethics-card.white{border-top:5px solid var(--blue)}
 .ethics-card.black{border-top:5px solid var(--red)}
+.static-figure-frame{
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  padding:18px;
+}
+.static-figure-frame img{
+  width:100%;
+  display:block;
+  background:#fff;
+}
+.static-figure-frame.compact{
+  max-width:980px;
+  margin:0 auto;
+}
 .ethics-note{
   margin-top:26px;
   border:1px solid var(--line);
@@ -771,46 +786,54 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
     <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | CSV loaded at runtime + D3</p>
   </div>
 
-  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="06">
+  <div class="viz-block horizontal" id="viz-country-fairness" data-step="06">
+    <div class="viz-head"><div><span class="viz-tag">06: Country Recovery Fairness</span><h2>Some Countries Recovered Traffic With a Higher CO₂ Penalty</h2><p class="viz-desc">The compass shows where traffic recovered. This diagnostic asks whether emissions recovered proportionally. Each country is compared against its own 2019 baseline for both flights and CO₂.</p></div><div class="insight"><h4>How to Read It</h4><p>Countries above the diagonal saw CO₂ recover faster than flights. Larger bubbles identify cases where the percentage pattern also carries substantial 2024 emissions mass.</p></div></div>
+    <div class="static-figure-frame compact">
+      <img src="figures/whitehat_country_recovery_gap_scatter.png" alt="Scatter plot comparing 2024 country flight recovery with CO2 recovery against a 2019 baseline">
+    </div>
+    <p class="caption">Source: EUROCONTROL EIA | State-level emissions and flights | 2024 indexed to 2019</p>
+  </div>
+
+  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="07">
     <div class="viz-head"><div><span class="viz-tag">06: Temporal Fingerprint</span><h2>Aviation Recovery as a Temporal Fingerprint</h2><p class="viz-desc">The stripes compress the pandemic collapse and post-pandemic rebound into a compact sequence. They help the reader see the recovery as a temporal pattern rather than as isolated yearly values.</p></div><div class="insight"><h4>Key Insight</h4><p>The recovery did not unfold as a simple return to normal: the post-2020 rebound carries a different emissions profile than the pre-pandemic baseline.</p></div></div>
     <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778164427596' style='position: relative'><noscript><a href='#'><img alt='Traffic Recovery' src='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='EnvStripes_17781643738830/Foglio1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div></div>
     <p class="caption">Source: Tableau Public | Traffic Recovery</p>
   </div>
 
-  <div class="viz-block" id="viz-ethics" data-step="07">
+  <div class="viz-block" id="viz-ethics" data-step="08">
     <div class="viz-head">
       <div>
         <span class="viz-tag">07: Visualisation Ethics</span>
-        <h2>Same Countries, Different Recovery Story</h2>
-        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same country-level recovery data, but one compares traffic and CO₂ fairly while the other narrows the story to flight growth alone.</p>
+        <h2>Same Data, Different Visual Truth</h2>
+        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same yearly CO₂-per-flight values, but one uses a proportional scale while the other compresses the vertical axis.</p>
       </div>
       <div class="insight" style="border-top-color:var(--red)">
         <h4>Critical Insight</h4>
-        <p>Visualisation choices are analytical choices. Metric selection, ranking, scale, and visual emphasis can make the same dataset appear balanced, incomplete, or deceptive.</p>
+        <p>Visualisation choices are analytical choices. Even when every value is unchanged, scale choices can make a moderate change look dramatic.</p>
       </div>
     </div>
 
     <div class="ethics-grid">
       <article class="ethics-card white">
-        <img src="figures/whitehat_country_recovery_gap_scatter.png" alt="White-hat scatter plot comparing 2024 country flight recovery with CO2 recovery against a 2019 baseline">
+        <img src="figures/whitehat_yearly_co2_per_flight.png" alt="Bar chart of yearly CO2 per flight from 2019 to 2024 using a proportional zero baseline">
         <div class="ethics-content">
-          <h3>White Hat: Recovery Fairness</h3>
-          <p>This chart compares each country's 2024 flight recovery with its 2024 CO₂ recovery, both indexed to 2019. Countries above the diagonal emitted more CO₂ than their traffic recovery alone would imply, while bubble size keeps the absolute 2024 CO₂ burden visible.</p>
+          <h3>White Hat: Proportional Scale</h3>
+          <p>This chart shows yearly CO₂ per flight from a true zero baseline. The increase from 2019 to 2024 is visible and important, but it reads proportionally: about 1,434 kg per flight in 2019 versus about 1,613 kg in 2024.</p>
         </div>
       </article>
 
       <article class="ethics-card black">
-        <img src="figures/blackhat_country_recovery_percent_only.png" alt="Black-hat bar chart ranking countries only by percent flight growth above 2019">
+        <img src="figures/blackhat_yearly_co2_per_flight_truncated_axis.png" alt="Bar chart of the same yearly CO2 per flight values using a compressed vertical scale">
         <div class="ethics-content">
-          <h3>Black Hat: Selective Growth Ranking</h3>
-          <p>This chart ranks countries only by percent flight growth above 2019. The values are real, but the framing hides whether CO₂ grew faster than traffic and ignores absolute emissions, making small fast-growing markets appear more central than they are climatically.</p>
+          <h3>Black Hat: Compressed Scale</h3>
+          <p>This chart uses the same six years and the same CO₂-per-flight values, but starts the vertical scale at 1,400 kg. The result is a much steeper-looking increase, even though no data point has been changed or removed.</p>
         </div>
       </article>
     </div>
 
     <div class="ethics-note">
       <h4>Why this matters</h4>
-      <p>A chart can be technically based on real data and still be misleading. In this case, the black-hat version does not change the dataset; it changes the <strong>reader's perception</strong> by selecting a convenient metric and suppressing the emissions context needed to evaluate sustainability.</p>
+      <p>A chart can be technically based on real data and still be misleading. Here, the data effect is <strong>(1612.59 - 1433.76) / 1433.76 = 0.12</strong>. With the compressed scale, the graphic effect is <strong>(1612.59 - 1433.76) / (1433.76 - 1400.00) = 5.30</strong>. The lie factor is therefore <strong>5.30 / 0.12 = 42.47</strong>.</p>
     </div>
 
   </div>
