@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ECAC Recovery Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="recovery_compass.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Europe's Aviation Recovery Compass</h1>
+      <p class="deck">Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p>
+    </header>
+
+    <div class="loader" id="loader">
+      <div id="loader-msg">Loading datasets…</div>
+      <div class="bar" id="loader-bar"></div>
+    </div>
+
+    <div class="dashboard" id="dash">
+      <div class="dash-main">
+        <div class="compass-wrap" id="compass-wrap">
+          <div class="tooltip" id="tt"></div>
+          <div class="yr-caption" id="yr-caption">
+            <div class="yc-year" id="yc-year"></div>
+            <div class="yc-text" id="yc-text"></div>
+          </div>
+        </div>
+        <div class="year-row">
+          <button class="btn-play" id="btn-play" title="Play / Pause">
+            <svg id="play-icon" viewBox="0 0 10 10" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>
+          </button>
+          <span class="yr-label">Year</span>
+          <input type="range" id="year-slider" min="2019" max="2024" step="1" value="2019">
+          <span class="yr-val" id="year-disp">2019</span>
+        </div>
+      </div>
+      <div class="dash-sidebar">
+        <div class="legend-wrap" id="legend"></div>
+        <div class="metrics-row" id="metrics"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dependencies loaded as globals before the ES module runs -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

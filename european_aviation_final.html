@@ -345,18 +345,25 @@ h2{
 .leg-title,.m-lbl{
   font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px
 }
+.leg-block{margin-bottom:16px}
 .leg-bar{height:8px;margin-bottom:7px}
 .leg-ticks{display:flex;justify-content:space-between}
-.leg-ticks span,.m-sub{font-size:.72rem;color:var(--muted)}
-.metric{padding:14px 0;border-top:1px solid var(--line)}
+.leg-ticks span,.m-sub,.leg-size-label{font-size:.72rem;color:var(--muted)}
+.leg-size-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+.metric{padding:14px 0;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px}
+.m-info{min-width:0}
 .m-val{font-size:1.9rem;font-weight:700;letter-spacing:-.05em;color:var(--dark);line-height:1}
 .atlas-tooltip{position:absolute;pointer-events:none;z-index:10;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:12px 14px;font-size:.85rem;line-height:1.5;opacity:0;transition:.15s}
 .atlas-tooltip.on{opacity:1}
+.atlas-tooltip .tt-head{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.atlas-tooltip .tt-flag{font-size:1.35rem;line-height:1}
 .atlas-tooltip .tt-name{font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:6px}
 .atlas-tooltip .tt-row{color:var(--muted)}
 .atlas-tooltip b{color:var(--dark)}
 .shape-g{cursor:grab}
 .shape-g:active{cursor:grabbing}
+.shape-g path,.shape-g circle{transition:stroke .2s,stroke-opacity .2s}
+.shape-g:hover path,.shape-g:hover circle{stroke:var(--dark)!important;stroke-opacity:.9!important}
 
 .plain-card{
   border:1px solid var(--line);
@@ -761,7 +768,7 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
         </div>
       </div>
     </div>
-    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
+    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | CSV loaded at runtime + D3</p>
   </div>
 
   <div class="viz-block horizontal stripes" id="viz-stripes" data-step="06">
@@ -818,9 +825,6 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
 <script>
-const EMBEDDED_COUNTRY_DATA = {"AL":{"iso":"AL","years":{"2019":223138.0,"2020":102884.0,"2021":156866.0,"2022":254163.0,"2023":307523.0,"2024":375887.0},"co2":{"2019":420090800.0,"2020":208937099.99999997,"2021":280163700.0,"2022":440626800.0,"2023":524446499.99999994,"2024":639491299.9999999}},"AZ":{"iso":"AZ","years":{"2019":38538.0,"2020":17690.0,"2021":60889.0,"2022":166127.0,"2023":233261.0,"2024":306032.0},"co2":{"2019":199054900.00000003,"2020":109918600.0,"2021":477628100.00000006,"2022":1241013499.9999998,"2023":1744762000.0000005,"2024":2458476900.0}},"BE":{"iso":"BE","years":{"2019":1226638.0,"2020":534298.0,"2021":629680.0,"2022":1016475.0,"2023":1152045.0,"2024":1196048.0},"co2":{"2019":2322153499.9999976,"2020":1081494399.9999995,"2021":1184420799.9999998,"2022":1947888299.9999979,"2023":2230310899.9999976,"2024":2299564699.999997}},"BG":{"iso":"BG","years":{"2019":874028.0,"2020":374277.0,"2021":513987.0,"2022":819168.0,"2023":972110.0,"2024":1049982.0},"co2":{"2019":3714271399.9999995,"2020":1638020500.0000005,"2021":1976372799.9999988,"2022":3428812599.9999976,"2023":4160255100.0000014,"2024":4449648900.000004}},"CH":{"iso":"CH","years":{"2019":1189953.0,"2020":481610.0,"2021":627659.0,"2022":1052417.0,"2023":1100725.0,"2024":1202246.0},"co2":{"2019":1820661499.9999986,"2020":690122700.0000001,"2021":885455399.9999999,"2022":1531359199.9999983,"2023":1640745199.9999983,"2024":1853220799.9999988}},"CY":{"iso":"CY","years":{"2019":413839.0,"2020":165015.0,"2021":251222.0,"2022":342455.0,"2023":401225.0,"2024":377569.0},"co2":{"2019":1772846799.9999998,"2020":782450000.0000002,"2021":1107765200.0,"2022":1502393899.9999995,"2023":1760281800.0,"2024":1610193100.0}},"CZ":{"iso":"CZ","years":{"2019":868295.0,"2020":341967.0,"2021":406879.0,"2022":625537.0,"2023":714551.0,"2024":794241.0},"co2":{"2019":2611828200.0,"2020":1023194700.0000004,"2021":1114993600.0,"2022":1567662199.9999988,"2023":1736191399.9999993,"2024":2047153899.9999993}},"DE":{"iso":"DE","years":{"2019":3454073.0,"2020":1492101.0,"2021":1733038.0,"2022":2767500.0,"2023":2998606.0,"2024":3158240.0},"co2":{"2019":15117074900.000004,"2020":6829551700.000003,"2021":7570036100.000001,"2022":11984153200.000004,"2023":13064666300.000004,"2024":13573553900.000013}},"DK":{"iso":"DK","years":{"2019":668980.0,"2020":274296.0,"2021":300120.0,"2022":505733.0,"2023":564187.0,"2024":642620.0},"co2":{"2019":1532050799.9999998,"2020":663347300.0,"2021":719669400.0,"2022":1148701000.0,"2023":1413291899.9999995,"2024":2715066600.0}},"EE":{"iso":"EE","years":{"2019":226642.0,"2020":95864.0,"2021":108944.0,"2022":141104.0,"2023":148274.0,"2024":169857.0},"co2":{"2019":857358200.0000004,"2020":408916900.0,"2021":456230200.00000006,"2022":396342700.0,"2023":415474999.99999994,"2024":523852200.0}},"ES":{"iso":"ES","years":{"2019":2156784.0,"2020":857970.0,"2021":1191439.0,"2022":1980202.0,"2023":2194380.0,"2024":2361949.0},"co2":{"2019":12817612100.000002,"2020":4913852100.0,"2021":6685489000.0,"2022":11617695800.0,"2023":13062142899.999998,"2024":13943366700.000002}},"FI":{"iso":"FI","years":{"2019":278103.0,"2020":114648.0,"2021":119178.0,"2022":202354.0,"2023":221965.0,"2024":239171.0},"co2":{"2019":1030414700.0,"2020":461099200.00000006,"2021":486276400.0,"2022":593788200.0,"2023":666391600.0,"2024":742649500.0}},"FR":{"iso":"FR","years":{"2019":3423262.0,"2020":1406145.0,"2021":1825487.0,"2022":3015623.0,"2023":3284032.0,"2024":3483374.0},"co2":{"2019":19006074400.000004,"2020":7588299600.0,"2021":9654922100.000002,"2022":16179295199.999996,"2023":18047406399.99999,"2024":19218965399.99999}},"GB":{"iso":"GB","years":{"2019":2643965.0,"2020":1049685.0,"2021":1105866.0,"2022":2214625.0,"2023":2483969.0,"2024":2598095.0},"co2":{"2019":18308123000.0,"2020":7408740000.0,"2021":10708143999.999998,"2022":20987914499.999996,"2023":23537855799.999992,"2024":24252320799.99999}},"GE":{"iso":"GE","years":{"2019":70503.0,"2020":24994.0,"2021":70787.0,"2022":145824.0,"2023":230538.0,"2024":296466.0},"co2":{"2019":200585700.0,"2020":74896100.0,"2021":305667800.0,"2022":777166400.0,"2023":1245066199.9999995,"2024":1806847599.9999995}},"GR":{"iso":"GR","years":{"2019":871380.0,"2020":376062.0,"2021":562629.0,"2022":888012.0,"2023":993283.0,"2024":1066920.0},"co2":{"2019":5249009100.0,"2020":2504031499.9999995,"2021":3601795500.0,"2022":5524612799.999999,"2023":6239857400.000001,"2024":6647098600.000001}},"HR":{"iso":"HR","years":{"2019":720129.0,"2020":303516.0,"2021":463085.0,"2022":718326.0,"2023":820780.0,"2024":929737.0},"co2":{"2019":1840163900.000001,"2020":786840800.0,"2021":1226141800.0000017,"2022":1806900400.0000024,"2023":2065853300.0000026,"2024":2454978199.9999995}},"HU":{"iso":"HU","years":{"2019":901304.0,"2020":383476.0,"2021":496618.0,"2022":907581.0,"2023":1047946.0,"2024":1119133.0},"co2":{"2019":2876675000.000001,"2020":1297445400.0000005,"2021":1504226299.9999993,"2022":2835112900.0000014,"2023":3332815100.000001,"2024":3479171500.0000024}},"IE":{"iso":"IE","years":{"2019":555348.0,"2020":224420.0,"2021":255344.0,"2022":506857.0,"2023":573862.0,"2024":589289.0},"co2":{"2019":2956767000.0000005,"2020":1247651000.0,"2021":1497709400.0,"2022":2649350700.0000005,"2023":2880172100.0,"2024":2973281500.0000005}},"IL":{"iso":"IL","years":{"2019":183227.0,"2020":57799.0,"2021":90846.0,"2022":172774.0,"2023":185052.0,"2024":116025.0},"co2":{"2019":364055599.9999999,"2020":127558699.99999999,"2021":209029700.0,"2022":367935900.0,"2023":411255499.99999994,"2024":240841800.0}},"IS":{"iso":"IS","years":{"2019":8394.0,"2020":4653.0,"2021":10285.0,"2022":16347.0,"2023":29455.0,"2024":177749.0},"co2":{"2019":26207599.999999993,"2020":15915400.0,"2021":78278500.00000004,"2022":81088900.00000003,"2023":350328500.00000036,"2024":3506592900.0000005}},"IT":{"iso":"IT","years":{"2019":1979579.0,"2020":787891.0,"2021":1118219.0,"2022":1808402.0,"2023":2014960.0,"2024":2196059.0},"co2":{"2019":9306270100.000002,"2020":3653061099.9999995,"2021":5114269800.000001,"2022":8504780500.000003,"2023":9509699800.000008,"2024":10501207800.000006}},"LT":{"iso":"LT","years":{"2019":298538.0,"2020":136727.0,"2021":174964.0,"2022":180056.0,"2023":185275.0,"2024":207194.0},"co2":{"2019":574495300.0,"2020":311336000.0,"2021":396418100.0,"2022":333118400.0,"2023":357291400.00000006,"2024":401019800.00000006}},"LU":{"iso":"LU","years":{"2019":307514.0,"2020":127070.0,"2021":157541.0,"2022":239367.0,"2023":273085.0,"2024":279724.0},"co2":{"2019":177833699.99999994,"2020":77235699.99999999,"2021":95847199.99999997,"2022":146486799.99999994,"2023":183146800.00000003,"2024":188809600.0000001}},"LV":{"iso":"LV","years":{"2019":294205.0,"2020":128394.0,"2021":161939.0,"2022":184265.0,"2023":194583.0,"2024":221542.0},"co2":{"2019":861755200.0000001,"2020":415718700.0,"2021":511083600.0,"2022":418021500.00000006,"2023":417706200.00000006,"2024":512940700.00000006}},"MA":{"iso":"MA","years":{"2019":398391.0,"2020":161821.0,"2021":242925.0,"2022":419150.0,"2023":473474.0,"2024":529427.0},"co2":{"2019":2603339400.0,"2020":1042947900.0000002,"2021":1506079699.9999998,"2022":2603659599.9999995,"2023":2943858199.9999995,"2024":3254948800.0000005}},"MD":{"iso":"MD","years":{"2019":68634.0,"2020":28945.0,"2021":41139.0,"2022":22115.0,"2023":24057.0,"2024":32439.0},"co2":{"2019":81004400.0,"2020":33128200.000000004,"2021":47846800.0,"2022":28064300.000000004,"2023":32248900.000000004,"2024":48615900.0}},"ME":{"iso":"ME","years":{"2019":134943.0,"2020":60118.0,"2021":89076.0,"2022":144497.0,"2023":171166.0,"2024":194860.0},"co2":{"2019":186982500.00000006,"2020":82723900.0,"2021":110564900.0,"2022":180160300.0000001,"2023":215869000.00000003,"2024":249251000.0}},"MK":{"iso":"MK","years":{"2019":221446.0,"2020":95426.0,"2021":154757.0,"2022":233892.0,"2023":267709.0,"2024":285862.0},"co2":{"2019":303959999.99999994,"2020":144754600.0,"2021":221572200.00000003,"2022":329837800.0,"2023":380018400.0000001,"2024":411795100.0000001}},"MT":{"iso":"MT","years":{"2019":128834.0,"2020":55140.0,"2021":71266.0,"2022":100006.0,"2023":131747.0,"2024":147062.0},"co2":{"2019":937474800.0,"2020":375363100.0,"2021":475320499.99999994,"2022":626755500.0,"2023":907533600.0,"2024":1028206200.0}},"NL":{"iso":"NL","years":{"2019":1356733.0,"2020":604315.0,"2021":662988.0,"2022":1114286.0,"2023":1218871.0,"2024":1281525.0},"co2":{"2019":3388643700.0,"2020":1575154899.9999998,"2021":1682566199.9999998,"2022":2592012699.999998,"2023":2817097199.9999967,"2024":2960568099.9999976}},"NO":{"iso":"NO","years":{"2019":579875.0,"2020":334721.0,"2021":367217.0,"2022":520164.0,"2023":544308.0,"2024":549464.0},"co2":{"2019":2358999900.0000005,"2020":1173338200.0,"2021":1383468100.0,"2022":1990451600.0,"2023":2240742300.0000005,"2024":2388843300.0}},"PL":{"iso":"PL","years":{"2019":910692.0,"2020":375813.0,"2021":471196.0,"2022":626192.0,"2023":696599.0,"2024":758942.0},"co2":{"2019":4472426300.000002,"2020":1981331399.9999998,"2021":2316455899.9999995,"2022":2843562299.9999995,"2023":3184655300.0,"2024":3420816399.9999995}},"RO":{"iso":"RO","years":{"2019":744397.0,"2020":318176.0,"2021":451242.0,"2022":654330.0,"2023":768340.0,"2024":819315.0},"co2":{"2019":4926145200.0,"2020":2155913000.0,"2021":2627773000.000001,"2022":4571635000.0,"2023":5590960100.000002,"2024":5939671200.0}},"RS":{"iso":"RS","years":{"2019":708299.0,"2020":312285.0,"2021":445899.0,"2022":721631.0,"2023":831135.0,"2024":906336.0},"co2":{"2019":1887309599.9999971,"2020":824496199.9999993,"2021":1069110899.999998,"2022":1839919499.9999971,"2023":2121010699.999999,"2024":2305082300.0000005}},"SE":{"iso":"SE","years":{"2019":827198.0,"2020":350793.0,"2021":381177.0,"2022":587636.0,"2023":638981.0,"2024":662733.0},"co2":{"2019":3473713500.0000005,"2020":1528876299.9999998,"2021":1619456599.9999995,"2022":2144403899.9999998,"2023":2329166199.9999995,"2024":2504589899.9999995}},"SI":{"iso":"SI","years":{"2019":465220.0,"2020":198310.0,"2021":282082.0,"2022":457455.0,"2023":504950.0,"2024":550243.0},"co2":{"2019":499655899.9999999,"2020":213837999.99999997,"2021":285710799.99999994,"2022":465814399.9999998,"2023":530788599.99999976,"2024":560578800.0}},"SK":{"iso":"SK","years":{"2019":557098.0,"2020":198990.0,"2021":269160.0,"2022":468713.0,"2023":530242.0,"2024":601001.0},"co2":{"2019":1153781000.0000002,"2020":427022199.9999999,"2021":528806300.0,"2022":825084099.9999996,"2023":917351999.9999994,"2024":1045231399.9999994}},"TR":{"iso":"TR","years":{"2019":1025442.0,"2020":426167.0,"2021":914441.0,"2022":1378865.0,"2023":1630582.0,"2024":1703030.0},"co2":{"2019":10831462199.999994,"2020":4795733500.0,"2021":9027373800.0,"2022":15224139099.999994,"2023":18470341099.999992,"2024":18807011099.99998}},"UA":{"iso":"UA","years":{"2019":334783.0,"2020":134391.0,"2021":214956.0,"2022":31526.0,"2023":24564.0,"2024":12066.0},"co2":{"2019":1667883500.0000002,"2020":696600800.0,"2021":1097594000.0,"2022":161641800.00000006,"2023":31807700.0,"2024":30841400.0}}};
-const EMBEDDED_YEARLY_TOTALS = {"2019":{"f":69827668.0,"c":1049608679900.008},"2020":{"f":30824703.0,"c":446293891600.00073},"2021":{"f":39330358.0,"c":570174280500.0029},"2022":{"f":59893287.0,"c":924801720500.0061},"2023":{"f":65763738.0,"c":1048550343200.0079},"2024":{"f":69367672.0,"c":1141751365900.0083}};
-
 const TABLEAU_RATIOS = {
   viz1778075893716: { ratio: 0.64, min: 520 },
   viz1778076877942: { ratio: 0.60, min: 820 },
@@ -973,50 +977,515 @@ document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(
 })();
 
 // Recovery compass
-(function initCompass(){
+(async function initCompass(){
   if (!window.d3) return;
-  const loader=document.getElementById('atlas-loader'), dash=document.getElementById('atlas-dash');
-  const centroids={AL:[41.0,20.0],AZ:[40.1,47.6],BE:[50.5,4.5],BG:[42.7,25.5],CH:[46.8,8.2],CY:[35.1,33.4],CZ:[49.8,15.5],DE:[51.2,10.4],DK:[56.0,10.0],EE:[58.6,25.0],ES:[40.5,-3.7],FI:[64.0,26.0],FR:[46.2,2.2],GB:[54.0,-2.0],GE:[42.3,43.4],GR:[39.0,22.0],HR:[45.1,15.2],HU:[47.2,19.5],IE:[53.4,-8.0],IL:[31.0,34.9],IS:[64.9,-19.0],IT:[42.5,12.5],LT:[55.2,23.9],LU:[49.8,6.1],LV:[56.9,24.1],MA:[31.8,-7.1],MD:[47.4,28.4],ME:[42.7,19.3],MK:[41.6,21.7],MT:[35.9,14.4],NL:[52.1,5.3],NO:[60.5,8.5],PL:[51.9,19.1],PT:[39.5,-8.0],RO:[45.9,24.9],RS:[44.0,21.0],SE:[60.1,18.6],SI:[46.1,14.8],SK:[48.7,19.7],TR:[39.0,35.0],UA:[48.4,31.2],DZ:[36.8,3.0],LB:[33.9,35.5],TN:[35.0,9.5],EG:[26.8,30.0]};
-  const countryNames={AL:'Albania',AZ:'Azerbaijan',BE:'Belgium',BG:'Bulgaria',CH:'Switzerland',CY:'Cyprus',CZ:'Czech Republic',DE:'Germany',DK:'Denmark',DZ:'Algeria',EE:'Estonia',EG:'Egypt',ES:'Spain',FI:'Finland',FR:'France',GB:'United Kingdom',GE:'Georgia',GR:'Greece',HR:'Croatia',HU:'Hungary',IE:'Ireland',IL:'Israel',IS:'Iceland',IT:'Italy',LB:'Lebanon',LT:'Lithuania',LU:'Luxembourg',LV:'Latvia',MA:'Morocco',MD:'Moldova',ME:'Montenegro',MK:'North Macedonia',MT:'Malta',NL:'Netherlands',NO:'Norway',PL:'Poland',PT:'Portugal',RO:'Romania',RS:'Serbia',SE:'Sweden',SI:'Slovenia',SK:'Slovakia',TN:'Tunisia',TR:'Turkey',UA:'Ukraine'};
-  const cLat=50*Math.PI/180,cLon=15*Math.PI/180,R=290,CX=400,CY=400,SVGW=800,SVGH=800;
-  function bearing(lat,lon){ const la=lat*Math.PI/180,lo=lon*Math.PI/180; const cosC=Math.sin(cLat)*Math.sin(la)+Math.cos(cLat)*Math.cos(la)*Math.cos(lo-cLon); const c=Math.acos(Math.max(-1,Math.min(1,cosC))); const sinC=Math.sin(c); if(sinC<1e-5)return 0; const cb=(Math.sin(la)-Math.sin(cLat)*cosC)/Math.cos(cLat)/sinC; let b=Math.acos(Math.max(-1,Math.min(1,cb))); if(Math.sin(lo-cLon)<0)b=-b; return b; }
-  function polar(b,rate){ let r=rate>=100?R*(1+Math.log2(rate/100)*.6):(rate<5?R*.06:R*(1-(100-rate)/100*.78)); r=Math.max(3,Math.min(R*1.3,r)); return [CX+r*Math.sin(b), CY-r*Math.cos(b)]; }
-  function color(rate){ if(rate<5)return '#c4c0ba'; if(rate<100)return d3.interpolateRgb('#537D96','#d0c1b1')(rate/100); return d3.interpolateRgb('#d6a09a','#BF4646')(Math.min((rate-100)/100,1)); }
-  let currentYear=2019, isDragging=false, playTimer=null;
-  const items=Object.values(EMBEDDED_COUNTRY_DATA).map(d=>{ const rate=(d.years['2019']/d.years['2019'])*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,rate); return {...d,rate,bearing:b,ax,ay,px:ax,py:ay,f19:d.years['2019'],f24:d.years['2024']||0}; });
-  const maxF=d3.max(items,d=>d.f24), rScale=d3.scaleSqrt().domain([0,maxF]).range([9,52]);
-  function runForce(){ const allBaseline=items.every(d=>Math.abs(d.rate-100)<.01); if(allBaseline){ items.forEach(d=>{d.px=d.ax;d.py=d.ay}); return; } items.forEach(d=>{d.x=d.ax;d.y=d.ay}); const sim=d3.forceSimulation(items).force('cx',d3.forceX(d=>d.ax).strength(.35)).force('cy',d3.forceY(d=>d.ay).strength(.35)).force('collide',d3.forceCollide(d=>rScale(d.f24)+8).iterations(8)).stop(); for(let i=0;i<260;i++)sim.tick(); items.forEach(d=>{ const targetR=Math.hypot(d.ax-CX,d.ay-CY), dist=Math.hypot(d.x-CX,d.y-CY); if(dist>.1){const s=targetR/dist; d.px=CX+(d.x-CX)*s; d.py=CY+(d.y-CY)*s;} else {d.px=d.ax;d.py=d.ay;} }); }
-  runForce();
-  const svg=d3.select('#compass-wrap').append('svg').attr('viewBox',[0,0,SVGW,SVGH]);
-  const defs=svg.append('defs'); const glow=defs.append('radialGradient').attr('id','atlas-glow'); glow.append('stop').attr('offset','0%').attr('stop-color','#fff').attr('stop-opacity',1); glow.append('stop').attr('offset','65%').attr('stop-color','#f6f7f8').attr('stop-opacity',.7); glow.append('stop').attr('offset','100%').attr('stop-color','#f6f7f8').attr('stop-opacity',0);
-  const g=svg.append('g'); g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',430).attr('fill','url(#atlas-glow)');
-  [{r:R*.4,op:.18},{r:R*.7,op:.22},{r:R,op:.62,label:'2019 baseline'},{r:R*1.3,op:.18,dash:'3,6'}].forEach(rd=>{ g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',rd.r).attr('fill','none').attr('stroke','#cfd6db').attr('stroke-width',rd.r===R?1.3:.6).attr('stroke-dasharray',rd.dash||'').attr('opacity',rd.op); if(rd.label)g.append('text').attr('x',CX+rd.r+6).attr('y',CY-12).attr('fill','#8b939b').style('font-family','Inter').style('font-size','11px').style('font-weight',700).text(rd.label); });
-  for(let deg=0; deg<360; deg+=22.5){ const b=deg*Math.PI/180, len=deg%90===0?1.12:(deg%45===0?.96:.82); g.append('line').attr('x1',CX).attr('y1',CY).attr('x2',CX+R*len*Math.sin(b)).attr('y2',CY-R*len*Math.cos(b)).attr('stroke',deg%90===0?'#aebbc3':'#cbd3d8').attr('stroke-width',deg%90===0?1.2:.45).attr('opacity',deg%90===0?.55:.28); }
-  [{b:0,l:'N',dx:0,dy:-18},{b:Math.PI/2,l:'E',dx:16,dy:5},{b:Math.PI,l:'S',dx:0,dy:22},{b:-Math.PI/2,l:'W',dx:-16,dy:5}].forEach(d=>{ g.append('text').attr('x',CX+R*1.05*Math.sin(d.b)+d.dx).attr('y',CY-R*1.05*Math.cos(d.b)+d.dy).attr('text-anchor','middle').attr('fill','#8b939b').style('font-family','var(--serif)').style('font-size','18px').style('font-weight',700).text(d.l); });
-  const spokes=g.selectAll('.spoke').data(items).join('line').attr('x1',CX).attr('y1',CY).attr('x2',d=>d.px).attr('y2',d=>d.py).attr('stroke',d=>d.rate<100?'#9fb7c4':'#cba09d').attr('stroke-width',.35).attr('opacity',.45);
-  g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',4).attr('fill','#2C2F33').attr('opacity',.72);
-  const shapeGroups=g.selectAll('.shape-g').data(items).join('g').attr('class','shape-g').attr('transform',d=>`translate(${d.px},${d.py}) scale(0)`);
-  shapeGroups.append('circle').attr('r',d=>rScale(d.f24)).attr('fill',d=>color(d.rate)).attr('fill-opacity',.88).attr('stroke','#fff').attr('stroke-width',1.4);
-  shapeGroups.transition().duration(800).delay((_,i)=>i*10).ease(d3.easeBackOut.overshoot(1.5)).attr('transform',d=>`translate(${d.px},${d.py}) scale(1)`);
-  const labels=g.selectAll('.atlas-lbl').data(items).join('text').attr('x',d=>d.px).attr('y',d=>d.py).attr('dy','.35em').attr('text-anchor','middle').attr('fill','#fff').style('font-family','Inter').style('font-weight',800).style('font-size',d=>Math.max(7,Math.min(rScale(d.f24)*.48,11))+'px').style('pointer-events','none').style('stroke','rgba(0,0,0,.38)').style('stroke-width','2.5px').style('paint-order','stroke fill').text(d=>d.iso);
-  const tt=document.getElementById('atlas-tt'), wrap=document.getElementById('compass-wrap');
-  shapeGroups.on('mouseenter',function(e,d){ shapeGroups.style('opacity',.18); labels.style('opacity',.14); spokes.style('opacity',.12); d3.select(this).style('opacity',1).raise(); labels.filter(l=>l.iso===d.iso).style('opacity',1).raise(); tt.innerHTML=`<div class="tt-name">${countryNames[d.iso]||d.iso}</div><div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div><div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div><div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[String(currentYear)]||0)}</b></div>`; tt.classList.add('on'); }).on('mousemove',function(e){ const r=wrap.getBoundingClientRect(); tt.style.left=(e.clientX-r.left+16)+'px'; tt.style.top=(e.clientY-r.top-55)+'px'; }).on('mouseleave',function(){ if(isDragging)return; shapeGroups.style('opacity',1); labels.style('opacity',1); spokes.style('opacity',.45); tt.classList.remove('on'); });
-  const svgNode=svg.node(); function toSVG(clientX,clientY){ const pt=svgNode.createSVGPoint(); pt.x=clientX; pt.y=clientY; return pt.matrixTransform(svgNode.getScreenCTM().inverse()); }
-  function stopPlay(){ if(playTimer){clearTimeout(playTimer);playTimer=null;} document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>'; }
-  shapeGroups.call(d3.drag().on('start',function(event,d){ isDragging=true; stopPlay(); d3.select(this).raise(); }).on('drag',function(event,d){ const p=toSVG(event.sourceEvent.clientX,event.sourceEvent.clientY); const r=Math.hypot(d.ax-CX,d.ay-CY); const angle=Math.atan2(p.x-CX,-(p.y-CY)); d.px=CX+r*Math.sin(angle); d.py=CY-r*Math.cos(angle); d3.select(this).attr('transform',`translate(${d.px},${d.py}) scale(1)`); spokes.filter(s=>s.iso===d.iso).attr('x2',d.px).attr('y2',d.py); labels.filter(l=>l.iso===d.iso).attr('x',d.px).attr('y',d.py); }).on('end',()=>{ isDragging=false; }));
-  function buildLegend(){ const vals=[0,50,100,150,200]; document.getElementById('atlas-legend').innerHTML=`<div class="leg-title">Recovery</div><div class="leg-bar" style="background:linear-gradient(90deg,${vals.map(color).join(',')})"></div><div class="leg-ticks">${vals.map(v=>`<span>${v}%</span>`).join('')}</div><div style="height:20px"></div><div class="leg-title">Traffic size</div><p style="font-size:.76rem">Circle area reflects each country’s 2024 cruise-flight volume.</p>`; }
-  const CAPTIONS={2019:'The baseline: European aviation at its pre-pandemic peak.',2020:'COVID-19 collapses air traffic across almost every country.',2021:'A fragile restart: leisure travel returns before business travel.',2022:'Pent-up demand surges, especially in tourism-heavy markets.',2023:'Recovery consolidates, with a changed geographic pattern.',2024:'Most of Europe has recovered, but not evenly.'};
-  function setCaption(y){ document.getElementById('yc-year').textContent=y; document.getElementById('yc-text').textContent=CAPTIONS[y]||''; }
-  function update(year){ currentYear=year; items.forEach(d=>{ d.rate=(d.years[String(year)]||0)/d.years['2019']*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,d.rate); d.ax=ax; d.ay=ay; }); runForce(); const yt=EMBEDDED_YEARLY_TOTALS[String(year)], y19=EMBEDDED_YEARLY_TOTALS['2019']; const tp=yt.f/y19.f*100, cp=yt.c/y19.c*100, gap=cp-tp; document.getElementById('atlas-metrics').innerHTML=`<div class="metric"><div class="m-lbl">Traffic vs 2019</div><div class="m-val" style="color:${tp>=100?'var(--red)':'var(--blue)'}">${tp>=100?tp.toFixed(0):tp.toFixed(1)}%</div><div class="m-sub">ECAC cruise flights</div></div><div class="metric"><div class="m-lbl">CO₂ vs 2019</div><div class="m-val" style="color:${cp>=100?'var(--red)':'var(--blue)'}">${cp>=100?cp.toFixed(0):cp.toFixed(1)}%</div><div class="m-sub">${gap>=0?'+':''}${gap.toFixed(1)} pp vs traffic</div></div><div class="metric"><div class="m-lbl">Countries above baseline</div><div class="m-val">${items.filter(d=>d.rate>=100).length}</div><div class="m-sub">out of ${items.length} countries</div></div>`;
-    spokes.transition().duration(420).attr('x2',d=>d.px).attr('y2',d=>d.py).attr('stroke',d=>d.rate<100?'#9fb7c4':'#cba09d');
-    shapeGroups.transition().duration(420).attr('transform',d=>`translate(${d.px},${d.py}) scale(1)`).select('circle').attr('fill',d=>color(d.rate));
-    labels.transition().duration(420).attr('x',d=>d.px).attr('y',d=>d.py);
-    document.getElementById('year-disp').textContent=year; setCaption(year);
+  const loader = document.getElementById('atlas-loader');
+  const dash = document.getElementById('atlas-dash');
+  const $ = id => document.getElementById(id);
+  const prog = message => { if (loader) loader.textContent = message; };
+
+  const CENTROIDS = {
+    AL:[41.0,20.0], AZ:[40.1,47.6], BE:[50.5,4.5], BG:[42.7,25.5], CH:[46.8,8.2],
+    CY:[35.1,33.4], CZ:[49.8,15.5], DE:[51.2,10.4], DK:[56.0,10.0], EE:[58.6,25.0],
+    ES:[40.5,-3.7], FI:[64.0,26.0], FR:[46.2,2.2], GB:[54.0,-2.0], GE:[42.3,43.4],
+    GR:[39.0,22.0], HR:[45.1,15.2], HU:[47.2,19.5], IE:[53.4,-8.0], IL:[31.0,34.9],
+    IS:[64.9,-19.0], IT:[42.5,12.5], LT:[55.2,23.9], LU:[49.8,6.1], LV:[56.9,24.1],
+    MA:[31.8,-7.1], MD:[47.4,28.4], ME:[42.7,19.3], MK:[41.6,21.7], MT:[35.9,14.4],
+    NL:[52.1,5.3], NO:[60.5,8.5], PL:[51.9,19.1], PT:[39.5,-8.0], RO:[45.9,24.9],
+    RS:[44.0,21.0], SE:[60.1,18.6], SI:[46.1,14.8], SK:[48.7,19.7], TR:[39.0,35.0],
+    UA:[48.4,31.2], DZ:[36.8,3.0], LB:[33.9,35.5], TN:[35.0,9.5], EG:[26.8,30.0]
+  };
+  const iso23 = {
+    AL:'008', AT:'040', AZ:'031', BE:'056', BG:'100', CH:'756', CY:'196', CZ:'203',
+    DE:'276', DK:'208', DZ:'012', EE:'233', EG:'818', ES:'724', FI:'246', FR:'250',
+    GB:'826', GE:'268', GR:'300', HR:'191', HU:'348', IE:'372', IL:'376', IS:'352',
+    IT:'380', LB:'422', LT:'440', LU:'442', LV:'428', MA:'504', MD:'498', ME:'499',
+    MK:'807', MT:'470', NL:'528', NO:'578', PL:'616', PT:'620', RO:'642', RS:'688',
+    SE:'752', SI:'705', SK:'703', TN:'788', TR:'792', UA:'804'
+  };
+  const ISO_NUM_TO_A2 = Object.fromEntries(Object.entries(iso23).map(([k, v]) => [v, k]));
+  const COUNTRY_NAMES = {
+    AL:'Albania', AZ:'Azerbaijan', BE:'Belgium', BG:'Bulgaria', CH:'Switzerland', CY:'Cyprus',
+    CZ:'Czech Republic', DE:'Germany', DK:'Denmark', DZ:'Algeria', EE:'Estonia', EG:'Egypt',
+    ES:'Spain', FI:'Finland', FR:'France', GB:'United Kingdom', GE:'Georgia', GR:'Greece',
+    HR:'Croatia', HU:'Hungary', IE:'Ireland', IL:'Israel', IS:'Iceland', IT:'Italy', LB:'Lebanon',
+    LT:'Lithuania', LU:'Luxembourg', LV:'Latvia', MA:'Morocco', MD:'Moldova', ME:'Montenegro',
+    MK:'North Macedonia', MT:'Malta', NL:'Netherlands', NO:'Norway', PL:'Poland', PT:'Portugal',
+    RO:'Romania', RS:'Serbia', SE:'Sweden', SI:'Slovenia', SK:'Slovakia', TN:'Tunisia',
+    TR:'Turkey', UA:'Ukraine'
+  };
+  const CAPTIONS = {
+    2019:'The baseline. European aviation at its pre-pandemic peak: 10.7 million cruise-phase flights across ECAC airspace.',
+    2020:'COVID-19 collapses air traffic. Borders close overnight. Some states see traffic fall below 10% of 2019 levels.',
+    2021:'A fragile restart. Vaccinations unlock leisure travel but business routes stay grounded and restrictions linger.',
+    2022:'Pent-up demand surges. Southern Europe bounces past 2019. Ukraine war reroutes eastern corridors permanently.',
+    2023:'Recovery consolidates. Turkey, North Africa and the Gulf corridor become new growth engines for the network.',
+    2024:'Most of Europe has recovered: but not equally. Eastern states and smaller markets still trail their 2019 baselines.'
+  };
+  const R = 290, CX = 400, CY = 400, SVGW = 800, SVGH = 800;
+  const cLat = 50 * Math.PI / 180;
+  const cLon = 15 * Math.PI / 180;
+  const toNum = v => Number(v) || 0;
+
+  function bearing(lat, lon){
+    const la = lat * Math.PI / 180, lo = lon * Math.PI / 180;
+    const cosC = Math.sin(cLat) * Math.sin(la) + Math.cos(cLat) * Math.cos(la) * Math.cos(lo - cLon);
+    const c = Math.acos(Math.max(-1, Math.min(1, cosC)));
+    const sinC = Math.sin(c);
+    if (sinC < 1e-5) return 0;
+    const cb = (Math.sin(la) - Math.sin(cLat) * cosC) / Math.cos(cLat) / sinC;
+    let b = Math.acos(Math.max(-1, Math.min(1, cb)));
+    if (Math.sin(lo - cLon) < 0) b = -b;
+    return b;
   }
-  buildLegend(); update(2019); loader.style.display='none'; dash.classList.add('ready');
-  const slider=document.getElementById('atlas-year-slider'); slider.addEventListener('input',()=>{ stopPlay(); update(+slider.value); });
-  const STEP=1100; function schedule(y){ const next=y+1; if(next>2024){stopPlay();return;} playTimer=setTimeout(()=>{ slider.value=next; update(next); schedule(next); },STEP); }
-  document.getElementById('btn-play').addEventListener('click',()=>{ if(playTimer) stopPlay(); else { document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><rect x="1.5" y="1" width="2.8" height="8" rx=".5"/><rect x="5.7" y="1" width="2.8" height="8" rx=".5"/></svg>'; if(currentYear>=2024){slider.value=2019;update(2019);} schedule(currentYear); } });
+
+  function polar(b, rate){
+    let r;
+    if (rate >= 100) r = R * (1 + Math.log2(rate / 100) * 0.6);
+    else if (rate < 5) r = R * 0.06;
+    else r = R * (1 - (100 - rate) / 100 * 0.78);
+    r = Math.max(3, Math.min(R * 1.3, r));
+    return [CX + r * Math.sin(b), CY - r * Math.cos(b)];
+  }
+
+  function bubColor(rate){
+    if (rate < 5) return '#c4c0ba';
+    if (rate < 100) return d3.interpolateRgb('#3a6070', '#c8b8a8')(rate / 100);
+    return d3.interpolateRgb('#c88a82', '#8a2525')(Math.min((rate - 100) / 100, 1));
+  }
+
+  async function loadAllData(){
+    prog('Loading carbon price...');
+    const priceRows = await d3.csv('data/clean/carbon_price_monthly_cleaned.csv');
+    const priceYM = {};
+    for (const r of priceRows) priceYM[`${r.YEAR}-${r.MONTH}`] = toNum(r.EUA_PRICE_EUR);
+
+    prog('Loading ECAC network...');
+    const net = await d3.csv('data/clean/emission_network_clean.csv');
+
+    prog('Loading state emissions...');
+    const st = await d3.csv('data/clean/emission_state_clean.csv');
+
+    prog('Loading country geometries...');
+    let worldData = null;
+    try {
+      const res = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json');
+      if (res.ok && window.topojson) {
+        const topo = await res.json();
+        worldData = topojson.feature(topo, topo.objects.countries);
+      }
+    } catch (_) {}
+
+    prog('Aggregating...');
+    const ecac = {};
+    for (const r of net) {
+      const k = `${r.YEAR}-${r.MONTH}`;
+      if (!ecac[k]) ecac[k] = { f:0, c:0, y:toNum(r.YEAR), m:toNum(r.MONTH) };
+      ecac[k].c += toNum(r.CO2_KG);
+      if (r.FLIGHT_PHASE === 'cruise') ecac[k].f += toNum(r.NB_FLIGHTS);
+    }
+
+    const stAgg = {}, stCO2 = {};
+    for (const r of st) {
+      if (r.FLIGHT_PHASE !== 'cruise') continue;
+      const y = toNum(r.YEAR);
+      if (y < 2019 || y > 2024) continue;
+      const a = r.AREA;
+      if (!stAgg[a]) stAgg[a] = {};
+      if (!stCO2[a]) stCO2[a] = {};
+      stAgg[a][y] = (stAgg[a][y] || 0) + toNum(r.NB_FLIGHTS);
+      stCO2[a][y] = (stCO2[a][y] || 0) + toNum(r.CO2_KG);
+    }
+
+    const cty = {};
+    for (const [a, years] of Object.entries(stAgg)) {
+      if (!CENTROIDS[a] || !years[2019] || years[2019] < 5000) continue;
+      cty[a] = { iso:a, years, f19:years[2019], f24:years[2024] || 0, co2:stCO2[a] || {} };
+    }
+
+    const yearlyTotals = {};
+    for (let y = 2019; y <= 2024; y++) {
+      yearlyTotals[y] = { f:0, c:0, bill:0 };
+      for (let m = 1; m <= 12; m++) {
+        const k = `${y}-${m}`;
+        const cur = ecac[k];
+        if (!cur) continue;
+        const ct = cur.c / 1000;
+        const p = priceYM[k] || 0;
+        yearlyTotals[y].f += cur.f;
+        yearlyTotals[y].c += cur.c;
+        yearlyTotals[y].bill += ct * p;
+      }
+    }
+    return { cty, yearlyTotals, worldData };
+  }
+
+  function runForce(items, rScale){
+    const allBaseline = items.every(d => Math.abs(d.rate - 100) < 0.01);
+    if (allBaseline) {
+      items.forEach(d => { d.px = d.ax; d.py = d.ay; });
+      return;
+    }
+    items.forEach(d => { d.x = d.ax; d.y = d.ay; });
+    const sim = d3.forceSimulation(items)
+      .force('cx', d3.forceX(d => d.ax).strength(0.35))
+      .force('cy', d3.forceY(d => d.ay).strength(0.35))
+      .force('collide', d3.forceCollide(d => rScale(d.f24) + 8).iterations(8))
+      .stop();
+    for (let i = 0; i < 300; i++) sim.tick();
+    items.forEach(d => {
+      const targetR = Math.hypot(d.ax - CX, d.ay - CY);
+      const dist = Math.hypot(d.x - CX, d.y - CY);
+      if (dist > 0.1) {
+        const s = targetR / dist;
+        d.px = CX + (d.x - CX) * s;
+        d.py = CY + (d.y - CY) * s;
+      } else {
+        d.px = d.ax;
+        d.py = d.ay;
+      }
+    });
+  }
+
+  function drawBackground(g, defs){
+    const filter = defs.append('filter').attr('id', 'rose-tint');
+    filter.append('feColorMatrix')
+      .attr('type', 'matrix')
+      .attr('values', '0.5 0 0 0 0.08  0 0.42 0 0 0.14  0 0 0.38 0 0.12  0 0 0 0.92 0');
+    const roseR = R * 0.98;
+    g.insert('image', ':first-child')
+      .attr('href', 'assets/simple-wind-rose.svg')
+      .attr('x', CX - roseR).attr('y', CY - roseR)
+      .attr('width', roseR * 2).attr('height', roseR * 2)
+      .attr('preserveAspectRatio', 'xMidYMid meet')
+      .attr('filter', 'url(#rose-tint)');
+
+    const glow = defs.append('radialGradient').attr('id', 'atlas-glow');
+    glow.append('stop').attr('offset', '0%').attr('stop-color', '#f4f5f7').attr('stop-opacity', 1);
+    glow.append('stop').attr('offset', '60%').attr('stop-color', '#f4f5f7').attr('stop-opacity', 0.5);
+    glow.append('stop').attr('offset', '100%').attr('stop-color', '#f4f5f7').attr('stop-opacity', 0);
+    g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', 420).attr('fill', 'url(#atlas-glow)');
+
+    [
+      { r:R * 0.4, op:0.15 },
+      { r:R * 0.7, op:0.20 },
+      { r:R, op:0.55, label:'2019 baseline' },
+      { r:R * 1.3, op:0.15, dash:'3,6' }
+    ].forEach(rd => {
+      g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', rd.r)
+        .attr('fill', 'none').attr('stroke', '#cfd6db')
+        .attr('stroke-width', rd.r === R ? 1.2 : 0.5)
+        .attr('stroke-dasharray', rd.dash || '').attr('opacity', rd.op);
+      if (rd.label) {
+        g.append('text').attr('x', CX + rd.r + 6).attr('y', CY - 12)
+          .attr('fill', '#8b939b').style('font-family', 'var(--mono)')
+          .style('font-size', '11px').style('letter-spacing', '.04em').text(rd.label);
+      }
+    });
+
+    [
+      { step:90, len:1.10, sw:1.2, op:0.55, color:'#bcc4c0', offset:0 },
+      { step:90, len:0.95, sw:0.8, op:0.40, color:'#c8d0cc', offset:45 },
+      { step:45, len:0.80, sw:0.5, op:0.28, color:'#d4dcd8', offset:22.5 }
+    ].forEach(tier => {
+      const n = Math.round(360 / tier.step);
+      for (let i = 0; i < n; i++) {
+        const b = (tier.offset + i * tier.step) * Math.PI / 180;
+        g.append('line')
+          .attr('x1', CX).attr('y1', CY)
+          .attr('x2', CX + R * tier.len * Math.sin(b))
+          .attr('y2', CY - R * tier.len * Math.cos(b))
+          .attr('stroke', tier.color).attr('stroke-width', tier.sw).attr('opacity', tier.op);
+      }
+    });
+
+    [
+      { b:0, label:'N', dx:0, dy:-18 },
+      { b:Math.PI / 2, label:'E', dx:14, dy:4 },
+      { b:Math.PI, label:'S', dx:0, dy:18 },
+      { b:-Math.PI / 2, label:'W', dx:-14, dy:4 }
+    ].forEach(d => {
+      g.append('text')
+        .attr('x', CX + roseR * Math.sin(d.b) + d.dx)
+        .attr('y', CY - roseR * Math.cos(d.b) + d.dy)
+        .attr('text-anchor', 'middle').attr('fill', '#8b939b')
+        .style('font-family', 'var(--sans)').style('font-size', '16px')
+        .style('font-weight', 700).text(d.label);
+    });
+    g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', 4).attr('fill', 'var(--dark)').attr('opacity', 0.7);
+    g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', 1.5).attr('fill', '#f4f5f7');
+  }
+
+  function preprocessShapes(worldData, cty){
+    const countryShapes = {};
+    if (!worldData) return countryShapes;
+    const proj = d3.geoMercator().scale(140).translate([0, 0]);
+    const path = d3.geoPath(proj);
+    worldData.features.forEach(f => {
+      const iso2 = ISO_NUM_TO_A2[f.id];
+      if (!iso2 || !cty[iso2]) return;
+      const d = path(f);
+      if (!d) return;
+      const b = path.bounds(f);
+      const diag = Math.hypot(b[1][0] - b[0][0], b[1][1] - b[0][1]);
+      if (diag < 0.05) return;
+      countryShapes[iso2] = { d, diag, cx:(b[0][0] + b[1][0]) / 2, cy:(b[0][1] + b[1][1]) / 2 };
+    });
+    return countryShapes;
+  }
+
+  function renderShapes(g, items, countryShapes, rScale){
+    const shapeGroups = g.selectAll('.shape-g').data(items).join('g')
+      .attr('class', 'shape-g')
+      .attr('transform', d => `translate(${d.px},${d.py}) scale(0)`);
+    shapeGroups.each(function(d){
+      const s = countryShapes[d.iso];
+      if (s) {
+        d3.select(this).append('path')
+          .attr('d', s.d)
+          .attr('transform', `translate(${-s.cx},${-s.cy})`)
+          .attr('fill', bubColor(d.rate)).attr('fill-opacity', 0.82)
+          .attr('stroke', '#fff').attr('stroke-width', 0.5)
+          .attr('stroke-opacity', 0.5).attr('vector-effect', 'non-scaling-stroke');
+        this._scale = rScale(d.f24) / (s.diag / 2);
+      } else {
+        d3.select(this).append('circle')
+          .attr('r', 8).attr('fill', bubColor(d.rate)).attr('fill-opacity', 0.82)
+          .attr('stroke', '#fff').attr('stroke-width', 0.5).attr('stroke-opacity', 0.5);
+        this._scale = rScale(d.f24) / 8;
+      }
+    });
+    return shapeGroups;
+  }
+
+  function buildLegend(items, rScale){
+    const flights = items.map(d => d.f24);
+    const legVals = [0, 50, 100, 150, 200];
+    const gradStops = legVals.map(v => bubColor(v)).join(', ');
+    const ticksHtml = legVals.map(v => `<span>${v}%</span>`).join('');
+    const szVals = [d3.quantile(flights, .25), d3.median(flights), d3.quantile(flights, .75)].filter(v => v != null);
+    const maxR = d3.max(szVals, s => rScale(s)) || 1;
+    const szHtml = szVals.map((s, i) => {
+      const r = rScale(s);
+      const overlap = i === 0 ? 0 : -Math.round(r * 0.55);
+      return `<div class="leg-size-row" style="margin-top:${overlap}px">
+        <svg width="${maxR * 2 + 2}" height="${r * 2 + 2}" style="overflow:visible;flex-shrink:0">
+          <circle cx="${maxR + 1}" cy="${r + 1}" r="${r}" fill="none" stroke="#b0a594" stroke-width="0.5"/>
+        </svg>
+        <span class="leg-size-label">${d3.format('.2s')(s)}</span>
+      </div>`;
+    }).join('');
+    $('atlas-legend').innerHTML = `
+      <div class="leg-block">
+        <div class="leg-title">Recovery</div>
+        <div class="leg-bar" style="background:linear-gradient(90deg,${gradStops})"></div>
+        <div class="leg-ticks">${ticksHtml}</div>
+      </div>
+      <div class="leg-block">
+        <div class="leg-title">Traffic (2024)</div>
+        <div style="display:flex;flex-direction:column;align-items:center;padding-left:28px">${szHtml}</div>
+      </div>`;
+  }
+
+  function updateMetrics(year, yearlyTotals){
+    const yt = yearlyTotals[year];
+    const yt19 = yearlyTotals[2019];
+    const tp = yt.f / yt19.f * 100;
+    const cp = yt.c / yt19.c * 100;
+    const fmt = n => (n >= 100 ? n.toFixed(0) : n.toFixed(1)) + '%';
+    $('atlas-metrics').innerHTML = `
+      <div class="metric">
+        <div class="m-info"><div class="m-lbl">Traffic vs 2019</div><div class="m-sub">ECAC cruise-phase flights</div></div>
+        <div class="m-val" style="color:${tp >= 100 ? 'var(--red)' : 'var(--blue)'}">${fmt(tp)}</div>
+      </div>
+      <div class="metric">
+        <div class="m-info"><div class="m-lbl">CO₂ vs 2019</div><div class="m-sub">${(cp >= 100 ? '+' : '') + (cp - 100).toFixed(0)} pp vs traffic</div></div>
+        <div class="m-val" style="color:${cp >= 100 ? 'var(--red)' : 'var(--blue)'}">${fmt(cp)}</div>
+      </div>
+      <div class="metric">
+        <div class="m-info"><div class="m-lbl">Carbon Bill</div><div class="m-sub">${(yt.bill / yt19.bill * 100).toFixed(0)}% of 2019</div></div>
+        <div class="m-val" style="color:var(--red)">€${(yt.bill / 1e9).toFixed(1)}bn</div>
+      </div>`;
+  }
+
+  function setCaption(year){
+    $('yc-year').textContent = year;
+    $('yc-text').textContent = CAPTIONS[year] || '';
+  }
+
+  try {
+    const { cty, yearlyTotals, worldData } = await loadAllData();
+    prog('Composing compass...');
+    const items = Object.values(cty).map(d => {
+      const b = bearing(...CENTROIDS[d.iso]);
+      const [ax, ay] = polar(b, 100);
+      return { ...d, rate:100, bearing:b, ax, ay, px:ax, py:ay };
+    });
+    const rScale = d3.scaleSqrt().domain([0, d3.max(items, d => d.f24)]).range([10, 54]);
+    runForce(items, rScale);
+
+    const svg = d3.select('#compass-wrap').append('svg').attr('viewBox', [0, 0, SVGW, SVGH]);
+    const defs = svg.append('defs');
+    const g = svg.append('g');
+    drawBackground(g, defs);
+
+    const spokes = g.selectAll('.spoke').data(items).join('line')
+      .attr('x1', CX).attr('y1', CY).attr('x2', d => d.px).attr('y2', d => d.py)
+      .attr('stroke', d => d.rate < 100 ? '#a8b8b8' : '#c8b0b0')
+      .attr('stroke-width', 0.3).attr('opacity', 0.45);
+    const countryShapes = preprocessShapes(worldData, cty);
+    const shapeGroups = renderShapes(g, items, countryShapes, rScale);
+    shapeGroups.transition().duration(800).delay((_, i) => i * 12)
+      .ease(d3.easeBackOut.overshoot(1.8))
+      .attr('transform', function(d){ return `translate(${d.px},${d.py}) scale(${this._scale})`; });
+
+    const labels = g.selectAll('.atlas-lbl').data(items).join('text')
+      .attr('x', d => d.px).attr('y', d => d.py).attr('dy', '0.35em')
+      .attr('text-anchor', 'middle').attr('fill', 'rgba(255,255,255,0.95)')
+      .style('font-family', 'var(--mono)').style('font-weight', '500')
+      .style('font-size', d => Math.max(7, Math.min(rScale(d.f24) * 0.52, 11)) + 'px')
+      .style('letter-spacing', '0.06em').style('pointer-events', 'none')
+      .style('stroke', 'rgba(0,0,0,0.45)').style('stroke-width', '2.5px')
+      .style('stroke-linejoin', 'round').style('paint-order', 'stroke fill').text(d => d.iso);
+
+    let currentYear = 2019;
+    let playTimer = null;
+    let isDragging = false;
+    const tt = $('atlas-tt');
+    const wrap = $('compass-wrap');
+    const slider = $('atlas-year-slider');
+    const btn = $('btn-play');
+    const ICON_PLAY = '<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>';
+    const ICON_PAUSE = '<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><rect x="1.5" y="1" width="2.8" height="8" rx=".5"/><rect x="5.7" y="1" width="2.8" height="8" rx=".5"/></svg>';
+
+    function stopPlay(){
+      if (playTimer) { clearTimeout(playTimer); playTimer = null; }
+      btn.innerHTML = ICON_PLAY;
+    }
+
+    shapeGroups.on('mouseenter', function(e, d){
+      shapeGroups.style('opacity', 0.18);
+      labels.style('opacity', 0.12);
+      spokes.style('opacity', 0.12);
+      d3.select(this).style('opacity', 1).raise();
+      d3.select(this).select('path,circle').attr('stroke-opacity', 0.9).attr('stroke', 'var(--dark)');
+      labels.filter(l => l.iso === d.iso).style('opacity', 1).raise();
+      const flag = d.iso.toUpperCase().replace(/./g, c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65));
+      tt.innerHTML = `
+        <div class="tt-head"><div><div class="tt-name">${COUNTRY_NAMES[d.iso] || d.iso}</div></div><span class="tt-flag">${flag}</span></div>
+        <div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div>
+        <div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div>
+        <div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[currentYear] || 0)}</b></div>`;
+      tt.classList.add('on');
+    }).on('mousemove', function(e){
+      const r = wrap.getBoundingClientRect();
+      tt.style.left = (e.clientX - r.left + 16) + 'px';
+      tt.style.top = (e.clientY - r.top - 55) + 'px';
+    }).on('mouseleave', function(){
+      if (isDragging) return;
+      shapeGroups.style('opacity', 1);
+      labels.style('opacity', 1);
+      spokes.style('opacity', 0.45);
+      d3.select(this).select('path,circle').attr('stroke-opacity', 0.5).attr('stroke', '#fff');
+      tt.classList.remove('on');
+    });
+
+    const svgNode = svg.node();
+    function toSVG(clientX, clientY){
+      const pt = svgNode.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      return pt.matrixTransform(svgNode.getScreenCTM().inverse());
+    }
+    shapeGroups.call(d3.drag()
+      .on('start', function(event, d){
+        isDragging = true;
+        stopPlay();
+        d3.select(this).raise();
+        labels.filter(l => l.iso === d.iso).raise();
+        tt.classList.remove('on');
+      })
+      .on('drag', function(event, d){
+        const p = toSVG(event.sourceEvent.clientX, event.sourceEvent.clientY);
+        const r = Math.hypot(d.ax - CX, d.ay - CY);
+        const angle = Math.atan2(p.x - CX, -(p.y - CY));
+        d.px = CX + r * Math.sin(angle);
+        d.py = CY - r * Math.cos(angle);
+        d3.select(this).attr('transform', `translate(${d.px},${d.py}) scale(${this._scale})`);
+        spokes.filter(s => s.iso === d.iso).attr('x2', d.px).attr('y2', d.py);
+        labels.filter(l => l.iso === d.iso).attr('x', d.px).attr('y', d.py);
+      })
+      .on('end', function(){ isDragging = false; })
+    );
+
+    function update(year){
+      currentYear = year;
+      items.forEach(d => {
+        d.rate = (d.years[year] || 0) / d.years[2019] * 100;
+        const b = bearing(...CENTROIDS[d.iso]);
+        const [ax, ay] = polar(b, d.rate);
+        d.ax = ax;
+        d.ay = ay;
+        d.bearing = b;
+      });
+      runForce(items, rScale);
+      updateMetrics(year, yearlyTotals);
+      spokes.transition().duration(400).ease(d3.easeCubicInOut)
+        .attr('x2', d => d.px).attr('y2', d => d.py)
+        .attr('stroke', d => d.rate < 100 ? '#a8b8b8' : '#c8b0b0');
+      shapeGroups.transition().duration(400).ease(d3.easeCubicInOut)
+        .attr('transform', function(d){ return `translate(${d.px},${d.py}) scale(${this._scale})`; })
+        .each(function(){ d3.select(this).select('path,circle').transition().duration(400).attr('fill', d => bubColor(d.rate)); });
+      labels.data(items).transition().duration(400).ease(d3.easeCubicInOut)
+        .attr('x', d => d.px).attr('y', d => d.py);
+      $('year-disp').textContent = year;
+      setCaption(year);
+    }
+
+    buildLegend(items, rScale);
+    update(2019);
+    loader.style.display = 'none';
+    dash.classList.add('ready');
+
+    slider.addEventListener('input', () => { stopPlay(); update(Number(slider.value)); });
+    const STEP = 1100;
+    function schedule(fromYear){
+      const next = fromYear + 1;
+      if (next > 2024) { stopPlay(); return; }
+      playTimer = setTimeout(() => {
+        slider.value = next;
+        update(next);
+        schedule(next);
+      }, STEP);
+    }
+    btn.addEventListener('click', () => {
+      if (playTimer) stopPlay();
+      else {
+        btn.innerHTML = ICON_PAUSE;
+        if (currentYear >= 2024) {
+          slider.value = 2019;
+          update(2019);
+        }
+        schedule(currentYear);
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' && currentYear < 2024) {
+        stopPlay();
+        slider.value = currentYear + 1;
+        update(currentYear + 1);
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft' && currentYear > 2019) {
+        stopPlay();
+        slider.value = currentYear - 1;
+        update(currentYear - 1);
+        e.preventDefault();
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    if (loader) loader.textContent = 'Error loading compass data: ' + (err.message || String(err));
+  }
 })();
 </script>
 </body>
