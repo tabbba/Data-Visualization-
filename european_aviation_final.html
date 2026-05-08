@@ -510,6 +510,16 @@ h2{
   gap:28px;
   margin-top:30px;
 }
+#viz-ethics{
+  width:min(1440px, calc(100vw - 48px));
+  margin-left:calc(50% - min(720px, calc(50vw - 24px)));
+}
+#viz-ethics .viz-head{
+  grid-template-columns:minmax(0,1.25fr) 340px;
+}
+#viz-ethics .ethics-grid{
+  gap:34px;
+}
 .ethics-card{
   background:#fff;
   border:1px solid var(--line);
@@ -590,6 +600,8 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
   .hero{padding:110px 20px 70px}.hero::after{display:none}
   .page,.conclusion-inner{padding:0 20px}
   .ds-grid,.findings,.ethics-grid{grid-template-columns:1fr}
+  #viz-ethics{width:auto;margin-left:0}
+  #viz-ethics .viz-head{grid-template-columns:1fr}
   .viz-block.horizontal{width:auto;margin-left:0}
   .atlas-dashboard{grid-template-columns:1fr;min-height:auto}
   .atlas-main{border-right:0}.atlas-side{border-left:0;border-top:1px solid var(--line)}
@@ -762,36 +774,36 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
     <div class="viz-head">
       <div>
         <span class="viz-tag">07: Visualisation Ethics</span>
-        <h2>Same Data, Different Story</h2>
-        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same data, but one preserves proportional comparison while the other distorts perception through misleading design.</p>
+        <h2>Same Countries, Different Recovery Story</h2>
+        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same country-level recovery data, but one compares traffic and CO₂ fairly while the other narrows the story to flight growth alone.</p>
       </div>
       <div class="insight" style="border-top-color:var(--red)">
         <h4>Critical Insight</h4>
-        <p>Visualisation choices are analytical choices. Axis scaling, breaks, spacing, and proportionality can make the same dataset appear objective, exaggerated, or deceptive.</p>
+        <p>Visualisation choices are analytical choices. Metric selection, ranking, scale, and visual emphasis can make the same dataset appear balanced, incomplete, or deceptive.</p>
       </div>
     </div>
 
     <div class="ethics-grid">
       <article class="ethics-card white">
-        <img src="figures/whitehat_a.png" alt="White-hat bar chart showing proportional aviation CO2 emissions by country">
+        <img src="figures/whitehat_country_recovery_gap_scatter.png" alt="White-hat scatter plot comparing 2024 country flight recovery with CO2 recovery against a 2019 baseline">
         <div class="ethics-content">
-          <h3>White Hat: Honest Encoding</h3>
-          <p>This chart uses a continuous proportional axis and direct value labels. The reader can compare countries fairly because the bar lengths correspond to the actual CO₂ totals.</p>
+          <h3>White Hat: Recovery Fairness</h3>
+          <p>This chart compares each country's 2024 flight recovery with its 2024 CO₂ recovery, both indexed to 2019. Countries above the diagonal emitted more CO₂ than their traffic recovery alone would imply, while bubble size keeps the absolute 2024 CO₂ burden visible.</p>
         </div>
       </article>
 
       <article class="ethics-card black">
-        <img src="figures/blackhat_a.png" alt="Black-hat bar chart showing a misleading version of the same aviation CO2 emissions data">
+        <img src="figures/blackhat_country_recovery_percent_only.png" alt="Black-hat bar chart ranking countries only by percent flight growth above 2019">
         <div class="ethics-content">
-          <h3>Black Hat: Misleading Encoding</h3>
-          <p>This chart uses broken axis segments and altered visual proportions. The underlying values are the same, but the design exaggerates similarity and difference, making the ranking harder to interpret correctly.</p>
+          <h3>Black Hat: Selective Growth Ranking</h3>
+          <p>This chart ranks countries only by percent flight growth above 2019. The values are real, but the framing hides whether CO₂ grew faster than traffic and ignores absolute emissions, making small fast-growing markets appear more central than they are climatically.</p>
         </div>
       </article>
     </div>
 
     <div class="ethics-note">
       <h4>Why this matters</h4>
-      <p>A chart can be technically based on real data and still be misleading. In this case, the black-hat version does not change the dataset; it changes the <strong>reader's perception</strong> by manipulating the visual scale.</p>
+      <p>A chart can be technically based on real data and still be misleading. In this case, the black-hat version does not change the dataset; it changes the <strong>reader's perception</strong> by selecting a convenient metric and suppressing the emissions context needed to evaluate sustainability.</p>
     </div>
 
   </div>
