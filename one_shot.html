@@ -57,10 +57,7 @@ nav{
   color:var(--muted);padding:8px 10px;border-radius:2px;transition:.18s
 }
 .nav-links a:hover,.nav-links a.active{background:var(--dark);color:#fff}
-.story-page{display:none}
-.story-page.active{display:block}
-.story-page:not([data-page="overview"]) .page{padding-top:126px}
-.story-page[data-page="findings"] .conclusion{min-height:100vh;padding-top:156px}
+
 .hero{
   min-height:100vh;
   display:grid;
@@ -651,8 +648,7 @@ h2{
     padding-bottom:2px;
   }
   .nav-links a{white-space:nowrap;padding:8px 9px}
-  .story-page:not([data-page="overview"]) .page{padding-top:118px}
-  .hero-inner,.intro-grid,.viz-head{grid-template-columns:1fr;gap:28px}
+    .hero-inner,.intro-grid,.viz-head{grid-template-columns:1fr;gap:28px}
   .hero{padding:110px 20px 70px}.hero::after{display:none}
   .page,.conclusion-inner{padding:0 20px}
   .ds-grid,.findings,.ethics-grid{grid-template-columns:1fr}
@@ -676,17 +672,16 @@ h2{
 <nav>
   <div class="nav-logo">European Aviation <span>2019-2024</span></div>
   <ul class="nav-links">
-    <li><a href="#overview" data-page-link="overview">Overview</a></li>
-    <li><a href="#recovery" data-page-link="recovery">Recovery</a></li>
-    <li><a href="#evidence" data-page-link="evidence">Evidence</a></li>
-    <li><a href="#perception" data-page-link="perception">Perception</a></li>
-    <li><a href="#findings" data-page-link="findings">Findings</a></li>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#recovery">Recovery</a></li>
+    <li><a href="#evidence">Evidence</a></li>
+    <li><a href="#perception">Perception</a></li>
+    <li><a href="#findings">Findings</a></li>
   </ul>
 </nav>
 
-<main class="story-pages">
-<section class="story-page active" data-page="overview" id="overview">
 
+<div id="overview">
   <div class="viz-block horizontal stripes is-visible" id="viz-stripes" data-step="00" style="padding-top:100px;">
     <div class="viz-head">
       <div>
@@ -763,9 +758,9 @@ h2{
     <div class="limits"><h4>Data Limitations</h4><ul><li>Emission figures are model-based EUROCONTROL estimates, not direct aircraft measurements.</li><li>Airport data covers IFR flights only.</li><li>Carbon price reflects market prices, not necessarily the effective cost paid by each airline.</li><li>Passenger load factor is unavailable at this granularity.</li></ul></div>
   </section>
 </div>
-</section>
+</div><!-- end overview -->
 
-<section class="story-page" data-page="recovery" id="recovery">
+<div id="recovery">
 <div class="page">
   <div class="divider" id="viz"><div class="divider-line"></div><span class="divider-label">Interactive Visualisations</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Connected visual storytelling sequence">
@@ -830,9 +825,8 @@ h2{
   </div>
 </section>
 </div>
-</section>
 
-<section class="story-page" data-page="evidence" id="evidence">
+<div id="evidence">
 <div class="page">
 <div class="divider"><div class="divider-line"></div><span class="divider-label">Policy, Time, and Geography</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Policy and spatial evidence sequence">
@@ -877,28 +871,9 @@ h2{
 
   
 
-  <div class="viz-block" id="viz-compass" data-step="05">
-    <div class="viz-head"><div><span class="viz-tag">05: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
-    <div class="atlas-card">
-      <div class="atlas-shell">
-        <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p></div></div>
-        <div class="atlas-loader" id="atlas-loader">Preparing compass...</div>
-        <div class="atlas-dashboard" id="atlas-dash">
-          <div class="atlas-main">
-            <div class="compass-wrap" id="compass-wrap"><div class="atlas-tooltip" id="atlas-tt"></div><div class="yr-caption"><div class="yc-year" id="yc-year"></div><div class="yc-text" id="yc-text"></div></div></div>
-            <div class="year-row"><button class="btn-play" id="btn-play" title="Play / Pause"><svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg></button><span class="yr-label">Year</span><input type="range" id="atlas-year-slider" min="2019" max="2024" step="1" value="2019"><span class="yr-val" id="year-disp">2019</span></div>
-          </div>
-          <div class="atlas-side"><div class="legend-wrap" id="atlas-legend"></div><div class="metrics-row" id="atlas-metrics"></div></div>
-        </div>
-      </div>
-    </div>
-    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
-  </div>
-</section>
-</div>
-</section>
+  
 
-<section class="story-page" data-page="perception" id="perception">
+<div id="perception">
 <div class="page">
 <div class="divider"><div class="divider-line"></div><span class="divider-label">Visual Perception and Ethics</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Visual perception sequence">
@@ -917,15 +892,6 @@ h2{
       </div>
     </div>
 
-    <div class="ethics-grid">
-      <article class="ethics-card white">
-        <img src="figures/whitehat_yearly_co2_per_flight.png" alt="White-hat line chart showing yearly CO2 per flight with a proportional axis">
-        <div class="ethics-content">
-          <h3>First Reading: Keep the Scale Honest</h3>
-          <p>The first version preserves vertical context. The increase in yearly CO₂ per flight is visible, but the scale lets the reader judge its magnitude against the baseline instead of only reacting to slope.</p>
-        </div>
-      </article>
-
       <article class="ethics-card black">
         <img src="figures/blackhat_yearly_co2_per_flight_truncated_axis.png" alt="Black-hat line chart showing yearly CO2 per flight with a truncated axis">
         <div class="ethics-content">
@@ -935,6 +901,15 @@ h2{
       </article>
     </div>
 
+    <div class="ethics-grid">
+      <article class="ethics-card white">
+        <img src="figures/whitehat_yearly_co2_per_flight.png" alt="White-hat line chart showing yearly CO2 per flight with a proportional axis">
+        <div class="ethics-content">
+          <h3>First Reading: Keep the Scale Honest</h3>
+          <p>The first version preserves vertical context. The increase in yearly CO₂ per flight is visible, but the scale lets the reader judge its magnitude against the baseline instead of only reacting to slope.</p>
+        </div>
+      </article>
+
     <div class="ethics-note">
       <h4>Why this matters</h4>
       <p>A chart can be technically based on real data and still be misleading. Here, the second reading changes the <strong>reader's perception</strong> through axis truncation. That creates a high <strong>lie factor</strong>: the visual effect is larger than the underlying data effect.</p>
@@ -943,13 +918,30 @@ h2{
   </div>
   </section>
 </div>
+
+<div class="viz-block" id="viz-compass" data-step="05">
+    <div class="viz-head"><div><span class="viz-tag">05: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
+    <div class="atlas-card">
+      <div class="atlas-shell">
+        <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p></div></div>
+        <div class="atlas-loader" id="atlas-loader">Preparing compass...</div>
+        <div class="atlas-dashboard" id="atlas-dash">
+          <div class="atlas-main">
+            <div class="compass-wrap" id="compass-wrap"><div class="atlas-tooltip" id="atlas-tt"></div><div class="yr-caption"><div class="yc-year" id="yc-year"></div><div class="yc-text" id="yc-text"></div></div></div>
+            <div class="year-row"><button class="btn-play" id="btn-play" title="Play / Pause"><svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg></button><span class="yr-label">Year</span><input type="range" id="atlas-year-slider" min="2019" max="2024" step="1" value="2019"><span class="yr-val" id="year-disp">2019</span></div>
+          </div>
+          <div class="atlas-side"><div class="legend-wrap" id="atlas-legend"></div><div class="metrics-row" id="atlas-metrics"></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
+  </div>
 </section>
+</div>
 
 <div id="findings">
-
+<div class="page">
   <div class="viz-block is-visible" id="viz-plain" data-step="01" style="padding-top:100px;">
-
-  <div class="viz-block is-visible" id="viz-plain" data-step="01">
     <div class="viz-head">
       <div>
         <span class="viz-tag">01: Plain-English Takeaway</span>
@@ -1003,16 +995,12 @@ h2{
     </div>
     <p class="caption">Source: EUROCONTROL EIA | Annual flight and CO₂ totals from cleaned project data</p>
   </div>
+</div>
+
 
 <section class="conclusion" id="conclusion"><div class="conclusion-inner">
 
 <h2>The Answer: <em>No</em>, Not Sustainably.</h2>
-
-
-<h2>The Answer: <em>No</em>, Not Sustainably.</h2>
-
-<div class="hero-card" style="margin:40px 0;">
-I
 
 <div class="hero-card" style="margin:40px 0;">
   <div class="hero-stats" style="grid-template-columns: repeat(3, 1fr); border-top: none;">
@@ -1033,8 +1021,7 @@ I
 <p class="conclusion-text">European aviation returned to pre-pandemic levels by 2023-2024, but it did so <strong>without meaningfully improving its environmental footprint</strong>. A genuinely sustainable aviation sector will require complementary policy instruments beyond carbon pricing.</p>
 
 </div></section>
-</section>
-</main>
+</div>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
@@ -1073,30 +1060,7 @@ function initTableauEmbeds() {
 window.addEventListener('load', initTableauEmbeds);
 window.addEventListener('resize', () => document.querySelectorAll('.tableauPlaceholder').forEach(sizeTableau));
 
-const STORY_PAGES = ["overview", "recovery", "evidence", "perception", "findings"];
-function showStoryPage(page, updateHash = true) {
-  const next = STORY_PAGES.includes(page) ? page : "overview";
-  document.querySelectorAll(".story-page").forEach((section) => {
-    section.classList.toggle("active", section.dataset.page === next);
-  });
-  document.querySelectorAll("[data-page-link]").forEach((control) => {
-    control.classList.toggle("active", control.dataset.pageLink === next);
-  });
-  if (updateHash) history.replaceState(null, "", `#${next}`);
-  window.scrollTo({ top: 0, behavior: "auto" });
-  requestAnimationFrame(() => {
-    document.querySelectorAll(".story-page.active .tableauPlaceholder").forEach(sizeTableau);
-    updateScrollProgress();
-  });
-}
-document.querySelectorAll("[data-page-link]").forEach((control) => {
-  control.addEventListener("click", (event) => {
-    event.preventDefault();
-    showStoryPage(control.dataset.pageLink);
-  });
-});
-window.addEventListener("hashchange", () => showStoryPage(location.hash.replace("#", ""), false));
-showStoryPage(location.hash.replace("#", ""), false);
+// Navigation handled by smooth scroll (html{scroll-behavior:smooth})
 
 function animateCounter(element, target, suffix = "%") {
   const duration = 1300; const startTime = performance.now();
