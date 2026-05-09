@@ -143,7 +143,7 @@ nav{
 .page{max-width:1180px;margin:0 auto;padding:0 36px}
 .divider{display:flex;align-items:center;gap:16px;padding:78px 0 44px}
 .divider-line{flex:1;height:1px;background:var(--line)}
-.intro{padding-bottom:72px;border-bottom:1px solid var(--line)}
+.intro{padding-bottom:72px;border-bottom:none}
 .intro-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:58px;align-items:start}
 h2{
   font-size:clamp(2rem,4vw,3.5rem);
@@ -176,13 +176,13 @@ h2{
   position:absolute;right:-10px;top:-28px;
   font-size:13rem;font-weight:700;letter-spacing:-.12em;color:rgba(83,125,150,.2)
 }
-.question-box p{font-size:1.2rem;line-height:1.55;position:relative;z-index:1}
+.question-box p{font-size:1.85rem;line-height:1.55;position:relative;z-index:1}
 .tags{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
 .tag{
   font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.04em;
   padding:7px 10px;border:1px solid var(--line);color:var(--dark);background:#fff
 }
-.datasets{padding:74px 0;border-bottom:1px solid var(--line)}
+.datasets{padding:74px 0;border-bottom:none}
 .ds-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:34px}
 .ds-card{background:#fff;padding:24px 20px;min-height:210px;transition:.2s}
 .ds-card:hover{background:var(--soft);transform:translateY(-2px)}
@@ -240,28 +240,9 @@ h2{
 }
 .story-flow .viz-block{
   position:relative;
-  padding-left:54px;
+  padding-left:0;
 }
-.story-flow .viz-block::before{
-  content:attr(data-step);
-  position:absolute;
-  left:0;
-  top:92px;
-  width:28px;
-  height:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:#fff;
-  border:2px solid var(--blue);
-  color:var(--dark);
-  font-family:var(--mono);
-  font-size:.62rem;
-  font-weight:700;
-  z-index:2;
-  box-shadow:0 8px 20px rgba(36,38,40,.08);
-}
+.story-flow .viz-block::before{display:none}
 .story-flow .viz-block:nth-of-type(2n)::before{border-color:var(--red)}
 .story-bridge{
   margin:22px 0 0 54px;
@@ -281,8 +262,10 @@ h2{
 }
 .viz-block.is-visible{opacity:1;transform:none}
 
-.viz-block{padding:86px 0;border-bottom:1px solid var(--line)}
-.viz-block:last-child{border-bottom:none}
+.viz-block{padding:40px 0;border-bottom:none}
+.viz-block::after{content:"";display:block;width:66%;margin:40px auto 0;height:1px;background:var(--line)}
+.viz-block.stripes::after,.viz-block#viz-plain::after{display:none}
+.story-flow .viz-block::after{width:66%;margin-left:auto;margin-right:auto}
 .viz-head{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:52px;align-items:start;margin-bottom:28px}
 .viz-tag{display:block;margin-bottom:12px}
 .viz-block h2{margin-bottom:16px}
@@ -306,6 +289,10 @@ h2{
 .viz-block.horizontal{
   width:min(1440px, calc(100vw - 48px));
   margin-left:calc(50% - min(720px, calc(50vw - 24px)));
+}
+.story-flow .viz-block.horizontal{
+  width:auto;
+  margin-left:0;
 }
 .viz-block.horizontal .viz-head{
   grid-template-columns:minmax(0,1.25fr) 340px;
@@ -672,19 +659,33 @@ h2{
 <nav>
   <div class="nav-logo">European Aviation <span>2019-2024</span></div>
   <ul class="nav-links">
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#recovery">Recovery</a></li>
-    <li><a href="#evidence">Evidence</a></li>
-    <li><a href="#perception">Perception</a></li>
-    <li><a href="#findings">Findings</a></li>
+    <li><a href="#overview">Introduction</a></li>
+    <li><a href="#recovery">Visualisations</a></li>
+    <li><a href="#conclusion">Findings</a></li>
   </ul>
 </nav>
 
 
 <div id="overview">
-  <div class="viz-block horizontal stripes is-visible" id="viz-stripes" data-step="00" style="padding-top:100px;">
+
+  <section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">Data Visualisation 2026 | Group Project</p>
+      <div class="airline-trace" aria-hidden="true"><span class="hero-plane">✈</span></div>
+      <h1>Did European Aviation Recover <em>Sustainably</em>?</h1>
+    </div>
+  </div>
+</section>
+
+</section>
+
+  <div class="divider" style="padding:0px 36px; margin-bottom:20px;"><div class="divider-line"></div><span class="divider-label">LET THE TAKEOFF BEGIN</span><div class="divider-line"></div></div>
+
+  <div class="viz-block horizontal stripes is-visible" id="viz-stripes" data-step="01" style="padding-top:20px; padding-bottom:20px; border-bottom:none;">
     <div class="viz-head">
       <div>
+        <span class="viz-tag">01: A deep crisis</span>
         <h2>An Unprecedented Event: COVID-19</h2>
 <p class="viz-desc" style="font-size:1.3rem;">European aviation experienced its sharpest collapse in history</p>
         </div>
@@ -719,36 +720,27 @@ h2{
       </div>
   </div>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <p class="eyebrow">Data Visualisation 2026 | Group Project</p>
-      <div class="airline-trace" aria-hidden="true"><span class="hero-plane">✈</span></div>
-      <h1>Did European Aviation Recover <em>Sustainably</em>?</h1>
-      <p class="hero-sub">Aviation traffic returned after COVID-19, but the climate story did not recover as cleanly. This visual analysis compares flights, emissions, carbon pricing and geography to test whether the rebound was environmentally efficient.</p>
-    </div>
-    
-  </div>
-</section>
 
 <div class="page">
-  <div class="divider" id="intro"><div class="divider-line"></div><span class="divider-label">Introduction & Research Question</span><div class="divider-line"></div></div>
+  <div class="divider" id="intro"><div class="divider-line"></div><span class="divider-label">Research Question</span><div class="divider-line"></div></div>
   <section class="intro">
     <div class="intro-grid">
       <div>
         <h2>The Question We Set Out to Answer</h2>
-        <p>The COVID-19 pandemic caused the sharpest collapse in aviation history. As the world reopened, European skies filled again: but did the recovery happen in a way that is compatible with climate commitments?</p>
-        </div>
-      <div class="question-box">
-        <p>How has European air traffic recovered since COVID-19, and has that recovery been environmentally efficient: or has aviation returned with higher emissions intensity?</p>
+        <p style="margin-top:16px;">The COVID-19 pandemic caused the sharpest collapse in aviation history. As the world reopened, European skies filled again: but did the recovery happen in a way that is compatible with climate commitments?</p>
       </div>
+      <div style="border-left:1px solid var(--line); padding-left:30px; display:flex; align-items:flex-end; padding-top:40px;">
+        <p class="hero-sub" style="font-size:1.5rem;">This visual analysis compares flights, emissions, carbon pricing and geography to test whether the rebound was environmentally efficient.</p>
+      </div>
+    </div>
+    <div class="question-box" style="margin-top:30px;">
+      <p>How has European air traffic recovered since COVID-19, and has that recovery been environmentally efficient: or has aviation returned with higher emissions intensity?</p>
     </div>
   </section>
 
-  <div class="divider" id="data"><div class="divider-line"></div><span class="divider-label">Data Sources</span><div class="divider-line"></div></div>
-  <section class="datasets">
+  <div class="divider" id="data" style="padding-top:60px; padding-bottom:40px;"><div class="divider-line"></div><span class="divider-label">Data Sources</span><div class="divider-line"></div></div>
     <h2>Four Datasets, One Story</h2>
-    <p>Public data covering European aviation activity, emissions, and carbon pricing from 2019 to 2024. Cleaned and integrated using Python.</p>
+    <p style="margin-top:16px;">Public data covering European aviation activity, emissions, and carbon pricing from 2019 to 2024. Cleaned and integrated using Python.</p>
     <div class="ds-grid">
       <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>Airport Traffic</h3><span class="ds-file">airport_clean.csv</span><p>Daily flight movements for 400+ airports across ECAC member states.</p><div class="ds-meta"><span>EUROCONTROL</span></div></div>
       <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></div><h3>Network Emissions</h3><span class="ds-file">emission_network_clean.csv</span><p>Monthly CO₂ by market segment and flight phase at ECAC level.</p><div class="ds-meta"><span>EUROCONTROL EIA</span></div></div>
@@ -762,14 +754,13 @@ h2{
 
 <div id="recovery">
 <div class="page">
-  <div class="divider" id="viz"><div class="divider-line"></div><span class="divider-label">Interactive Visualisations</span><div class="divider-line"></div></div>
+<div class="divider" id="viz" style="padding-top:80px; padding-bottom:40px;"><div class="divider-line"></div><span class="divider-label">Visualisations</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Connected visual storytelling sequence">
-  <div class="story-bridge"><strong>Page 2 reading path:</strong> first make the climate cost tangible with the receipt, then translate the recovery gap into plain language, and finally move into the linked dashboard where the same gap can be explored interactively.</div>
 
-  <div class="viz-block horizontal" id="viz-carbon-receipt" data-step="00">
+  <div class="viz-block horizontal" id="viz-carbon-receipt" data-step="02" style="padding-left:40px; padding-right:40px;">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">Opening Figure: Six-Year Carbon Receipt</span>
+        <span class="viz-tag">02: Six-Year Carbon Receipt</span>
         <h2>The Carbon Bill Behind the Recovery</h2>
         <p class="viz-desc">This receipt-style plot gives the reader a quick entry point into the six-year aviation carbon story before the interactive dashboards. It frames the recovery as a cumulative climate cost, not only a traffic rebound.</p>
       </div>
@@ -778,7 +769,7 @@ h2{
         <p>The plot compresses annual emissions and carbon-price context into a simple receipt metaphor, making the scale of the post-pandemic rebound easier to compare across years.</p>
       </div>
     </div>
-    <div class="static-figure-frame receipt-figure">
+    <div class="static-figure-frame receipt-figure" style="width:min(1400px, calc(100vw - 48px)); margin-left:calc(50% - min(700px, calc(50vw - 24px)));">
       <img src="figures/carbon_receipt_6years.png?v=4499878" alt="Six-year carbon receipt plot for European aviation from 2019 to 2024">
     </div>
     <p class="caption">Source: Project figure | Six-year aviation carbon receipt</p>
@@ -789,16 +780,16 @@ h2{
   <div class="viz-block horizontal" id="viz-dashboard" data-step="02">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">02: Linked Tableau Dashboard</span>
-        <h2>One Dashboard, Connected Core Views</h2>
-        <p class="viz-desc">The main Tableau views are combined into a single linked dashboard. This lets the reader move between the recovery gap and geographic concentration while keeping the analytical context connected.</p>
+        <span class="viz-tag">03: A Deeper View</span>
+        <h2>Explore the Recovery from Every Angle</h2>
+        <p class="viz-desc">Four linked views let you better understand what happened differently across Europe.</p>
       </div>
       <div class="insight">
-        <h4>Why This Improves the Story</h4>
-        <p>Because the views are linked, the dashboard works as one analytical system: recovery and geography can be read together instead of separately.</p>
+        <h4>How to Use It</h4>
+        <p>Click on any point to filter all four charts simultaneously. Compare how the gap between flights and CO₂ changes across regions and seasons.</p>
       </div>
     </div>
-    <div class="tableau-frame dashboard-frame">
+    <div class="tableau-frame dashboard-frame" style="width:min(1400px, calc(100vw - 48px)); margin-left:calc(50% - min(700px, calc(50vw - 24px)));">
       <div class='tableauPlaceholder' id='viz1778319861679' style='position: relative'>
         <noscript>
           <a href='#'><img alt='Dashboard ' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/Dashboard/1_rss.png' style='border: none' /></a>
@@ -828,16 +819,14 @@ h2{
 
 <div id="evidence">
 <div class="page">
-<div class="divider"><div class="divider-line"></div><span class="divider-label">Policy, Time, and Geography</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Policy and spatial evidence sequence">
-  <div class="story-bridge"><strong>Page 3 reading path:</strong> after seeing that the recovery gap exists, test whether carbon pricing restrained it, compress the time pattern into stripes, then use the compass to see how unevenly the recovery spread across countries.</div>
 
-  <div class="viz-block horizontal" id="viz-carbon" data-step="03">
+  <div class="viz-block horizontal" id="viz-carbon" data-step="04">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">03: Carbon Price Signal</span>
+        <span class="viz-tag">04: Carbon Price Signal</span>
         <h2>Carbon Price Rose, Aviation Emissions Rebounded Anyway</h2>
-        <p class="viz-desc">This separate Tableau view focuses on the policy signal. It compares the rise in carbon prices with the rebound in aviation emissions, showing that the carbon market signal alone did not prevent emissions from returning.</p>
+        <p class="viz-desc">This view focuses on the policy signal. It compares the rise in carbon prices with the rebound in aviation emissions, showing that the carbon market signal alone did not prevent emissions from returning.</p>
       </div>
       <div class="insight" style="border-top-color:var(--red)">
         <h4>Central Finding</h4>
@@ -868,60 +857,65 @@ h2{
     </div>
     <p class="caption">Source: EUROCONTROL EIA + EUA prices | Monthly data</p>
   </div>
-
   
-
-  
+</section>
+</div>
+</div>
 
 <div id="perception">
 <div class="page">
-<div class="divider"><div class="divider-line"></div><span class="divider-label">Visual Perception and Ethics</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Visual perception sequence">
-  <div class="story-bridge"><strong>Page 4 reading path:</strong> now that the evidence is clear, the final test is interpretive: how much can the same emissions-intensity trend be changed by design choices alone?</div>
 
-  <div class="viz-block" id="viz-ethics" data-step="06">
-    <div class="viz-head">
+  <div class="viz-block" id="viz-ethics" data-step="05">
+      <div class="viz-head" style="grid-template-columns:1fr;">
       <div>
-        <span class="viz-tag">06: Perception Test</span>
-        <h2>How the Same Trend Can Be Made to Feel Different</h2>
-        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. The two views below use the same yearly CO₂-per-flight values, but they guide the reader toward different emotional conclusions.</p>
+        <span class="viz-tag">05: It is a tragedy</span>
+        <h2>Flights got dirtier </h2>
+        <p class="viz-desc">Every single flight has become dramatically less efficient over the past few years.</p>
       </div>
-      <div class="insight" style="border-top-color:var(--red)">
-        <h4>Critical Insight</h4>
-        <p>Visualisation choices are analytical choices. Axis scaling, breaks, spacing, and proportionality decide whether a reader sees a measured increase or an alarming surge.</p>
-      </div>
+      
     </div>
 
+    <div class="ethics-grid">
       <article class="ethics-card black">
         <img src="figures/blackhat_yearly_co2_per_flight_truncated_axis.png" alt="Black-hat line chart showing yearly CO2 per flight with a truncated axis">
-        <div class="ethics-content">
-          <h3>Second Reading: Amplify the Alarm</h3>
-          <p>The second version keeps the same values but truncates the vertical axis. Nothing in the dataset changed; what changed is the amount of visual distance assigned to the increase.</p>
+        <div class="ethics-content">  
         </div>
       </article>
+    </div>
+
+<div class="ethics-note" style="margin-top:50px; margin-bottom:120px;">
+      <h4>Is it the real story?</h4>
+      <p>Not quite, compare it with the chart below. </p>
     </div>
 
     <div class="ethics-grid">
       <article class="ethics-card white">
         <img src="figures/whitehat_yearly_co2_per_flight.png" alt="White-hat line chart showing yearly CO2 per flight with a proportional axis">
         <div class="ethics-content">
-          <h3>First Reading: Keep the Scale Honest</h3>
-          <p>The first version preserves vertical context. The increase in yearly CO₂ per flight is visible, but the scale lets the reader judge its magnitude against the baseline instead of only reacting to slope.</p>
         </div>
       </article>
+    </div>
 
     <div class="ethics-note">
       <h4>Why this matters</h4>
-      <p>A chart can be technically based on real data and still be misleading. Here, the second reading changes the <strong>reader's perception</strong> through axis truncation. That creates a high <strong>lie factor</strong>: the visual effect is larger than the underlying data effect.</p>
+      <p>A chart can be technically based on real data and still be misleading. Here, the first reading changes the <strong>reader's perception</strong> through axis truncation. That creates a high <strong>lie factor</strong>: the visual effect is larger than the underlying data effect.</p>
     </div>
+
+    <div class="insight" style="border-top-color:var(--red); margin-top:40px; margin-bottom:30px;">
+        <h4>Critical Insight</h4>
+        <p>In this case the second far more honest visualisation, reveals that there is a trend, but not nearly as dramatic as the first chart suggests.</p>
+      </div>
 
   </div>
   </section>
 </div>
+</div>
 
-<div class="viz-block" id="viz-compass" data-step="05">
-    <div class="viz-head"><div><span class="viz-tag">05: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
-    <div class="atlas-card">
+<div class="page">
+<div class="viz-block" id="viz-compass" data-step="06">
+    <div class="viz-head"><div><span class="viz-tag">06: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative. Take your time to grasp the many insights this visualisation reveals.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
+    <div class="atlas-card" style="width:min(1400px, calc(100vw - 48px)); margin-left:calc(50% - min(700px, calc(50vw - 24px)));">
       <div class="atlas-shell">
         <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p></div></div>
         <div class="atlas-loader" id="atlas-loader">Preparing compass...</div>
@@ -936,15 +930,14 @@ h2{
     </div>
     <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
   </div>
-</section>
 </div>
 
 <div id="findings">
 <div class="page">
-  <div class="viz-block is-visible" id="viz-plain" data-step="01" style="padding-top:100px;">
+  <div class="viz-block is-visible" id="viz-plain" data-step="07" style="padding-top:100px;">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">01: Plain-English Takeaway</span>
+        <span class="viz-tag">07: One last look — at the end, what really matters</span>
         <h2>The Recovery Gap, Without the Jargon</h2>
         <p class="viz-desc">This opening view is built for a non-expert audience. Move the year slider and compare two simple quantities: how much flying returned, and how much CO₂ returned with it.</p>
       </div>
@@ -997,9 +990,10 @@ h2{
   </div>
 </div>
 
+<div class="divider" style="padding:30px 36px;"><div class="divider-line"></div><span class="divider-label">The Reality</span><div class="divider-line"></div></div>
 
 <section class="conclusion" id="conclusion"><div class="conclusion-inner">
-
+  
 <h2>The Answer: <em>No</em>, Not Sustainably.</h2>
 
 <div class="hero-card" style="margin:40px 0;">
@@ -1009,11 +1003,11 @@ h2{
     <div class="hero-stat"><div class="hero-stat-num" data-target="11.9">+0.0%</div><div class="hero-stat-label">CO₂ per flight in 2024 vs 2019</div></div>
   </div>
   <div class="gap-controls"><button id="gapBtn" class="gap-btn" type="button">Explain the gap</button><div class="mini-plane" aria-hidden="true"></div></div>
-  <p id="gapText" class="gap-text">Traffic returned almost to pre-pandemic levels, but emissions increased much faster. This means the recovery was <strong>not environmentally efficient</strong>: each flight emitted more CO₂ on average in 2024 than in 2019.</p>
+  <p id="gapText" class="gap-text">Traffic returned almost to pre-pandemic levels, but emissions increased much faster. This means the recovery was <strong>not environmentally efficient</strong>.</p>
 </div>
 
 <div class="findings">
-  <div class="finding"><div class="finding-n">01</div><h3>Emissions intensity worsened</h3><p>CO₂ per flight rose between 2019 and 2024: the recovery was not cleaner on average.</p></div>
+  <div class="finding"><div class="finding-n">01</div><h3>Emissions intensity worsened</h3><p>CO₂ emissions rose between 2019 and 2024: the recovery was not clean.</p></div>
   <div class="finding"><div class="finding-n">02</div><h3>Carbon pricing was not enough</h3><p>The carbon signal increased, but aviation emissions still rebounded strongly.</p></div>
   <div class="finding"><div class="finding-n">03</div><h3>Recovery was uneven</h3><p>Growth is geographically uneven, with different regional patterns after COVID-19.</p></div>
 </div>
