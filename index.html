@@ -56,7 +56,11 @@ nav{
   font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
   color:var(--muted);padding:8px 10px;border-radius:2px;transition:.18s
 }
-.nav-links a:hover{background:var(--dark);color:#fff}
+.nav-links a:hover,.nav-links a.active{background:var(--dark);color:#fff}
+.story-page{display:none}
+.story-page.active{display:block}
+.story-page:not([data-page="overview"]) .page{padding-top:126px}
+.story-page[data-page="findings"] .conclusion{min-height:100vh;padding-top:156px}
 .hero{
   min-height:100vh;
   display:grid;
@@ -563,9 +567,12 @@ h2{
 
 .ethics-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:28px;
+  grid-template-columns:1fr;
+  gap:30px;
   margin-top:30px;
+  max-width:1040px;
+  margin-left:auto;
+  margin-right:auto;
 }
 .ethics-card{
   background:#fff;
@@ -637,7 +644,14 @@ h2{
   .story-flow .viz-block{padding-left:0}
   .story-flow .viz-block::before{display:none}
   .story-bridge{margin-left:0}
-.nav-links{display:none}
+  .nav-links{
+    display:flex;
+    overflow-x:auto;
+    max-width:62vw;
+    padding-bottom:2px;
+  }
+  .nav-links a{white-space:nowrap;padding:8px 9px}
+  .story-page:not([data-page="overview"]) .page{padding-top:118px}
   .hero-inner,.intro-grid,.viz-head{grid-template-columns:1fr;gap:28px}
   .hero{padding:110px 20px 70px}.hero::after{display:none}
   .page,.conclusion-inner{padding:0 20px}
@@ -662,16 +676,16 @@ h2{
 <nav>
   <div class="nav-logo">European Aviation <span>2019-2024</span></div>
   <ul class="nav-links">
-    <li><a href="#intro">Introduction</a></li>
-    <li><a href="#data">Data</a></li>
-    <li><a href="#viz">Visualisations</a></li>
-    <li><a href="#viz-carbon">Carbon</a></li>
-    <li><a href="#viz-stripes">Stripes</a></li>
-    <li><a href="#viz-ethics">Ethics</a></li>
-    <li><a href="#conclusion">Findings</a></li>
+    <li><a href="#overview" data-page-link="overview">Overview</a></li>
+    <li><a href="#recovery" data-page-link="recovery">Recovery</a></li>
+    <li><a href="#evidence" data-page-link="evidence">Evidence</a></li>
+    <li><a href="#perception" data-page-link="perception">Perception</a></li>
+    <li><a href="#findings" data-page-link="findings">Findings</a></li>
   </ul>
 </nav>
 
+<main class="story-pages">
+<section class="story-page active" data-page="overview" id="overview">
 <section class="hero">
   <div class="hero-inner">
     <div>
@@ -720,10 +734,14 @@ h2{
     </div>
     <div class="limits"><h4>Data Limitations</h4><ul><li>Emission figures are model-based EUROCONTROL estimates, not direct aircraft measurements.</li><li>Airport data covers IFR flights only.</li><li>Carbon price reflects market prices, not necessarily the effective cost paid by each airline.</li><li>Passenger load factor is unavailable at this granularity.</li></ul></div>
   </section>
+</div>
+</section>
 
+<section class="story-page" data-page="recovery" id="recovery">
+<div class="page">
   <div class="divider" id="viz"><div class="divider-line"></div><span class="divider-label">Interactive Visualisations</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Connected visual storytelling sequence">
-  <div class="story-bridge"><strong>Reading path:</strong> start with the linked Tableau dashboard to move between the core recovery and geographic views. Then isolate the carbon-price signal and the temporal fingerprint, use the compass to compare country recovery patterns, and end with the ethics section to understand how design choices can change interpretation.</div>
+  <div class="story-bridge"><strong>Page 2 reading path:</strong> first make the climate cost tangible with the receipt, then translate the recovery gap into plain language, and finally move into the linked dashboard where the same gap can be explored interactively.</div>
 
   <div class="viz-block horizontal" id="viz-carbon-receipt" data-step="00">
     <div class="viz-head">
@@ -738,7 +756,7 @@ h2{
       </div>
     </div>
     <div class="static-figure-frame receipt-figure">
-      <img src="figures/carbon_receipt_6years.png" alt="Six-year carbon receipt plot for European aviation from 2019 to 2024">
+      <img src="figures/carbon_receipt_6years.png?v=4499878" alt="Six-year carbon receipt plot for European aviation from 2019 to 2024">
     </div>
     <p class="caption">Source: Project figure | Six-year aviation carbon receipt</p>
   </div>
@@ -835,6 +853,15 @@ h2{
     </div>
     <p class="caption">Source: Tableau Public | Linked dashboard</p>
   </div>
+</section>
+</div>
+</section>
+
+<section class="story-page" data-page="evidence" id="evidence">
+<div class="page">
+<div class="divider"><div class="divider-line"></div><span class="divider-label">Policy, Time, and Geography</span><div class="divider-line"></div></div>
+<section class="story-flow" aria-label="Policy and spatial evidence sequence">
+  <div class="story-bridge"><strong>Page 3 reading path:</strong> after seeing that the recovery gap exists, test whether carbon pricing restrained it, compress the time pattern into stripes, then use the compass to see how unevenly the recovery spread across countries.</div>
 
   <div class="viz-block horizontal" id="viz-carbon" data-step="03">
     <div class="viz-head">
@@ -886,24 +913,25 @@ h2{
       </div>
     </div>
     <div class="tableau-frame">
-      <div class='tableauPlaceholder' id='viz1778320184556' style='position: relative'>
+      <div class='tableauPlaceholder' id='viz1778324972719' style='position: relative'>
         <noscript>
-          <a href='#'><img alt='Traffic Recovery ' src='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1_rss.png' style='border: none' /></a>
+          <a href='#'><img alt='Traffic Recovery ' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/TrafficRecovery/1_rss.png' style='border: none' /></a>
         </noscript>
         <object class='tableauViz' style='display:none;'>
           <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
           <param name='embed_code_version' value='3' />
           <param name='site_root' value='' />
-          <param name='name' value='EnvStripes_17781643738830/Foglio1' />
+          <param name='name' value='Data_Visualization_Tableau_17780729875790/TrafficRecovery' />
           <param name='tabs' value='no' />
           <param name='toolbar' value='yes' />
-          <param name='static_image' value='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1.png' />
+          <param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/TrafficRecovery/1.png' />
           <param name='animate_transition' value='yes' />
           <param name='display_static_image' value='yes' />
           <param name='display_spinner' value='yes' />
           <param name='display_overlay' value='yes' />
           <param name='display_count' value='yes' />
           <param name='language' value='en-US' />
+          <param name='filter' value='publish=yes' />
         </object>
       </div>
     </div>
@@ -927,17 +955,26 @@ h2{
     </div>
     <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
   </div>
+</section>
+</div>
+</section>
+
+<section class="story-page" data-page="perception" id="perception">
+<div class="page">
+<div class="divider"><div class="divider-line"></div><span class="divider-label">Visual Perception and Ethics</span><div class="divider-line"></div></div>
+<section class="story-flow" aria-label="Visual perception sequence">
+  <div class="story-bridge"><strong>Page 4 reading path:</strong> now that the evidence is clear, the final test is interpretive: how much can the same emissions-intensity trend be changed by design choices alone?</div>
 
   <div class="viz-block" id="viz-ethics" data-step="06">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">06: Visualisation Ethics</span>
-        <h2>Same Data, Different Story</h2>
-        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same data, but one preserves proportional comparison while the other distorts perception through misleading design.</p>
+        <span class="viz-tag">06: Perception Test</span>
+        <h2>How the Same Trend Can Be Made to Feel Different</h2>
+        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. The two views below use the same yearly CO₂-per-flight values, but they guide the reader toward different emotional conclusions.</p>
       </div>
       <div class="insight" style="border-top-color:var(--red)">
         <h4>Critical Insight</h4>
-        <p>Visualisation choices are analytical choices. Axis scaling, breaks, spacing, and proportionality can make the same dataset appear objective, exaggerated, or deceptive.</p>
+        <p>Visualisation choices are analytical choices. Axis scaling, breaks, spacing, and proportionality decide whether a reader sees a measured increase or an alarming surge.</p>
       </div>
     </div>
 
@@ -945,30 +982,34 @@ h2{
       <article class="ethics-card white">
         <img src="figures/whitehat_yearly_co2_per_flight.png" alt="White-hat line chart showing yearly CO2 per flight with a proportional axis">
         <div class="ethics-content">
-          <h3>White Hat: Proportional Trend</h3>
-          <p>This chart preserves the full vertical context for yearly CO₂ per flight. The increase is visible, but its magnitude stays proportional to the baseline.</p>
+          <h3>First Reading: Keep the Scale Honest</h3>
+          <p>The first version preserves vertical context. The increase in yearly CO₂ per flight is visible, but the scale lets the reader judge its magnitude against the baseline instead of only reacting to slope.</p>
         </div>
       </article>
 
       <article class="ethics-card black">
         <img src="figures/blackhat_yearly_co2_per_flight_truncated_axis.png" alt="Black-hat line chart showing yearly CO2 per flight with a truncated axis">
         <div class="ethics-content">
-          <h3>Black Hat: Truncated Axis</h3>
-          <p>This chart uses the same values but cuts the vertical axis, visually stretching the change. The trend looks more dramatic because the encoded visual change is larger than the real data change.</p>
+          <h3>Second Reading: Amplify the Alarm</h3>
+          <p>The second version keeps the same values but truncates the vertical axis. Nothing in the dataset changed; what changed is the amount of visual distance assigned to the increase.</p>
         </div>
       </article>
     </div>
 
     <div class="ethics-note">
       <h4>Why this matters</h4>
-      <p>A chart can be technically based on real data and still be misleading. In this case, the black-hat version does not change the yearly CO₂-per-flight values; it changes the <strong>reader's perception</strong> through axis truncation. That creates a high <strong>lie factor</strong>: the visual effect is larger than the underlying data effect.</p>
+      <p>A chart can be technically based on real data and still be misleading. Here, the second reading changes the <strong>reader's perception</strong> through axis truncation. That creates a high <strong>lie factor</strong>: the visual effect is larger than the underlying data effect.</p>
     </div>
 
   </div>
   </section>
 </div>
+</section>
 
+<section class="story-page" data-page="findings" id="findings">
 <section class="conclusion" id="conclusion"><div class="conclusion-inner"><h2>The Answer: <em>No</em>, Not Sustainably.</h2><div class="findings"><div class="finding"><div class="finding-n">01</div><h3>Emissions intensity worsened</h3><p>CO₂ per flight rose between 2019 and 2024: the recovery was not cleaner on average.</p></div><div class="finding"><div class="finding-n">02</div><h3>Carbon pricing was not enough</h3><p>The carbon signal increased, but aviation emissions still rebounded strongly.</p></div><div class="finding"><div class="finding-n">03</div><h3>Recovery was uneven</h3><p>Growth is geographically uneven, with different regional patterns after COVID-19.</p></div></div><p class="conclusion-text">European aviation returned to pre-pandemic levels by 2023-2024, but it did so <strong>without meaningfully improving its environmental footprint</strong>. A genuinely sustainable aviation sector will require complementary policy instruments beyond carbon pricing.</p></div></section>
+</section>
+</main>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
@@ -979,7 +1020,7 @@ const EMBEDDED_YEARLY_TOTALS = {"2019":{"f":69827668,"c":1049608679900.008,"bill
 const TABLEAU_RATIOS = {
   viz1778319861679: { ratio: 0.75, min: 820, mobile: 1677 },
   viz1778317854774: { ratio: 0.32, min: 360 },
-  viz1778320184556: { ratio: 0.28, min: 300 }
+  viz1778324972719: { ratio: 0.28, min: 300 }
 };
 function sizeTableau(div) {
   const viz = div.getElementsByTagName('object')[0];
@@ -1006,6 +1047,31 @@ function initTableauEmbeds() {
 }
 window.addEventListener('load', initTableauEmbeds);
 window.addEventListener('resize', () => document.querySelectorAll('.tableauPlaceholder').forEach(sizeTableau));
+
+const STORY_PAGES = ["overview", "recovery", "evidence", "perception", "findings"];
+function showStoryPage(page, updateHash = true) {
+  const next = STORY_PAGES.includes(page) ? page : "overview";
+  document.querySelectorAll(".story-page").forEach((section) => {
+    section.classList.toggle("active", section.dataset.page === next);
+  });
+  document.querySelectorAll("[data-page-link]").forEach((control) => {
+    control.classList.toggle("active", control.dataset.pageLink === next);
+  });
+  if (updateHash) history.replaceState(null, "", `#${next}`);
+  window.scrollTo({ top: 0, behavior: "auto" });
+  requestAnimationFrame(() => {
+    document.querySelectorAll(".story-page.active .tableauPlaceholder").forEach(sizeTableau);
+    updateScrollProgress();
+  });
+}
+document.querySelectorAll("[data-page-link]").forEach((control) => {
+  control.addEventListener("click", (event) => {
+    event.preventDefault();
+    showStoryPage(control.dataset.pageLink);
+  });
+});
+window.addEventListener("hashchange", () => showStoryPage(location.hash.replace("#", ""), false));
+showStoryPage(location.hash.replace("#", ""), false);
 
 function animateCounter(element, target, suffix = "%") {
   const duration = 1300; const startTime = performance.now();
