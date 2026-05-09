@@ -6,7 +6,7 @@
 <title>Did European Aviation Recover Sustainably After COVID-19?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:wght@300;400;600&family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --blue:#537D96;
@@ -311,6 +311,16 @@ h2{
 }
 .viz-block.horizontal .tableau-frame{min-height:520px}
 .viz-block.horizontal.stripes .tableau-frame{min-height:390px}
+#viz-carbon .tableau-frame{min-height:360px}
+#viz-stripes .tableau-frame{min-height:300px}
+
+.dashboard-frame{
+  min-height:820px;
+}
+.dashboard-frame .tableauPlaceholder,
+.dashboard-frame object{
+  width:100%;
+}
 .caption{
   font-family:var(--mono);
   font-size:.68rem;
@@ -318,52 +328,92 @@ h2{
   margin-top:12px;
   text-align:right;
 }
-
-.atlas-card{background:#fff}
-.atlas-shell{padding:0}
-.atlas-header{display:flex;justify-content:space-between;gap:20px;padding:22px 26px;border-bottom:1px solid var(--line);background:#fff}
-.atlas-title h3{font-size:1.45rem;color:var(--dark);letter-spacing:-.03em}
-.atlas-title p{margin-top:6px;font-size:.86rem;color:var(--muted);line-height:1.65}
-.atlas-loader{height:580px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.atlas-dashboard{display:none;grid-template-columns:minmax(0,1fr) 220px;gap:0;min-height:680px}
-.atlas-dashboard.ready{display:grid}
-.atlas-main{min-width:0;display:flex;flex-direction:column;border-right:1px solid var(--line)}
-.atlas-side{padding:26px 22px;background:#fff;display:flex;flex-direction:column;gap:22px;justify-content:center;border-left:1px solid var(--line)}
-.compass-wrap{position:relative;display:flex;justify-content:center;align-items:center;flex:1;min-height:0;background:#fff}
-.compass-wrap svg{display:block;width:100%;height:100%;min-height:590px}
-.yr-caption{position:absolute;left:22px;bottom:24px;max-width:230px;pointer-events:none}
-.yc-year{font-size:1.5rem;color:var(--dark);font-weight:700;line-height:1;margin-bottom:6px}
-.yc-text{font-size:.86rem;line-height:1.55;color:var(--muted)}
-.year-row{display:flex;align-items:center;justify-content:center;gap:14px;padding:16px;border-top:1px solid var(--line);font-family:var(--mono);color:var(--muted)}
-.year-row input[type=range]{appearance:none;width:260px;height:3px;background:linear-gradient(90deg,var(--blue),#c9c9c9,var(--red));border-radius:0;outline:none;cursor:pointer}
-.year-row input[type=range]::-webkit-slider-thumb{appearance:none;width:15px;height:15px;background:#fff;border:2px solid var(--dark);border-radius:50%}
-.year-row input[type=range]::-moz-range-thumb{width:15px;height:15px;background:#fff;border:2px solid var(--dark);border-radius:50%}
-.yr-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em}
-.yr-val{font-size:1rem;color:var(--dark);font-weight:700;min-width:44px}
-.btn-play{width:30px;height:30px;border:1px solid var(--dark);background:#fff;color:var(--dark);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.btn-play:hover{background:var(--dark);color:#fff}
-.leg-title,.m-lbl{
-  font-family:var(--mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px
+.static-figure-frame{
+  border:1px solid var(--line);
+  background:#fff;
+  box-shadow:var(--shadow);
+  overflow:hidden;
 }
-.leg-block{margin-bottom:16px}
-.leg-bar{height:8px;margin-bottom:7px}
+.static-figure-frame img{
+  width:100%;
+  display:block;
+  background:#fff;
+}
+.receipt-figure{
+  max-width:1360px;
+  margin:0 auto;
+}
+
+.atlas-card{
+  --atlas-bg:oklch(97.5% 0.003 220);
+  --atlas-surface:oklch(99.5% 0.002 220);
+  --atlas-fg:oklch(18% 0.01 240);
+  --atlas-muted:oklch(50% 0.008 220);
+  --atlas-border:oklch(91% 0.005 220);
+  --atlas-ref:oklch(84% 0.006 220);
+  --atlas-display:'Cinzel', Georgia, serif;
+  --atlas-body:'Crimson Pro', Georgia, serif;
+  --atlas-mono:'Courier Prime', 'Courier New', monospace;
+  background:
+    linear-gradient(90deg, color-mix(in oklch, var(--atlas-border), transparent 72%) 1px, transparent 1px) 0 0 / 92px 92px,
+    linear-gradient(180deg, color-mix(in oklch, var(--atlas-border), transparent 80%) 1px, transparent 1px) 0 0 / 92px 92px,
+    var(--atlas-bg);
+  color:var(--atlas-fg);
+}
+.atlas-shell{
+  max-width:960px;
+  margin:0 auto;
+  padding:0 32px 10px;
+  min-height:760px;
+  display:flex;
+  flex-direction:column;
+}
+.atlas-header{padding:14px 0 10px;border-bottom:1px solid var(--atlas-border);background:transparent}
+.atlas-title h3{font-family:var(--atlas-display);font-size:clamp(1.5rem,3vw,2.6rem);font-weight:500;line-height:1.05;color:var(--atlas-fg);letter-spacing:0}
+.atlas-title p{margin-top:5px;max-width:680px;font-family:var(--atlas-body);font-size:1rem;line-height:1.45;color:var(--atlas-muted)}
+.atlas-loader{flex:1;min-height:520px;display:flex;align-items:center;justify-content:center;font-family:var(--atlas-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--atlas-muted)}
+.atlas-dashboard{display:none;flex:1;min-height:620px;flex-direction:row;gap:14px;padding:8px 0 0}
+.atlas-dashboard.ready{display:flex}
+.atlas-main{min-width:0;min-height:0;display:flex;flex:1;flex-direction:column;border-right:0}
+.atlas-side{width:192px;flex-shrink:0;padding:0;background:transparent;display:flex;flex-direction:column;gap:16px;justify-content:center;border-left:0}
+.compass-wrap{position:relative;display:flex;justify-content:center;align-items:center;flex:1;min-height:0;margin-bottom:4px;background:transparent}
+.compass-wrap svg{display:block;width:100%;height:100%;max-width:100%;max-height:100%;min-height:0}
+.yr-caption{position:absolute;left:10px;bottom:18px;max-width:180px;pointer-events:none}
+.yc-year{font-family:var(--atlas-display);font-size:1rem;font-weight:500;color:var(--atlas-fg);opacity:.55;line-height:1;margin-bottom:5px}
+.yc-text{font-family:var(--atlas-body);font-size:.88rem;line-height:1.5;color:var(--atlas-muted)}
+.year-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 0 6px;padding:5px 0;flex-shrink:0;border-top:0;font-family:var(--atlas-mono);color:var(--atlas-muted)}
+.year-row input[type=range]{appearance:none;width:240px;height:3px;background:linear-gradient(90deg,#537D96,#7a9aae,#c8b8a8,#d4a888,#BF4646);border-radius:2px;outline:none;cursor:pointer}
+.year-row input[type=range]::-webkit-slider-thumb{appearance:none;width:14px;height:14px;background:var(--atlas-surface);border:2px solid var(--atlas-fg);border-radius:50%;cursor:pointer;transition:transform .15s}
+.year-row input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.year-row input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--atlas-surface);border:2px solid var(--atlas-fg);border-radius:50%;cursor:pointer}
+.yr-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
+.yr-val{font-family:var(--atlas-display);font-size:1.5rem;font-weight:500;color:var(--atlas-fg);min-width:2.2ch;text-align:center;line-height:1}
+.btn-play{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--atlas-fg);background:var(--atlas-surface);color:var(--atlas-fg);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s,transform .15s;flex-shrink:0;padding:0}
+.btn-play:hover{background:var(--atlas-fg);color:var(--atlas-surface);transform:scale(1.08)}
+.btn-play svg{width:10px;height:10px;display:block}
+.leg-block{margin-bottom:14px}
+.leg-title,.m-lbl{font-family:var(--atlas-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--atlas-muted);font-weight:400;margin-bottom:8px;text-align:center}
+.leg-bar{height:8px;border-radius:3px;margin-bottom:5px}
 .leg-ticks{display:flex;justify-content:space-between}
-.leg-ticks span,.m-sub,.leg-size-label{font-size:.72rem;color:var(--muted)}
-.leg-size-row{display:flex;align-items:center;gap:8px;margin:3px 0}
-.metric{padding:14px 0;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:14px}
-.m-info{min-width:0}
-.m-val{font-size:1.9rem;font-weight:700;letter-spacing:-.05em;color:var(--dark);line-height:1}
-.atlas-tooltip{position:absolute;pointer-events:none;z-index:10;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:12px 14px;font-size:.85rem;line-height:1.5;opacity:0;transition:.15s}
+.leg-ticks span,.m-sub,.leg-size-label{font-family:var(--atlas-mono);font-size:.68rem;color:#8a7e70}
+.leg-size-row{display:flex;align-items:center;gap:7px;margin:3px 0}
+.metric{background:none;padding:10px 0;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;border-top:0;border-bottom:1px solid color-mix(in oklch, var(--atlas-border), transparent 50%)}
+.m-info{flex:1;min-width:0}
+.m-val{font-family:var(--atlas-display);font-size:1.4rem;font-weight:500;letter-spacing:0;color:var(--atlas-fg);line-height:1;flex-shrink:0;text-align:right}
+.m-lbl{font-size:.6rem;text-align:left;margin-bottom:2px}
+.m-sub{font-family:var(--atlas-body);font-size:.76rem;color:var(--atlas-muted)}
+.atlas-tooltip{position:absolute;pointer-events:none;z-index:10;background:var(--atlas-surface);border:1px solid var(--atlas-border);box-shadow:0 2px 10px rgba(0,0,0,.07);padding:10px 14px;font-family:var(--atlas-body);font-size:.9rem;line-height:1.55;opacity:0;transition:opacity .15s}
 .atlas-tooltip.on{opacity:1}
-.atlas-tooltip .tt-head{display:flex;align-items:center;gap:9px;margin-bottom:6px}
-.atlas-tooltip .tt-flag{font-size:1.35rem;line-height:1}
-.atlas-tooltip .tt-name{font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:6px}
-.atlas-tooltip .tt-row{color:var(--muted)}
-.atlas-tooltip b{color:var(--dark)}
+.atlas-tooltip .tt-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.atlas-tooltip .tt-flag{font-size:26px;line-height:1;flex-shrink:0}
+.atlas-tooltip .tt-name{font-family:var(--atlas-display);font-size:1.2rem;color:var(--atlas-fg);line-height:1.15;margin-bottom:0}
+.atlas-tooltip .tt-iso{font-family:var(--atlas-mono);font-size:.68rem;color:var(--atlas-muted);letter-spacing:.05em;margin-top:1px}
+.atlas-tooltip .tt-row{color:var(--atlas-muted);font-size:.82rem}
+.atlas-tooltip b{color:var(--atlas-fg);font-weight:600}
 .shape-g{cursor:grab}
 .shape-g:active{cursor:grabbing}
 .shape-g path,.shape-g circle{transition:stroke .2s,stroke-opacity .2s}
-.shape-g:hover path,.shape-g:hover circle{stroke:var(--dark)!important;stroke-opacity:.9!important}
+.shape-g:hover path,.shape-g:hover circle{stroke:#2d2418!important;stroke-opacity:.9!important}
 
 .plain-card{
   border:1px solid var(--line);
@@ -386,12 +436,16 @@ h2{
 .plain-stage::before{
   content:"";
   position:absolute;
-  left:34px;right:34px;top:108px;height:1px;
+  left:34px;
+  right:34px;
+  top:108px;
+  height:1px;
   background:linear-gradient(90deg,rgba(83,125,150,.2),rgba(191,70,70,.32));
 }
 .plain-plane{
   position:absolute;
-  left:34px;top:76px;
+  left:34px;
+  top:76px;
   font-size:34px;
   color:var(--dark);
   filter:drop-shadow(0 12px 18px rgba(36,38,40,.16));
@@ -433,10 +487,7 @@ h2{
   gap:16px;
   background:#fff;
 }
-.plain-score{
-  border-top:1px solid var(--line);
-  padding-top:16px;
-}
+.plain-score{border-top:1px solid var(--line);padding-top:16px}
 .plain-score:first-child{border-top:0;padding-top:0}
 .plain-score-label{
   font-family:var(--mono);
@@ -510,22 +561,11 @@ h2{
 .plain-control input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#fff;border:2px solid var(--dark);border-radius:50%}
 .plain-years{display:flex;justify-content:space-between;margin-top:9px;font-family:var(--mono);font-size:.62rem;color:var(--muted)}
 
-
 .ethics-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:28px;
   margin-top:30px;
-}
-#viz-ethics{
-  width:min(1440px, calc(100vw - 48px));
-  margin-left:calc(50% - min(720px, calc(50vw - 24px)));
-}
-#viz-ethics .viz-head{
-  grid-template-columns:minmax(0,1.25fr) 340px;
-}
-#viz-ethics .ethics-grid{
-  gap:34px;
 }
 .ethics-card{
   background:#fff;
@@ -554,21 +594,6 @@ h2{
 }
 .ethics-card.white{border-top:5px solid var(--blue)}
 .ethics-card.black{border-top:5px solid var(--red)}
-.static-figure-frame{
-  background:#fff;
-  border:1px solid var(--line);
-  box-shadow:var(--shadow);
-  padding:18px;
-}
-.static-figure-frame img{
-  width:100%;
-  display:block;
-  background:#fff;
-}
-.static-figure-frame.compact{
-  max-width:980px;
-  margin:0 auto;
-}
 .ethics-note{
   margin-top:26px;
   border:1px solid var(--line);
@@ -601,11 +626,6 @@ h2{
 .finding p,.conclusion-text{font-size:.9rem;line-height:1.75;color:rgba(255,255,255,.6)}
 .conclusion-text{max-width:780px;border-top:1px solid rgba(255,255,255,.14);padding-top:34px}
 .conclusion-text strong{color:#fff}
-footer{background:#fff;border-top:1px solid var(--line);padding:26px 36px;display:flex;justify-content:space-between;align-items:center}
-footer p,footer a{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
-footer a{text-decoration:none;color:var(--blue);font-weight:700}
-
-
 @media (max-width:860px){
 .airline-trace{width:100%;height:36px}
   @keyframes heroPlaneFloat{0%,100%{transform:translate(0,4px) rotate(7deg)}45%,55%{transform:translate(220px,-1px) rotate(7deg)}}
@@ -622,12 +642,11 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
   .hero{padding:110px 20px 70px}.hero::after{display:none}
   .page,.conclusion-inner{padding:0 20px}
   .ds-grid,.findings,.ethics-grid{grid-template-columns:1fr}
-  #viz-ethics{width:auto;margin-left:0}
-  #viz-ethics .viz-head{grid-template-columns:1fr}
   .viz-block.horizontal{width:auto;margin-left:0}
-  .atlas-dashboard{grid-template-columns:1fr;min-height:auto}
-  .atlas-main{border-right:0}.atlas-side{border-left:0;border-top:1px solid var(--line)}
-  .compass-wrap svg{min-height:480px}
+  .atlas-shell{padding:0 16px 10px;min-height:780px}
+  .atlas-dashboard{flex-direction:column;min-height:660px}
+  .atlas-side{width:auto;border-top:1px solid var(--atlas-border);padding-top:14px}
+  .compass-wrap{min-height:480px}
   .plain-top,.plain-bottom{grid-template-columns:1fr}
   .plain-side,.plain-control{border-left:0;border-top:1px solid var(--line)}
   .plain-control{padding-left:0;padding-top:20px}
@@ -635,7 +654,6 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
   .plain-stage::before{left:22px;right:22px}
   .plain-plane{left:22px}
   .plain-bar-row{grid-template-columns:82px minmax(0,1fr) 56px}
-  footer{flex-direction:column;gap:8px;text-align:center}
 }
 </style>
 </head>
@@ -647,6 +665,8 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
     <li><a href="#intro">Introduction</a></li>
     <li><a href="#data">Data</a></li>
     <li><a href="#viz">Visualisations</a></li>
+    <li><a href="#viz-carbon">Carbon</a></li>
+    <li><a href="#viz-stripes">Stripes</a></li>
     <li><a href="#viz-ethics">Ethics</a></li>
     <li><a href="#conclusion">Findings</a></li>
   </ul>
@@ -703,10 +723,38 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
 
   <div class="divider" id="viz"><div class="divider-line"></div><span class="divider-label">Interactive Visualisations</span><div class="divider-line"></div></div>
 <section class="story-flow" aria-label="Connected visual storytelling sequence">
-  <div class="story-bridge"><strong>Reading path:</strong> start with the plain-language recovery gap, then inspect the analytical charts, test the policy signal, locate emissions geographically, compare country trajectories, summarise the time pattern, and finally evaluate how design choices can change interpretation.</div>
+  <div class="story-bridge"><strong>Reading path:</strong> start with the linked Tableau dashboard to move between the core recovery and geographic views. Then isolate the carbon-price signal and the temporal fingerprint, use the compass to compare country recovery patterns, and end with the ethics section to understand how design choices can change interpretation.</div>
+
+  <div class="viz-block horizontal" id="viz-carbon-receipt" data-step="00">
+    <div class="viz-head">
+      <div>
+        <span class="viz-tag">Opening Figure: Six-Year Carbon Receipt</span>
+        <h2>The Carbon Bill Behind the Recovery</h2>
+        <p class="viz-desc">This receipt-style plot gives the reader a quick entry point into the six-year aviation carbon story before the interactive dashboards. It frames the recovery as a cumulative climate cost, not only a traffic rebound.</p>
+      </div>
+      <div class="insight" style="border-top-color:var(--red)">
+        <h4>How to Read It</h4>
+        <p>The plot compresses annual emissions and carbon-price context into a simple receipt metaphor, making the scale of the post-pandemic rebound easier to compare across years.</p>
+      </div>
+    </div>
+    <div class="static-figure-frame receipt-figure">
+      <img src="figures/carbon_receipt_6years.png" alt="Six-year carbon receipt plot for European aviation from 2019 to 2024">
+    </div>
+    <p class="caption">Source: Project figure | Six-year aviation carbon receipt</p>
+  </div>
 
   <div class="viz-block" id="viz-plain" data-step="01">
-    <div class="viz-head"><div><span class="viz-tag">01: Plain-English Takeaway</span><h2>The Recovery Gap, Without the Jargon</h2><p class="viz-desc">This opening view is built for a non-expert audience. Move the year slider and compare two simple quantities: how much flying returned, and how much CO₂ returned with it.</p></div><div class="insight"><h4>How to Read It</h4><p>If the red CO₂ bar is longer than the blue traffic bar, aviation is emitting more pollution than its traffic recovery alone would suggest.</p></div></div>
+    <div class="viz-head">
+      <div>
+        <span class="viz-tag">01: Plain-English Takeaway</span>
+        <h2>The Recovery Gap, Without the Jargon</h2>
+        <p class="viz-desc">This opening view is built for a non-expert audience. Move the year slider and compare two simple quantities: how much flying returned, and how much CO₂ returned with it.</p>
+      </div>
+      <div class="insight">
+        <h4>How to Read It</h4>
+        <p>If the red CO₂ bar is longer than the blue traffic bar, aviation is emitting more pollution than its traffic recovery alone would suggest.</p>
+      </div>
+    </div>
     <div class="plain-card" aria-label="Interactive plain-language recovery gap chart">
       <div class="plain-top">
         <div class="plain-stage">
@@ -747,93 +795,173 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
         </div>
       </div>
     </div>
-    <p class="caption">Source: EUROCONTROL EIA | State-level annual totals from cleaned project data</p>
+    <p class="caption">Source: EUROCONTROL EIA | Annual flight and CO₂ totals from cleaned project data</p>
   </div>
 
-  <div class="viz-block horizontal" id="viz-recovery" data-step="02">
-    <div class="viz-head"><div><span class="viz-tag">02: Recovery Gap</span><h2>Flights Came Back, Emissions Came Back Faster</h2><p class="viz-desc">After the plain-language view, the analytical chart measures the same gap more formally. Flight activity returned close to its pre-pandemic level, but total CO₂ rose faster than traffic.</p></div><div class="insight"><h4>Key Insight</h4><p>By 2024, flights were <strong>only +1.9% above 2019</strong>, but CO₂ was <strong>+14.1% above 2019</strong>.</p></div></div>
-    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778076877942' style='position:relative'><noscript><a href='#'><img alt='Recovery' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_emissions/EuropeanAviationRecoveryandEmissions20192024/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
-    <p class="caption">Source: EUROCONTROL EIA | Annual aggregates</p>
+  <div class="viz-block horizontal" id="viz-dashboard" data-step="02">
+    <div class="viz-head">
+      <div>
+        <span class="viz-tag">02: Linked Tableau Dashboard</span>
+        <h2>One Dashboard, Connected Core Views</h2>
+        <p class="viz-desc">The main Tableau views are combined into a single linked dashboard. This lets the reader move between the recovery gap and geographic concentration while keeping the analytical context connected.</p>
+      </div>
+      <div class="insight">
+        <h4>Why This Improves the Story</h4>
+        <p>Because the views are linked, the dashboard works as one analytical system: recovery and geography can be read together instead of separately.</p>
+      </div>
+    </div>
+    <div class="tableau-frame dashboard-frame">
+      <div class='tableauPlaceholder' id='viz1778319861679' style='position: relative'>
+        <noscript>
+          <a href='#'><img alt='Dashboard ' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/Dashboard/1_rss.png' style='border: none' /></a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+          <param name='embed_code_version' value='3' />
+          <param name='site_root' value='' />
+          <param name='name' value='Data_Visualization_Tableau_17780729875790/Dashboard' />
+          <param name='tabs' value='no' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/Dashboard/1.png' />
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-US' />
+          <param name='filter' value='publish=yes' />
+        </object>
+      </div>
+    </div>
+    <p class="caption">Source: Tableau Public | Linked dashboard</p>
   </div>
 
   <div class="viz-block horizontal" id="viz-carbon" data-step="03">
-    <div class="viz-head"><div><span class="viz-tag">03: Policy Signal</span><h2>Carbon Price Rose, Aviation Emissions Rebounded Anyway</h2><p class="viz-desc">The next question is whether the carbon market constrained the rebound. The chart compares rising EUA prices with aviation emissions and shows that the price signal alone did not stop emissions from returning.</p></div><div class="insight" style="border-left-color:var(--red)"><h4>Central Finding</h4><p><strong>Market-based carbon pricing alone proved insufficient</strong> to prevent aviation's emissions rebound.</p></div></div>
-    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778076181159' style='position:relative'><noscript><a href='#'><img alt='Carbon' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
+    <div class="viz-head">
+      <div>
+        <span class="viz-tag">03: Carbon Price Signal</span>
+        <h2>Carbon Price Rose, Aviation Emissions Rebounded Anyway</h2>
+        <p class="viz-desc">This separate Tableau view focuses on the policy signal. It compares the rise in carbon prices with the rebound in aviation emissions, showing that the carbon market signal alone did not prevent emissions from returning.</p>
+      </div>
+      <div class="insight" style="border-top-color:var(--red)">
+        <h4>Central Finding</h4>
+        <p><strong>Market-based carbon pricing alone proved insufficient</strong> to prevent aviation's emissions rebound.</p>
+      </div>
+    </div>
+    <div class="tableau-frame">
+      <div class='tableauPlaceholder' id='viz1778317854774' style='position: relative'>
+        <noscript>
+          <a href='#'><img alt='Carbon Price Tripled. Aviation Emissions Rebounded Anyway.' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1_rss.png' style='border: none' /></a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+          <param name='embed_code_version' value='3' />
+          <param name='site_root' value='' />
+          <param name='name' value='Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_' />
+          <param name='tabs' value='no' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_carbonprice/CarbonPriceTripled_AviationEmissionsReboundedAnyway_/1.png' />
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-US' />
+        </object>
+      </div>
+    </div>
     <p class="caption">Source: EUROCONTROL EIA + EUA prices | Monthly data</p>
   </div>
 
-  <div class="viz-block" id="viz-map" data-step="04">
-    <div class="viz-head"><div><span class="viz-tag">04: Geographic Concentration</span><h2>Where Are Aviation Emissions Concentrated?</h2><p class="viz-desc">After identifying the recovery gap, the map shows where the emissions burden is concentrated across Europe. This shifts the story from time to geography.</p></div><div class="insight"><h4>Key Insight</h4><p>Large western European markets dominate total emissions, while Turkey signals a shifting centre of gravity in aviation growth.</p></div></div>
-    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778075893716' style='position:relative'><noscript><a href='#'><img alt='Map' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState/1_rss.png' style='border:none'/></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F'/><param name='embed_code_version' value='3'/><param name='site_root' value=''/><param name='name' value='Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState'/><param name='tabs' value='no'/><param name='toolbar' value='yes'/><param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_map/EuropeanAviationCOEmissionsbyState/1.png'/><param name='animate_transition' value='yes'/><param name='display_static_image' value='yes'/><param name='display_spinner' value='yes'/><param name='display_overlay' value='yes'/><param name='display_count' value='yes'/><param name='language' value='en-US'/><param name='filter' value='publish=yes'/></object></div></div>
-    <p class="caption">Source: EUROCONTROL EIA | 2019-2024</p>
+  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="04">
+    <div class="viz-head">
+      <div>
+        <span class="viz-tag">04: Temporal Fingerprint</span>
+        <h2>Aviation Recovery as a Temporal Fingerprint</h2>
+        <p class="viz-desc">The stripes condense the pandemic collapse and post-pandemic rebound into a compact sequence. They help the reader see the recovery as a temporal pattern rather than as isolated yearly values.</p>
+      </div>
+      <div class="insight">
+        <h4>Key Insight</h4>
+        <p>The recovery did not unfold as a simple return to normal: the post-2020 rebound carries a different emissions profile than the pre-pandemic baseline.</p>
+      </div>
+    </div>
+    <div class="tableau-frame">
+      <div class='tableauPlaceholder' id='viz1778320184556' style='position: relative'>
+        <noscript>
+          <a href='#'><img alt='Traffic Recovery ' src='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1_rss.png' style='border: none' /></a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+          <param name='embed_code_version' value='3' />
+          <param name='site_root' value='' />
+          <param name='name' value='EnvStripes_17781643738830/Foglio1' />
+          <param name='tabs' value='no' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1.png' />
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-US' />
+        </object>
+      </div>
+    </div>
+    <p class="caption">Source: Tableau Public | Traffic Recovery Stripes</p>
   </div>
 
   <div class="viz-block" id="viz-compass" data-step="05">
     <div class="viz-head"><div><span class="viz-tag">05: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
     <div class="atlas-card">
       <div class="atlas-shell">
-        <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Move the year slider or press play. Hover over each country to inspect its recovery rate and flight volume.</p></div></div>
+        <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p></div></div>
         <div class="atlas-loader" id="atlas-loader">Preparing compass...</div>
         <div class="atlas-dashboard" id="atlas-dash">
           <div class="atlas-main">
             <div class="compass-wrap" id="compass-wrap"><div class="atlas-tooltip" id="atlas-tt"></div><div class="yr-caption"><div class="yc-year" id="yc-year"></div><div class="yc-text" id="yc-text"></div></div></div>
             <div class="year-row"><button class="btn-play" id="btn-play" title="Play / Pause"><svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg></button><span class="yr-label">Year</span><input type="range" id="atlas-year-slider" min="2019" max="2024" step="1" value="2019"><span class="yr-val" id="year-disp">2019</span></div>
           </div>
-          <div class="atlas-side"><div id="atlas-legend"></div><div id="atlas-metrics"></div></div>
+          <div class="atlas-side"><div class="legend-wrap" id="atlas-legend"></div><div class="metrics-row" id="atlas-metrics"></div></div>
         </div>
       </div>
     </div>
-    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | CSV loaded at runtime + D3</p>
+    <p class="caption">Source: EUROCONTROL EIA | State-level cruise-phase flights | Embedded JavaScript + D3</p>
   </div>
 
-  <div class="viz-block horizontal" id="viz-country-fairness" data-step="06">
-    <div class="viz-head"><div><span class="viz-tag">06: Country Recovery Fairness</span><h2>Some Countries Recovered Traffic With a Higher CO₂ Penalty</h2><p class="viz-desc">The compass shows where traffic recovered. This diagnostic asks whether emissions recovered proportionally. Each country is compared against its own 2019 baseline for both flights and CO₂.</p></div><div class="insight"><h4>How to Read It</h4><p>Countries above the diagonal saw CO₂ recover faster than flights. Larger bubbles identify cases where the percentage pattern also carries substantial 2024 emissions mass.</p></div></div>
-    <div class="static-figure-frame compact">
-      <img src="figures/whitehat_country_recovery_gap_scatter.png" alt="Scatter plot comparing 2024 country flight recovery with CO2 recovery against a 2019 baseline">
-    </div>
-    <p class="caption">Source: EUROCONTROL EIA | State-level emissions and flights | 2024 indexed to 2019</p>
-  </div>
-
-  <div class="viz-block horizontal stripes" id="viz-stripes" data-step="07">
-    <div class="viz-head"><div><span class="viz-tag">06: Temporal Fingerprint</span><h2>Aviation Recovery as a Temporal Fingerprint</h2><p class="viz-desc">The stripes compress the pandemic collapse and post-pandemic rebound into a compact sequence. They help the reader see the recovery as a temporal pattern rather than as isolated yearly values.</p></div><div class="insight"><h4>Key Insight</h4><p>The recovery did not unfold as a simple return to normal: the post-2020 rebound carries a different emissions profile than the pre-pandemic baseline.</p></div></div>
-    <div class="tableau-frame"><div class='tableauPlaceholder' id='viz1778164427596' style='position: relative'><noscript><a href='#'><img alt='Traffic Recovery' src='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1_rss.png' style='border: none' /></a></noscript><object class='tableauViz' style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='EnvStripes_17781643738830/Foglio1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https://public.tableau.com/static/images/En/EnvStripes_17781643738830/Foglio1/1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div></div>
-    <p class="caption">Source: Tableau Public | Traffic Recovery</p>
-  </div>
-
-  <div class="viz-block" id="viz-ethics" data-step="08">
+  <div class="viz-block" id="viz-ethics" data-step="06">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">07: Visualisation Ethics</span>
-        <h2>Same Data, Different Visual Truth</h2>
-        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same yearly CO₂-per-flight values, but one uses a proportional scale while the other compresses the vertical axis.</p>
+        <span class="viz-tag">06: Visualisation Ethics</span>
+        <h2>Same Data, Different Story</h2>
+        <p class="viz-desc">The final section turns the analysis back on the visualisation process itself. Two static plots use the same data, but one preserves proportional comparison while the other distorts perception through misleading design.</p>
       </div>
       <div class="insight" style="border-top-color:var(--red)">
         <h4>Critical Insight</h4>
-        <p>Visualisation choices are analytical choices. Even when every value is unchanged, scale choices can make a moderate change look dramatic.</p>
+        <p>Visualisation choices are analytical choices. Axis scaling, breaks, spacing, and proportionality can make the same dataset appear objective, exaggerated, or deceptive.</p>
       </div>
     </div>
 
     <div class="ethics-grid">
       <article class="ethics-card white">
-        <img src="figures/whitehat_yearly_co2_per_flight.png" alt="Bar chart of yearly CO2 per flight from 2019 to 2024 using a proportional zero baseline">
+        <img src="figures/whitehat_yearly_co2_per_flight.png" alt="White-hat line chart showing yearly CO2 per flight with a proportional axis">
         <div class="ethics-content">
-          <h3>White Hat: Proportional Scale</h3>
-          <p>This chart shows yearly CO₂ per flight from a true zero baseline. The increase from 2019 to 2024 is visible and important, but it reads proportionally: about 1,434 kg per flight in 2019 versus about 1,613 kg in 2024.</p>
+          <h3>White Hat: Proportional Trend</h3>
+          <p>This chart preserves the full vertical context for yearly CO₂ per flight. The increase is visible, but its magnitude stays proportional to the baseline.</p>
         </div>
       </article>
 
       <article class="ethics-card black">
-        <img src="figures/blackhat_yearly_co2_per_flight_truncated_axis.png" alt="Bar chart of the same yearly CO2 per flight values using a compressed vertical scale">
+        <img src="figures/blackhat_yearly_co2_per_flight_truncated_axis.png" alt="Black-hat line chart showing yearly CO2 per flight with a truncated axis">
         <div class="ethics-content">
-          <h3>Black Hat: Compressed Scale</h3>
-          <p>This chart uses the same six years and the same CO₂-per-flight values, but starts the vertical scale at 1,400 kg. The result is a much steeper-looking increase, even though no data point has been changed or removed.</p>
+          <h3>Black Hat: Truncated Axis</h3>
+          <p>This chart uses the same values but cuts the vertical axis, visually stretching the change. The trend looks more dramatic because the encoded visual change is larger than the real data change.</p>
         </div>
       </article>
     </div>
 
     <div class="ethics-note">
       <h4>Why this matters</h4>
-      <p>A chart can be technically based on real data and still be misleading. Here, the data effect is <strong>(1612.59 - 1433.76) / 1433.76 = 0.12</strong>. With the compressed scale, the graphic effect is <strong>(1612.59 - 1433.76) / (1433.76 - 1400.00) = 5.30</strong>. The lie factor is therefore <strong>5.30 / 0.12 = 42.47</strong>.</p>
+      <p>A chart can be technically based on real data and still be misleading. In this case, the black-hat version does not change the yearly CO₂-per-flight values; it changes the <strong>reader's perception</strong> through axis truncation. That creates a high <strong>lie factor</strong>: the visual effect is larger than the underlying data effect.</p>
     </div>
 
   </div>
@@ -841,25 +969,28 @@ footer a{text-decoration:none;color:var(--blue);font-weight:700}
 </div>
 
 <section class="conclusion" id="conclusion"><div class="conclusion-inner"><h2>The Answer: <em>No</em>, Not Sustainably.</h2><div class="findings"><div class="finding"><div class="finding-n">01</div><h3>Emissions intensity worsened</h3><p>CO₂ per flight rose between 2019 and 2024: the recovery was not cleaner on average.</p></div><div class="finding"><div class="finding-n">02</div><h3>Carbon pricing was not enough</h3><p>The carbon signal increased, but aviation emissions still rebounded strongly.</p></div><div class="finding"><div class="finding-n">03</div><h3>Recovery was uneven</h3><p>Growth is geographically uneven, with different regional patterns after COVID-19.</p></div></div><p class="conclusion-text">European aviation returned to pre-pandemic levels by 2023-2024, but it did so <strong>without meaningfully improving its environmental footprint</strong>. A genuinely sustainable aviation sector will require complementary policy instruments beyond carbon pricing.</p></div></section>
-<footer>
-  <p>European Aviation Recovery Analysis · 2019–2024</p>
-</footer>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
 <script>
+const EMBEDDED_COUNTRY_DATA = {"AL":{"iso":"AL","years":{"2019":223138.0,"2020":102884.0,"2021":156866.0,"2022":254163.0,"2023":307523.0,"2024":375887.0},"co2":{"2019":420090800.0,"2020":208937099.99999997,"2021":280163700.0,"2022":440626800.0,"2023":524446499.99999994,"2024":639491299.9999999}},"AZ":{"iso":"AZ","years":{"2019":38538.0,"2020":17690.0,"2021":60889.0,"2022":166127.0,"2023":233261.0,"2024":306032.0},"co2":{"2019":199054900.00000003,"2020":109918600.0,"2021":477628100.00000006,"2022":1241013499.9999998,"2023":1744762000.0000005,"2024":2458476900.0}},"BE":{"iso":"BE","years":{"2019":1226638.0,"2020":534298.0,"2021":629680.0,"2022":1016475.0,"2023":1152045.0,"2024":1196048.0},"co2":{"2019":2322153499.9999976,"2020":1081494399.9999995,"2021":1184420799.9999998,"2022":1947888299.9999979,"2023":2230310899.9999976,"2024":2299564699.999997}},"BG":{"iso":"BG","years":{"2019":874028.0,"2020":374277.0,"2021":513987.0,"2022":819168.0,"2023":972110.0,"2024":1049982.0},"co2":{"2019":3714271399.9999995,"2020":1638020500.0000005,"2021":1976372799.9999988,"2022":3428812599.9999976,"2023":4160255100.0000014,"2024":4449648900.000004}},"CH":{"iso":"CH","years":{"2019":1189953.0,"2020":481610.0,"2021":627659.0,"2022":1052417.0,"2023":1100725.0,"2024":1202246.0},"co2":{"2019":1820661499.9999986,"2020":690122700.0000001,"2021":885455399.9999999,"2022":1531359199.9999983,"2023":1640745199.9999983,"2024":1853220799.9999988}},"CY":{"iso":"CY","years":{"2019":413839.0,"2020":165015.0,"2021":251222.0,"2022":342455.0,"2023":401225.0,"2024":377569.0},"co2":{"2019":1772846799.9999998,"2020":782450000.0000002,"2021":1107765200.0,"2022":1502393899.9999995,"2023":1760281800.0,"2024":1610193100.0}},"CZ":{"iso":"CZ","years":{"2019":868295.0,"2020":341967.0,"2021":406879.0,"2022":625537.0,"2023":714551.0,"2024":794241.0},"co2":{"2019":2611828200.0,"2020":1023194700.0000004,"2021":1114993600.0,"2022":1567662199.9999988,"2023":1736191399.9999993,"2024":2047153899.9999993}},"DE":{"iso":"DE","years":{"2019":3454073.0,"2020":1492101.0,"2021":1733038.0,"2022":2767500.0,"2023":2998606.0,"2024":3158240.0},"co2":{"2019":15117074900.000004,"2020":6829551700.000003,"2021":7570036100.000001,"2022":11984153200.000004,"2023":13064666300.000004,"2024":13573553900.000013}},"DK":{"iso":"DK","years":{"2019":668980.0,"2020":274296.0,"2021":300120.0,"2022":505733.0,"2023":564187.0,"2024":642620.0},"co2":{"2019":1532050799.9999998,"2020":663347300.0,"2021":719669400.0,"2022":1148701000.0,"2023":1413291899.9999995,"2024":2715066600.0}},"EE":{"iso":"EE","years":{"2019":226642.0,"2020":95864.0,"2021":108944.0,"2022":141104.0,"2023":148274.0,"2024":169857.0},"co2":{"2019":857358200.0000004,"2020":408916900.0,"2021":456230200.00000006,"2022":396342700.0,"2023":415474999.99999994,"2024":523852200.0}},"ES":{"iso":"ES","years":{"2019":2156784.0,"2020":857970.0,"2021":1191439.0,"2022":1980202.0,"2023":2194380.0,"2024":2361949.0},"co2":{"2019":12817612100.000002,"2020":4913852100.0,"2021":6685489000.0,"2022":11617695800.0,"2023":13062142899.999998,"2024":13943366700.000002}},"FI":{"iso":"FI","years":{"2019":278103.0,"2020":114648.0,"2021":119178.0,"2022":202354.0,"2023":221965.0,"2024":239171.0},"co2":{"2019":1030414700.0,"2020":461099200.00000006,"2021":486276400.0,"2022":593788200.0,"2023":666391600.0,"2024":742649500.0}},"FR":{"iso":"FR","years":{"2019":3423262.0,"2020":1406145.0,"2021":1825487.0,"2022":3015623.0,"2023":3284032.0,"2024":3483374.0},"co2":{"2019":19006074400.000004,"2020":7588299600.0,"2021":9654922100.000002,"2022":16179295199.999996,"2023":18047406399.99999,"2024":19218965399.99999}},"GB":{"iso":"GB","years":{"2019":2643965.0,"2020":1049685.0,"2021":1105866.0,"2022":2214625.0,"2023":2483969.0,"2024":2598095.0},"co2":{"2019":18308123000.0,"2020":7408740000.0,"2021":10708143999.999998,"2022":20987914499.999996,"2023":23537855799.999992,"2024":24252320799.99999}},"GE":{"iso":"GE","years":{"2019":70503.0,"2020":24994.0,"2021":70787.0,"2022":145824.0,"2023":230538.0,"2024":296466.0},"co2":{"2019":200585700.0,"2020":74896100.0,"2021":305667800.0,"2022":777166400.0,"2023":1245066199.9999995,"2024":1806847599.9999995}},"GR":{"iso":"GR","years":{"2019":871380.0,"2020":376062.0,"2021":562629.0,"2022":888012.0,"2023":993283.0,"2024":1066920.0},"co2":{"2019":5249009100.0,"2020":2504031499.9999995,"2021":3601795500.0,"2022":5524612799.999999,"2023":6239857400.000001,"2024":6647098600.000001}},"HR":{"iso":"HR","years":{"2019":720129.0,"2020":303516.0,"2021":463085.0,"2022":718326.0,"2023":820780.0,"2024":929737.0},"co2":{"2019":1840163900.000001,"2020":786840800.0,"2021":1226141800.0000017,"2022":1806900400.0000024,"2023":2065853300.0000026,"2024":2454978199.9999995}},"HU":{"iso":"HU","years":{"2019":901304.0,"2020":383476.0,"2021":496618.0,"2022":907581.0,"2023":1047946.0,"2024":1119133.0},"co2":{"2019":2876675000.000001,"2020":1297445400.0000005,"2021":1504226299.9999993,"2022":2835112900.0000014,"2023":3332815100.000001,"2024":3479171500.0000024}},"IE":{"iso":"IE","years":{"2019":555348.0,"2020":224420.0,"2021":255344.0,"2022":506857.0,"2023":573862.0,"2024":589289.0},"co2":{"2019":2956767000.0000005,"2020":1247651000.0,"2021":1497709400.0,"2022":2649350700.0000005,"2023":2880172100.0,"2024":2973281500.0000005}},"IL":{"iso":"IL","years":{"2019":183227.0,"2020":57799.0,"2021":90846.0,"2022":172774.0,"2023":185052.0,"2024":116025.0},"co2":{"2019":364055599.9999999,"2020":127558699.99999999,"2021":209029700.0,"2022":367935900.0,"2023":411255499.99999994,"2024":240841800.0}},"IS":{"iso":"IS","years":{"2019":8394.0,"2020":4653.0,"2021":10285.0,"2022":16347.0,"2023":29455.0,"2024":177749.0},"co2":{"2019":26207599.999999993,"2020":15915400.0,"2021":78278500.00000004,"2022":81088900.00000003,"2023":350328500.00000036,"2024":3506592900.0000005}},"IT":{"iso":"IT","years":{"2019":1979579.0,"2020":787891.0,"2021":1118219.0,"2022":1808402.0,"2023":2014960.0,"2024":2196059.0},"co2":{"2019":9306270100.000002,"2020":3653061099.9999995,"2021":5114269800.000001,"2022":8504780500.000003,"2023":9509699800.000008,"2024":10501207800.000006}},"LT":{"iso":"LT","years":{"2019":298538.0,"2020":136727.0,"2021":174964.0,"2022":180056.0,"2023":185275.0,"2024":207194.0},"co2":{"2019":574495300.0,"2020":311336000.0,"2021":396418100.0,"2022":333118400.0,"2023":357291400.00000006,"2024":401019800.00000006}},"LU":{"iso":"LU","years":{"2019":307514.0,"2020":127070.0,"2021":157541.0,"2022":239367.0,"2023":273085.0,"2024":279724.0},"co2":{"2019":177833699.99999994,"2020":77235699.99999999,"2021":95847199.99999997,"2022":146486799.99999994,"2023":183146800.00000003,"2024":188809600.0000001}},"LV":{"iso":"LV","years":{"2019":294205.0,"2020":128394.0,"2021":161939.0,"2022":184265.0,"2023":194583.0,"2024":221542.0},"co2":{"2019":861755200.0000001,"2020":415718700.0,"2021":511083600.0,"2022":418021500.00000006,"2023":417706200.00000006,"2024":512940700.00000006}},"MA":{"iso":"MA","years":{"2019":398391.0,"2020":161821.0,"2021":242925.0,"2022":419150.0,"2023":473474.0,"2024":529427.0},"co2":{"2019":2603339400.0,"2020":1042947900.0000002,"2021":1506079699.9999998,"2022":2603659599.9999995,"2023":2943858199.9999995,"2024":3254948800.0000005}},"MD":{"iso":"MD","years":{"2019":68634.0,"2020":28945.0,"2021":41139.0,"2022":22115.0,"2023":24057.0,"2024":32439.0},"co2":{"2019":81004400.0,"2020":33128200.000000004,"2021":47846800.0,"2022":28064300.000000004,"2023":32248900.000000004,"2024":48615900.0}},"ME":{"iso":"ME","years":{"2019":134943.0,"2020":60118.0,"2021":89076.0,"2022":144497.0,"2023":171166.0,"2024":194860.0},"co2":{"2019":186982500.00000006,"2020":82723900.0,"2021":110564900.0,"2022":180160300.0000001,"2023":215869000.00000003,"2024":249251000.0}},"MK":{"iso":"MK","years":{"2019":221446.0,"2020":95426.0,"2021":154757.0,"2022":233892.0,"2023":267709.0,"2024":285862.0},"co2":{"2019":303959999.99999994,"2020":144754600.0,"2021":221572200.00000003,"2022":329837800.0,"2023":380018400.0000001,"2024":411795100.0000001}},"MT":{"iso":"MT","years":{"2019":128834.0,"2020":55140.0,"2021":71266.0,"2022":100006.0,"2023":131747.0,"2024":147062.0},"co2":{"2019":937474800.0,"2020":375363100.0,"2021":475320499.99999994,"2022":626755500.0,"2023":907533600.0,"2024":1028206200.0}},"NL":{"iso":"NL","years":{"2019":1356733.0,"2020":604315.0,"2021":662988.0,"2022":1114286.0,"2023":1218871.0,"2024":1281525.0},"co2":{"2019":3388643700.0,"2020":1575154899.9999998,"2021":1682566199.9999998,"2022":2592012699.999998,"2023":2817097199.9999967,"2024":2960568099.9999976}},"NO":{"iso":"NO","years":{"2019":579875.0,"2020":334721.0,"2021":367217.0,"2022":520164.0,"2023":544308.0,"2024":549464.0},"co2":{"2019":2358999900.0000005,"2020":1173338200.0,"2021":1383468100.0,"2022":1990451600.0,"2023":2240742300.0000005,"2024":2388843300.0}},"PL":{"iso":"PL","years":{"2019":910692.0,"2020":375813.0,"2021":471196.0,"2022":626192.0,"2023":696599.0,"2024":758942.0},"co2":{"2019":4472426300.000002,"2020":1981331399.9999998,"2021":2316455899.9999995,"2022":2843562299.9999995,"2023":3184655300.0,"2024":3420816399.9999995}},"RO":{"iso":"RO","years":{"2019":744397.0,"2020":318176.0,"2021":451242.0,"2022":654330.0,"2023":768340.0,"2024":819315.0},"co2":{"2019":4926145200.0,"2020":2155913000.0,"2021":2627773000.000001,"2022":4571635000.0,"2023":5590960100.000002,"2024":5939671200.0}},"RS":{"iso":"RS","years":{"2019":708299.0,"2020":312285.0,"2021":445899.0,"2022":721631.0,"2023":831135.0,"2024":906336.0},"co2":{"2019":1887309599.9999971,"2020":824496199.9999993,"2021":1069110899.999998,"2022":1839919499.9999971,"2023":2121010699.999999,"2024":2305082300.0000005}},"SE":{"iso":"SE","years":{"2019":827198.0,"2020":350793.0,"2021":381177.0,"2022":587636.0,"2023":638981.0,"2024":662733.0},"co2":{"2019":3473713500.0000005,"2020":1528876299.9999998,"2021":1619456599.9999995,"2022":2144403899.9999998,"2023":2329166199.9999995,"2024":2504589899.9999995}},"SI":{"iso":"SI","years":{"2019":465220.0,"2020":198310.0,"2021":282082.0,"2022":457455.0,"2023":504950.0,"2024":550243.0},"co2":{"2019":499655899.9999999,"2020":213837999.99999997,"2021":285710799.99999994,"2022":465814399.9999998,"2023":530788599.99999976,"2024":560578800.0}},"SK":{"iso":"SK","years":{"2019":557098.0,"2020":198990.0,"2021":269160.0,"2022":468713.0,"2023":530242.0,"2024":601001.0},"co2":{"2019":1153781000.0000002,"2020":427022199.9999999,"2021":528806300.0,"2022":825084099.9999996,"2023":917351999.9999994,"2024":1045231399.9999994}},"TR":{"iso":"TR","years":{"2019":1025442.0,"2020":426167.0,"2021":914441.0,"2022":1378865.0,"2023":1630582.0,"2024":1703030.0},"co2":{"2019":10831462199.999994,"2020":4795733500.0,"2021":9027373800.0,"2022":15224139099.999994,"2023":18470341099.999992,"2024":18807011099.99998}},"UA":{"iso":"UA","years":{"2019":334783.0,"2020":134391.0,"2021":214956.0,"2022":31526.0,"2023":24564.0,"2024":12066.0},"co2":{"2019":1667883500.0000002,"2020":696600800.0,"2021":1097594000.0,"2022":161641800.00000006,"2023":31807700.0,"2024":30841400.0}}};
+const EMBEDDED_YEARLY_TOTALS = {"2019":{"f":69827668,"c":1049608679900.008,"bill":27528710217.751217},"2020":{"f":30824703,"c":446293891600.0005,"bill":11420967515.633017},"2021":{"f":39330358,"c":570174280500.0027,"bill":32684573237.493156},"2022":{"f":59893287,"c":924801720500.0059,"bill":74832975656.23146},"2023":{"f":65763738,"c":1048550343200.0077,"bill":88755532713.74765},"2024":{"f":69367672,"c":1141751365900.008,"bill":76202774118.79852}};
+
 const TABLEAU_RATIOS = {
-  viz1778075893716: { ratio: 0.64, min: 520 },
-  viz1778076877942: { ratio: 0.60, min: 820 },
-  viz1778076181159: { ratio: 0.34, min: 420 },
-  viz1778164427596: { ratio: 0.30, min: 390 }
+  viz1778319861679: { ratio: 0.75, min: 820, mobile: 1677 },
+  viz1778317854774: { ratio: 0.32, min: 360 },
+  viz1778320184556: { ratio: 0.28, min: 300 }
 };
 function sizeTableau(div) {
   const viz = div.getElementsByTagName('object')[0];
   if (!viz) return;
   const cfg = TABLEAU_RATIOS[div.id] || { ratio: 0.58, min: 500 };
   viz.style.width = '100%';
-  viz.style.height = Math.max(cfg.min, div.offsetWidth * cfg.ratio) + 'px';
+  if (cfg.mobile && div.offsetWidth <= 500) {
+    viz.style.height = cfg.mobile + 'px';
+  } else {
+    viz.style.height = Math.max(cfg.min, div.offsetWidth * cfg.ratio) + 'px';
+  }
 }
 function initTableauEmbeds() {
   document.querySelectorAll('.tableauPlaceholder').forEach((div) => {
@@ -968,7 +1099,7 @@ document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(
     els.intensity.textContent = fmtPct(intensityPct);
     els.flightsSub.textContent = `${fmtSigned(flightChange)} flights`;
     els.co2Sub.textContent = `${fmtSigned(co2Change)} CO₂`;
-    els.intensitySub.textContent = intensityChange >= 0 ? `${fmtSigned(intensityChange)} CO₂ per flight` : `${fmtSigned(intensityChange)} CO₂ per flight`;
+    els.intensitySub.textContent = `${fmtSigned(intensityChange)} CO₂ per flight`;
     els.flightBar.style.width = `${Math.min(100, flightPct / 1.2)}%`;
     els.co2Bar.style.width = `${Math.min(100, co2Pct / 1.2)}%`;
     els.flightBarValue.textContent = fmtPct(flightPct);
@@ -983,16 +1114,16 @@ document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(
       els.sentence.innerHTML = "Use 2019 as the reference point. Every later year is compared with this pre-pandemic baseline.";
     } else if (year <= 2021) {
       els.headline.innerHTML = `Aviation shrank fast: flights fell to <strong>${fmtPct(flightPct)}</strong> of 2019.`;
-      els.sentence.innerHTML = `The pandemic collapse is visible immediately. CO₂ also dropped, but this was a shutdown effect, not a cleaner recovery.`;
+      els.sentence.innerHTML = "The pandemic collapse is visible immediately. CO₂ also dropped, but this was a shutdown effect, not a cleaner recovery.";
     } else if (year === 2023) {
       els.headline.innerHTML = `Traffic was still below 2019, but CO₂ was already back at <strong>${fmtPct(co2Pct)}</strong>.`;
-      els.sentence.innerHTML = `This is the turning point: pollution recovered faster than the amount of flying.`;
+      els.sentence.innerHTML = "This is the turning point: pollution recovered faster than the amount of flying.";
     } else if (year === 2024) {
       els.headline.innerHTML = `By 2024, flying was almost back, but CO₂ rose to <strong>${fmtPct(co2Pct)}</strong>.`;
       els.sentence.innerHTML = `For a non-expert reader, this is the whole story: similar traffic, more emissions, and about ${fmtPct(intensityPct)} CO₂ per flight compared with 2019.`;
     } else {
-      els.headline.innerHTML = `The rebound begins: CO₂ climbs faster than flights.`;
-      els.sentence.innerHTML = `As travel reopened, the red bar started catching up more quickly than the blue bar.`;
+      els.headline.innerHTML = "The rebound begins: CO₂ climbs faster than flights.";
+      els.sentence.innerHTML = "As travel reopened, the red bar started catching up more quickly than the blue bar.";
     }
   }
   slider.addEventListener("input", () => updatePlain(Number(slider.value)));
@@ -1000,515 +1131,88 @@ document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(
 })();
 
 // Recovery compass
-(async function initCompass(){
+(function initCompass(){
   if (!window.d3) return;
-  const loader = document.getElementById('atlas-loader');
-  const dash = document.getElementById('atlas-dash');
-  const $ = id => document.getElementById(id);
-  const prog = message => { if (loader) loader.textContent = message; };
-
-  const CENTROIDS = {
-    AL:[41.0,20.0], AZ:[40.1,47.6], BE:[50.5,4.5], BG:[42.7,25.5], CH:[46.8,8.2],
-    CY:[35.1,33.4], CZ:[49.8,15.5], DE:[51.2,10.4], DK:[56.0,10.0], EE:[58.6,25.0],
-    ES:[40.5,-3.7], FI:[64.0,26.0], FR:[46.2,2.2], GB:[54.0,-2.0], GE:[42.3,43.4],
-    GR:[39.0,22.0], HR:[45.1,15.2], HU:[47.2,19.5], IE:[53.4,-8.0], IL:[31.0,34.9],
-    IS:[64.9,-19.0], IT:[42.5,12.5], LT:[55.2,23.9], LU:[49.8,6.1], LV:[56.9,24.1],
-    MA:[31.8,-7.1], MD:[47.4,28.4], ME:[42.7,19.3], MK:[41.6,21.7], MT:[35.9,14.4],
-    NL:[52.1,5.3], NO:[60.5,8.5], PL:[51.9,19.1], PT:[39.5,-8.0], RO:[45.9,24.9],
-    RS:[44.0,21.0], SE:[60.1,18.6], SI:[46.1,14.8], SK:[48.7,19.7], TR:[39.0,35.0],
-    UA:[48.4,31.2], DZ:[36.8,3.0], LB:[33.9,35.5], TN:[35.0,9.5], EG:[26.8,30.0]
-  };
-  const iso23 = {
-    AL:'008', AT:'040', AZ:'031', BE:'056', BG:'100', CH:'756', CY:'196', CZ:'203',
-    DE:'276', DK:'208', DZ:'012', EE:'233', EG:'818', ES:'724', FI:'246', FR:'250',
-    GB:'826', GE:'268', GR:'300', HR:'191', HU:'348', IE:'372', IL:'376', IS:'352',
-    IT:'380', LB:'422', LT:'440', LU:'442', LV:'428', MA:'504', MD:'498', ME:'499',
-    MK:'807', MT:'470', NL:'528', NO:'578', PL:'616', PT:'620', RO:'642', RS:'688',
-    SE:'752', SI:'705', SK:'703', TN:'788', TR:'792', UA:'804'
-  };
-  const ISO_NUM_TO_A2 = Object.fromEntries(Object.entries(iso23).map(([k, v]) => [v, k]));
-  const COUNTRY_NAMES = {
-    AL:'Albania', AZ:'Azerbaijan', BE:'Belgium', BG:'Bulgaria', CH:'Switzerland', CY:'Cyprus',
-    CZ:'Czech Republic', DE:'Germany', DK:'Denmark', DZ:'Algeria', EE:'Estonia', EG:'Egypt',
-    ES:'Spain', FI:'Finland', FR:'France', GB:'United Kingdom', GE:'Georgia', GR:'Greece',
-    HR:'Croatia', HU:'Hungary', IE:'Ireland', IL:'Israel', IS:'Iceland', IT:'Italy', LB:'Lebanon',
-    LT:'Lithuania', LU:'Luxembourg', LV:'Latvia', MA:'Morocco', MD:'Moldova', ME:'Montenegro',
-    MK:'North Macedonia', MT:'Malta', NL:'Netherlands', NO:'Norway', PL:'Poland', PT:'Portugal',
-    RO:'Romania', RS:'Serbia', SE:'Sweden', SI:'Slovenia', SK:'Slovakia', TN:'Tunisia',
-    TR:'Turkey', UA:'Ukraine'
-  };
-  const CAPTIONS = {
-    2019:'The baseline. European aviation at its pre-pandemic peak: 10.7 million cruise-phase flights across ECAC airspace.',
-    2020:'COVID-19 collapses air traffic. Borders close overnight. Some states see traffic fall below 10% of 2019 levels.',
-    2021:'A fragile restart. Vaccinations unlock leisure travel but business routes stay grounded and restrictions linger.',
-    2022:'Pent-up demand surges. Southern Europe bounces past 2019. Ukraine war reroutes eastern corridors permanently.',
-    2023:'Recovery consolidates. Turkey, North Africa and the Gulf corridor become new growth engines for the network.',
-    2024:'Most of Europe has recovered: but not equally. Eastern states and smaller markets still trail their 2019 baselines.'
-  };
-  const R = 290, CX = 400, CY = 400, SVGW = 800, SVGH = 800;
-  const cLat = 50 * Math.PI / 180;
-  const cLon = 15 * Math.PI / 180;
-  const toNum = v => Number(v) || 0;
-
-  function bearing(lat, lon){
-    const la = lat * Math.PI / 180, lo = lon * Math.PI / 180;
-    const cosC = Math.sin(cLat) * Math.sin(la) + Math.cos(cLat) * Math.cos(la) * Math.cos(lo - cLon);
-    const c = Math.acos(Math.max(-1, Math.min(1, cosC)));
-    const sinC = Math.sin(c);
-    if (sinC < 1e-5) return 0;
-    const cb = (Math.sin(la) - Math.sin(cLat) * cosC) / Math.cos(cLat) / sinC;
-    let b = Math.acos(Math.max(-1, Math.min(1, cb)));
-    if (Math.sin(lo - cLon) < 0) b = -b;
-    return b;
-  }
-
-  function polar(b, rate){
-    let r;
-    if (rate >= 100) r = R * (1 + Math.log2(rate / 100) * 0.6);
-    else if (rate < 5) r = R * 0.06;
-    else r = R * (1 - (100 - rate) / 100 * 0.78);
-    r = Math.max(3, Math.min(R * 1.3, r));
-    return [CX + r * Math.sin(b), CY - r * Math.cos(b)];
-  }
-
-  function bubColor(rate){
-    if (rate < 5) return '#c4c0ba';
-    if (rate < 100) return d3.interpolateRgb('#3a6070', '#c8b8a8')(rate / 100);
-    return d3.interpolateRgb('#c88a82', '#8a2525')(Math.min((rate - 100) / 100, 1));
-  }
-
-  async function loadAllData(){
-    prog('Loading carbon price...');
-    const priceRows = await d3.csv('data/clean/carbon_price_monthly_cleaned.csv');
-    const priceYM = {};
-    for (const r of priceRows) priceYM[`${r.YEAR}-${r.MONTH}`] = toNum(r.EUA_PRICE_EUR);
-
-    prog('Loading ECAC network...');
-    const net = await d3.csv('data/clean/emission_network_clean.csv');
-
-    prog('Loading state emissions...');
-    const st = await d3.csv('data/clean/emission_state_clean.csv');
-
-    prog('Loading country geometries...');
-    let worldData = null;
-    try {
-      const res = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json');
-      if (res.ok && window.topojson) {
-        const topo = await res.json();
-        worldData = topojson.feature(topo, topo.objects.countries);
-      }
-    } catch (_) {}
-
-    prog('Aggregating...');
-    const ecac = {};
-    for (const r of net) {
-      const k = `${r.YEAR}-${r.MONTH}`;
-      if (!ecac[k]) ecac[k] = { f:0, c:0, y:toNum(r.YEAR), m:toNum(r.MONTH) };
-      ecac[k].c += toNum(r.CO2_KG);
-      if (r.FLIGHT_PHASE === 'cruise') ecac[k].f += toNum(r.NB_FLIGHTS);
-    }
-
-    const stAgg = {}, stCO2 = {};
-    for (const r of st) {
-      if (r.FLIGHT_PHASE !== 'cruise') continue;
-      const y = toNum(r.YEAR);
-      if (y < 2019 || y > 2024) continue;
-      const a = r.AREA;
-      if (!stAgg[a]) stAgg[a] = {};
-      if (!stCO2[a]) stCO2[a] = {};
-      stAgg[a][y] = (stAgg[a][y] || 0) + toNum(r.NB_FLIGHTS);
-      stCO2[a][y] = (stCO2[a][y] || 0) + toNum(r.CO2_KG);
-    }
-
-    const cty = {};
-    for (const [a, years] of Object.entries(stAgg)) {
-      if (!CENTROIDS[a] || !years[2019] || years[2019] < 5000) continue;
-      cty[a] = { iso:a, years, f19:years[2019], f24:years[2024] || 0, co2:stCO2[a] || {} };
-    }
-
-    const yearlyTotals = {};
-    for (let y = 2019; y <= 2024; y++) {
-      yearlyTotals[y] = { f:0, c:0, bill:0 };
-      for (let m = 1; m <= 12; m++) {
-        const k = `${y}-${m}`;
-        const cur = ecac[k];
-        if (!cur) continue;
-        const ct = cur.c / 1000;
-        const p = priceYM[k] || 0;
-        yearlyTotals[y].f += cur.f;
-        yearlyTotals[y].c += cur.c;
-        yearlyTotals[y].bill += ct * p;
-      }
-    }
-    return { cty, yearlyTotals, worldData };
-  }
-
-  function runForce(items, rScale){
-    const allBaseline = items.every(d => Math.abs(d.rate - 100) < 0.01);
-    if (allBaseline) {
-      items.forEach(d => { d.px = d.ax; d.py = d.ay; });
-      return;
-    }
-    items.forEach(d => { d.x = d.ax; d.y = d.ay; });
-    const sim = d3.forceSimulation(items)
-      .force('cx', d3.forceX(d => d.ax).strength(0.35))
-      .force('cy', d3.forceY(d => d.ay).strength(0.35))
-      .force('collide', d3.forceCollide(d => rScale(d.f24) + 8).iterations(8))
-      .stop();
-    for (let i = 0; i < 300; i++) sim.tick();
-    items.forEach(d => {
-      const targetR = Math.hypot(d.ax - CX, d.ay - CY);
-      const dist = Math.hypot(d.x - CX, d.y - CY);
-      if (dist > 0.1) {
-        const s = targetR / dist;
-        d.px = CX + (d.x - CX) * s;
-        d.py = CY + (d.y - CY) * s;
-      } else {
-        d.px = d.ax;
-        d.py = d.ay;
-      }
+  const loader=document.getElementById('atlas-loader'), dash=document.getElementById('atlas-dash');
+  const centroids={AL:[41.0,20.0],AZ:[40.1,47.6],BE:[50.5,4.5],BG:[42.7,25.5],CH:[46.8,8.2],CY:[35.1,33.4],CZ:[49.8,15.5],DE:[51.2,10.4],DK:[56.0,10.0],EE:[58.6,25.0],ES:[40.5,-3.7],FI:[64.0,26.0],FR:[46.2,2.2],GB:[54.0,-2.0],GE:[42.3,43.4],GR:[39.0,22.0],HR:[45.1,15.2],HU:[47.2,19.5],IE:[53.4,-8.0],IL:[31.0,34.9],IS:[64.9,-19.0],IT:[42.5,12.5],LT:[55.2,23.9],LU:[49.8,6.1],LV:[56.9,24.1],MA:[31.8,-7.1],MD:[47.4,28.4],ME:[42.7,19.3],MK:[41.6,21.7],MT:[35.9,14.4],NL:[52.1,5.3],NO:[60.5,8.5],PL:[51.9,19.1],PT:[39.5,-8.0],RO:[45.9,24.9],RS:[44.0,21.0],SE:[60.1,18.6],SI:[46.1,14.8],SK:[48.7,19.7],TR:[39.0,35.0],UA:[48.4,31.2],DZ:[36.8,3.0],LB:[33.9,35.5],TN:[35.0,9.5],EG:[26.8,30.0]};
+  const countryNames={AL:'Albania',AZ:'Azerbaijan',BE:'Belgium',BG:'Bulgaria',CH:'Switzerland',CY:'Cyprus',CZ:'Czech Republic',DE:'Germany',DK:'Denmark',DZ:'Algeria',EE:'Estonia',EG:'Egypt',ES:'Spain',FI:'Finland',FR:'France',GB:'United Kingdom',GE:'Georgia',GR:'Greece',HR:'Croatia',HU:'Hungary',IE:'Ireland',IL:'Israel',IS:'Iceland',IT:'Italy',LB:'Lebanon',LT:'Lithuania',LU:'Luxembourg',LV:'Latvia',MA:'Morocco',MD:'Moldova',ME:'Montenegro',MK:'North Macedonia',MT:'Malta',NL:'Netherlands',NO:'Norway',PL:'Poland',PT:'Portugal',RO:'Romania',RS:'Serbia',SE:'Sweden',SI:'Slovenia',SK:'Slovakia',TN:'Tunisia',TR:'Turkey',UA:'Ukraine'};
+  const iso23={AL:'008',AT:'040',AZ:'031',BE:'056',BG:'100',CH:'756',CY:'196',CZ:'203',DE:'276',DK:'208',DZ:'012',EE:'233',EG:'818',ES:'724',FI:'246',FR:'250',GB:'826',GE:'268',GR:'300',HR:'191',HU:'348',IE:'372',IL:'376',IS:'352',IT:'380',LB:'422',LT:'440',LU:'442',LV:'428',MA:'504',MD:'498',ME:'499',MK:'807',MT:'470',NL:'528',NO:'578',PL:'616',PT:'620',RO:'642',RS:'688',SE:'752',SI:'705',SK:'703',TN:'788',TR:'792',UA:'804'};
+  const isoNumToA2=Object.fromEntries(Object.entries(iso23).map(([k,v])=>[v,k]));
+  const cLat=50*Math.PI/180,cLon=15*Math.PI/180,R=290,CX=400,CY=400,SVGW=800,SVGH=800;
+  function bearing(lat,lon){ const la=lat*Math.PI/180,lo=lon*Math.PI/180; const cosC=Math.sin(cLat)*Math.sin(la)+Math.cos(cLat)*Math.cos(la)*Math.cos(lo-cLon); const c=Math.acos(Math.max(-1,Math.min(1,cosC))); const sinC=Math.sin(c); if(sinC<1e-5)return 0; const cb=(Math.sin(la)-Math.sin(cLat)*cosC)/Math.cos(cLat)/sinC; let b=Math.acos(Math.max(-1,Math.min(1,cb))); if(Math.sin(lo-cLon)<0)b=-b; return b; }
+  function polar(b,rate){ let r=rate>=100?R*(1+Math.log2(rate/100)*.6):(rate<5?R*.06:R*(1-(100-rate)/100*.78)); r=Math.max(3,Math.min(R*1.3,r)); return [CX+r*Math.sin(b), CY-r*Math.cos(b)]; }
+  function color(rate){ if(rate<5)return '#c4c0ba'; if(rate<100)return d3.interpolateRgb('#3a6070','#c8b8a8')(rate/100); return d3.interpolateRgb('#c88a82','#8a2525')(Math.min((rate-100)/100,1)); }
+  let currentYear=2019, isDragging=false, playTimer=null;
+  const items=Object.values(EMBEDDED_COUNTRY_DATA).map(d=>{ const rate=(d.years['2019']/d.years['2019'])*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,rate); return {...d,rate,bearing:b,ax,ay,px:ax,py:ay,f19:d.years['2019'],f24:d.years['2024']||0}; });
+  const maxF=d3.max(items,d=>d.f24), rScale=d3.scaleSqrt().domain([0,maxF]).range([10,54]);
+  function runForce(){ const allBaseline=items.every(d=>Math.abs(d.rate-100)<.01); if(allBaseline){ items.forEach(d=>{d.px=d.ax;d.py=d.ay}); return; } items.forEach(d=>{d.x=d.ax;d.y=d.ay}); const sim=d3.forceSimulation(items).force('cx',d3.forceX(d=>d.ax).strength(.35)).force('cy',d3.forceY(d=>d.ay).strength(.35)).force('collide',d3.forceCollide(d=>rScale(d.f24)+8).iterations(8)).stop(); for(let i=0;i<260;i++)sim.tick(); items.forEach(d=>{ const targetR=Math.hypot(d.ax-CX,d.ay-CY), dist=Math.hypot(d.x-CX,d.y-CY); if(dist>.1){const s=targetR/dist; d.px=CX+(d.x-CX)*s; d.py=CY+(d.y-CY)*s;} else {d.px=d.ax;d.py=d.ay;} }); }
+  runForce();
+  function preprocessShapes(worldData){
+    const shapes={};
+    if(!worldData) return shapes;
+    const proj=d3.geoMercator().scale(140).translate([0,0]);
+    const path=d3.geoPath(proj);
+    worldData.features.forEach(f=>{
+      const iso=isoNumToA2[f.id];
+      if(!iso || !EMBEDDED_COUNTRY_DATA[iso]) return;
+      const d=path(f);
+      if(!d) return;
+      const b=path.bounds(f), diag=Math.hypot(b[1][0]-b[0][0], b[1][1]-b[0][1]);
+      if(diag<.05) return;
+      shapes[iso]={d,diag,cx:(b[0][0]+b[1][0])/2,cy:(b[0][1]+b[1][1])/2};
     });
+    return shapes;
   }
-
-  function drawBackground(g, defs){
-    const filter = defs.append('filter').attr('id', 'rose-tint');
-    filter.append('feColorMatrix')
-      .attr('type', 'matrix')
-      .attr('values', '0.5 0 0 0 0.08  0 0.42 0 0 0.14  0 0 0.38 0 0.12  0 0 0 0.92 0');
-    const roseR = R * 0.98;
-    g.insert('image', ':first-child')
-      .attr('href', 'assets/simple-wind-rose.svg')
-      .attr('x', CX - roseR).attr('y', CY - roseR)
-      .attr('width', roseR * 2).attr('height', roseR * 2)
-      .attr('preserveAspectRatio', 'xMidYMid meet')
-      .attr('filter', 'url(#rose-tint)');
-
-    const glow = defs.append('radialGradient').attr('id', 'atlas-glow');
-    glow.append('stop').attr('offset', '0%').attr('stop-color', '#f4f5f7').attr('stop-opacity', 1);
-    glow.append('stop').attr('offset', '60%').attr('stop-color', '#f4f5f7').attr('stop-opacity', 0.5);
-    glow.append('stop').attr('offset', '100%').attr('stop-color', '#f4f5f7').attr('stop-opacity', 0);
-    g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', 420).attr('fill', 'url(#atlas-glow)');
-
-    [
-      { r:R * 0.4, op:0.15 },
-      { r:R * 0.7, op:0.20 },
-      { r:R, op:0.55, label:'2019 baseline' },
-      { r:R * 1.3, op:0.15, dash:'3,6' }
-    ].forEach(rd => {
-      g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', rd.r)
-        .attr('fill', 'none').attr('stroke', '#cfd6db')
-        .attr('stroke-width', rd.r === R ? 1.2 : 0.5)
-        .attr('stroke-dasharray', rd.dash || '').attr('opacity', rd.op);
-      if (rd.label) {
-        g.append('text').attr('x', CX + rd.r + 6).attr('y', CY - 12)
-          .attr('fill', '#8b939b').style('font-family', 'var(--mono)')
-          .style('font-size', '11px').style('letter-spacing', '.04em').text(rd.label);
-      }
-    });
-
-    [
-      { step:90, len:1.10, sw:1.2, op:0.55, color:'#bcc4c0', offset:0 },
-      { step:90, len:0.95, sw:0.8, op:0.40, color:'#c8d0cc', offset:45 },
-      { step:45, len:0.80, sw:0.5, op:0.28, color:'#d4dcd8', offset:22.5 }
-    ].forEach(tier => {
-      const n = Math.round(360 / tier.step);
-      for (let i = 0; i < n; i++) {
-        const b = (tier.offset + i * tier.step) * Math.PI / 180;
-        g.append('line')
-          .attr('x1', CX).attr('y1', CY)
-          .attr('x2', CX + R * tier.len * Math.sin(b))
-          .attr('y2', CY - R * tier.len * Math.cos(b))
-          .attr('stroke', tier.color).attr('stroke-width', tier.sw).attr('opacity', tier.op);
-      }
-    });
-
-    [
-      { b:0, label:'N', dx:0, dy:-18 },
-      { b:Math.PI / 2, label:'E', dx:14, dy:4 },
-      { b:Math.PI, label:'S', dx:0, dy:18 },
-      { b:-Math.PI / 2, label:'W', dx:-14, dy:4 }
-    ].forEach(d => {
-      g.append('text')
-        .attr('x', CX + roseR * Math.sin(d.b) + d.dx)
-        .attr('y', CY - roseR * Math.cos(d.b) + d.dy)
-        .attr('text-anchor', 'middle').attr('fill', '#8b939b')
-        .style('font-family', 'var(--sans)').style('font-size', '16px')
-        .style('font-weight', 700).text(d.label);
-    });
-    g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', 4).attr('fill', 'var(--dark)').attr('opacity', 0.7);
-    g.append('circle').attr('cx', CX).attr('cy', CY).attr('r', 1.5).attr('fill', '#f4f5f7');
-  }
-
-  function preprocessShapes(worldData, cty){
-    const countryShapes = {};
-    if (!worldData) return countryShapes;
-    const proj = d3.geoMercator().scale(140).translate([0, 0]);
-    const path = d3.geoPath(proj);
-    worldData.features.forEach(f => {
-      const iso2 = ISO_NUM_TO_A2[f.id];
-      if (!iso2 || !cty[iso2]) return;
-      const d = path(f);
-      if (!d) return;
-      const b = path.bounds(f);
-      const diag = Math.hypot(b[1][0] - b[0][0], b[1][1] - b[0][1]);
-      if (diag < 0.05) return;
-      countryShapes[iso2] = { d, diag, cx:(b[0][0] + b[1][0]) / 2, cy:(b[0][1] + b[1][1]) / 2 };
-    });
-    return countryShapes;
-  }
-
-  function renderShapes(g, items, countryShapes, rScale){
-    const shapeGroups = g.selectAll('.shape-g').data(items).join('g')
-      .attr('class', 'shape-g')
-      .attr('transform', d => `translate(${d.px},${d.py}) scale(0)`);
+  const svg=d3.select('#compass-wrap').append('svg').attr('viewBox',[0,0,SVGW,SVGH]);
+  const defs=svg.append('defs'), g=svg.append('g');
+  const roseFilter=defs.append('filter').attr('id','rose-tint');
+  roseFilter.append('feColorMatrix').attr('type','matrix').attr('values','0.5 0 0 0 0.08  0 0.42 0 0 0.14  0 0 0.38 0 0.12  0 0 0 0.92 0');
+  const roseR=R*.98;
+  g.insert('image',':first-child').attr('href','assets/simple-wind-rose.svg').attr('x',CX-roseR).attr('y',CY-roseR).attr('width',roseR*2).attr('height',roseR*2).attr('preserveAspectRatio','xMidYMid meet').attr('filter','url(#rose-tint)');
+  const glow=defs.append('radialGradient').attr('id','atlas-glow'); glow.append('stop').attr('offset','0%').attr('stop-color','#f4f5f7').attr('stop-opacity',1); glow.append('stop').attr('offset','60%').attr('stop-color','#f4f5f7').attr('stop-opacity',.5); glow.append('stop').attr('offset','100%').attr('stop-color','#f4f5f7').attr('stop-opacity',0);
+  g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',420).attr('fill','url(#atlas-glow)');
+  [{r:R*.4,op:.15},{r:R*.7,op:.2},{r:R,op:.55,label:'2019 baseline'},{r:R*1.3,op:.15,dash:'3,6'}].forEach(rd=>{ g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',rd.r).attr('fill','none').attr('stroke','var(--atlas-ref)').attr('stroke-width',rd.r===R?1.2:.5).attr('stroke-dasharray',rd.dash||'').attr('opacity',rd.op); if(rd.label)g.append('text').attr('x',CX+rd.r+6).attr('y',CY-12).attr('fill','#9a8e7e').style('font-family','var(--atlas-mono)').style('font-size','11px').style('letter-spacing','.04em').text(rd.label); });
+  [{step:90,len:1.10,sw:1.2,op:.55,color:'#bcc4c0',offset:0},{step:90,len:.95,sw:.8,op:.4,color:'#c8d0cc',offset:45},{step:45,len:.80,sw:.5,op:.28,color:'#d4dcd8',offset:22.5}].forEach(tier=>{ const n=Math.round(360/tier.step); for(let i=0;i<n;i++){ const b=(tier.offset+i*tier.step)*Math.PI/180; g.append('line').attr('x1',CX).attr('y1',CY).attr('x2',CX+R*tier.len*Math.sin(b)).attr('y2',CY-R*tier.len*Math.cos(b)).attr('stroke',tier.color).attr('stroke-width',tier.sw).attr('opacity',tier.op); } });
+  [{b:0,l:'N',dx:0,dy:-18},{b:Math.PI/2,l:'E',dx:14,dy:4},{b:Math.PI,l:'S',dx:0,dy:18},{b:-Math.PI/2,l:'W',dx:-14,dy:4}].forEach(d=>{ g.append('text').attr('x',CX+roseR*Math.sin(d.b)+d.dx).attr('y',CY-roseR*Math.cos(d.b)+d.dy).attr('text-anchor','middle').attr('fill','#b0a594').style('font-family','var(--atlas-display)').style('font-size','16px').style('letter-spacing','.06em').text(d.l); });
+  const spokes=g.selectAll('.spoke').data(items).join('line').attr('x1',CX).attr('y1',CY).attr('x2',d=>d.px).attr('y2',d=>d.py).attr('stroke',d=>d.rate<100?'#9fb7c4':'#cba09d').attr('stroke-width',.35).attr('opacity',.45);
+  g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',4).attr('fill','#5c5046').attr('opacity',.7);
+  g.append('circle').attr('cx',CX).attr('cy',CY).attr('r',1.5).attr('fill','#f4f5f7');
+  const shapeGroups=g.selectAll('.shape-g').data(items).join('g').attr('class','shape-g').attr('transform',d=>`translate(${d.px},${d.py}) scale(0)`);
+  function applyCountryShapes(shapes){
+    shapeGroups.selectAll('*').remove();
     shapeGroups.each(function(d){
-      const s = countryShapes[d.iso];
-      if (s) {
-        d3.select(this).append('path')
-          .attr('d', s.d)
-          .attr('transform', `translate(${-s.cx},${-s.cy})`)
-          .attr('fill', bubColor(d.rate)).attr('fill-opacity', 0.82)
-          .attr('stroke', '#fff').attr('stroke-width', 0.5)
-          .attr('stroke-opacity', 0.5).attr('vector-effect', 'non-scaling-stroke');
-        this._scale = rScale(d.f24) / (s.diag / 2);
+      const s=shapes[d.iso];
+      if(s){
+        d3.select(this).append('path').attr('d',s.d).attr('transform',`translate(${-s.cx},${-s.cy})`).attr('fill',color(d.rate)).attr('fill-opacity',.82).attr('stroke','#fff').attr('stroke-width',.5).attr('stroke-opacity',.5).attr('vector-effect','non-scaling-stroke');
+        this._scale=rScale(d.f24)/(s.diag/2);
       } else {
-        d3.select(this).append('circle')
-          .attr('r', 8).attr('fill', bubColor(d.rate)).attr('fill-opacity', 0.82)
-          .attr('stroke', '#fff').attr('stroke-width', 0.5).attr('stroke-opacity', 0.5);
-        this._scale = rScale(d.f24) / 8;
+        d3.select(this).append('circle').attr('r',8).attr('fill',color(d.rate)).attr('fill-opacity',.82).attr('stroke','#fff').attr('stroke-width',.5).attr('stroke-opacity',.5);
+        this._scale=rScale(d.f24)/8;
       }
     });
-    return shapeGroups;
+    shapeGroups.attr('transform',d=>`translate(${d.px},${d.py}) scale(0)`).transition().duration(800).delay((_,i)=>i*12).ease(d3.easeBackOut.overshoot(1.8)).attr('transform',function(d){return `translate(${d.px},${d.py}) scale(${this._scale})`;});
   }
-
-  function buildLegend(items, rScale){
-    const flights = items.map(d => d.f24);
-    const legVals = [0, 50, 100, 150, 200];
-    const gradStops = legVals.map(v => bubColor(v)).join(', ');
-    const ticksHtml = legVals.map(v => `<span>${v}%</span>`).join('');
-    const szVals = [d3.quantile(flights, .25), d3.median(flights), d3.quantile(flights, .75)].filter(v => v != null);
-    const maxR = d3.max(szVals, s => rScale(s)) || 1;
-    const szHtml = szVals.map((s, i) => {
-      const r = rScale(s);
-      const overlap = i === 0 ? 0 : -Math.round(r * 0.55);
-      return `<div class="leg-size-row" style="margin-top:${overlap}px">
-        <svg width="${maxR * 2 + 2}" height="${r * 2 + 2}" style="overflow:visible;flex-shrink:0">
-          <circle cx="${maxR + 1}" cy="${r + 1}" r="${r}" fill="none" stroke="#b0a594" stroke-width="0.5"/>
-        </svg>
-        <span class="leg-size-label">${d3.format('.2s')(s)}</span>
-      </div>`;
-    }).join('');
-    $('atlas-legend').innerHTML = `
-      <div class="leg-block">
-        <div class="leg-title">Recovery</div>
-        <div class="leg-bar" style="background:linear-gradient(90deg,${gradStops})"></div>
-        <div class="leg-ticks">${ticksHtml}</div>
-      </div>
-      <div class="leg-block">
-        <div class="leg-title">Traffic (2024)</div>
-        <div style="display:flex;flex-direction:column;align-items:center;padding-left:28px">${szHtml}</div>
-      </div>`;
+  applyCountryShapes({});
+  fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json').then(r=>r.ok?r.json():null).then(topo=>{ if(topo && window.topojson) applyCountryShapes(preprocessShapes(topojson.feature(topo, topo.objects.countries))); }).catch(()=>{});
+  const labels=g.selectAll('.atlas-lbl').data(items).join('text').attr('x',d=>d.px).attr('y',d=>d.py).attr('dy','.35em').attr('text-anchor','middle').attr('fill','rgba(255,255,255,.95)').style('font-family','var(--atlas-mono)').style('font-weight',500).style('font-size',d=>Math.max(7,Math.min(rScale(d.f24)*.52,11))+'px').style('letter-spacing','.06em').style('pointer-events','none').style('stroke','rgba(0,0,0,.45)').style('stroke-width','2.5px').style('stroke-linejoin','round').style('paint-order','stroke fill').text(d=>d.iso);
+  const tt=document.getElementById('atlas-tt'), wrap=document.getElementById('compass-wrap');
+  shapeGroups.on('mouseenter',function(e,d){ shapeGroups.style('opacity',.18); labels.style('opacity',.12); spokes.style('opacity',.12); d3.select(this).style('opacity',1).raise(); d3.select(this).select('path,circle').attr('stroke-opacity',.9).attr('stroke','#2d2418'); labels.filter(l=>l.iso===d.iso).style('opacity',1).raise(); const flag=d.iso.toUpperCase().replace(/./g,c=>String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65)); tt.innerHTML=`<div class="tt-head"><div><div class="tt-name">${countryNames[d.iso]||d.iso}</div><div class="tt-iso">${d.iso}</div></div><span class="tt-flag">${flag}</span></div><div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div><div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div><div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[String(currentYear)]||0)}</b></div>`; tt.classList.add('on'); }).on('mousemove',function(e){ const r=wrap.getBoundingClientRect(); tt.style.left=(e.clientX-r.left+16)+'px'; tt.style.top=(e.clientY-r.top-55)+'px'; }).on('mouseleave',function(){ if(isDragging)return; shapeGroups.style('opacity',1); labels.style('opacity',1); spokes.style('opacity',.45); d3.select(this).select('path,circle').attr('stroke-opacity',.5).attr('stroke','#fff'); tt.classList.remove('on'); });
+  const svgNode=svg.node(); function toSVG(clientX,clientY){ const pt=svgNode.createSVGPoint(); pt.x=clientX; pt.y=clientY; return pt.matrixTransform(svgNode.getScreenCTM().inverse()); }
+  function stopPlay(){ if(playTimer){clearTimeout(playTimer);playTimer=null;} document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>'; }
+  shapeGroups.call(d3.drag().on('start',function(event,d){ isDragging=true; stopPlay(); d3.select(this).raise(); labels.filter(l=>l.iso===d.iso).raise(); tt.classList.remove('on'); }).on('drag',function(event,d){ const p=toSVG(event.sourceEvent.clientX,event.sourceEvent.clientY); const r=Math.hypot(d.ax-CX,d.ay-CY); const angle=Math.atan2(p.x-CX,-(p.y-CY)); d.px=CX+r*Math.sin(angle); d.py=CY-r*Math.cos(angle); d3.select(this).attr('transform',`translate(${d.px},${d.py}) scale(${this._scale||1})`); spokes.filter(s=>s.iso===d.iso).attr('x2',d.px).attr('y2',d.py); labels.filter(l=>l.iso===d.iso).attr('x',d.px).attr('y',d.py); }).on('end',()=>{ isDragging=false; }));
+  function buildLegend(){ const vals=[0,50,100,150,200], flights=items.map(d=>d.f24), szVals=[d3.quantile(flights,.25),d3.median(flights),d3.quantile(flights,.75)].filter(v=>v!=null), maxR=d3.max(szVals,s=>rScale(s))||1; const szHtml=szVals.map((s,i)=>{ const r=rScale(s), overlap=i===0?0:-Math.round(r*.55); return `<div class="leg-size-row" style="margin-top:${overlap}px"><svg width="${maxR*2+2}" height="${r*2+2}" style="overflow:visible;flex-shrink:0"><circle cx="${maxR+1}" cy="${r+1}" r="${r}" fill="none" stroke="#b0a594" stroke-width="0.5"/></svg><span class="leg-size-label">${d3.format('.2s')(s)}</span></div>`; }).join(''); document.getElementById('atlas-legend').innerHTML=`<div class="leg-block"><div class="leg-title">Recovery</div><div class="leg-bar" style="background:linear-gradient(90deg,${vals.map(color).join(',')})"></div><div class="leg-ticks">${vals.map(v=>`<span>${v}%</span>`).join('')}</div></div><div class="leg-block"><div class="leg-title">Traffic (2024)</div><div style="display:flex;flex-direction:column;align-items:center;padding-left:28px">${szHtml}</div></div>`; }
+  const CAPTIONS={2019:'The baseline. European aviation at its pre-pandemic peak: 10.7 million cruise-phase flights across ECAC airspace.',2020:'COVID-19 collapses air traffic. Borders close overnight. Some states see traffic fall below 10% of 2019 levels.',2021:'A fragile restart. Vaccinations unlock leisure travel but business routes stay grounded and restrictions linger.',2022:'Pent-up demand surges. Southern Europe bounces past 2019. Ukraine war reroutes eastern corridors permanently.',2023:'Recovery consolidates. Turkey, North Africa and the Gulf corridor become new growth engines for the network.',2024:'Most of Europe has recovered: but not equally. Eastern states and smaller markets still trail their 2019 baselines.'};
+  function setCaption(y){ document.getElementById('yc-year').textContent=y; document.getElementById('yc-text').textContent=CAPTIONS[y]||''; }
+  function update(year){ currentYear=year; items.forEach(d=>{ d.rate=(d.years[String(year)]||0)/d.years['2019']*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,d.rate); d.ax=ax; d.ay=ay; }); runForce(); const yt=EMBEDDED_YEARLY_TOTALS[String(year)], y19=EMBEDDED_YEARLY_TOTALS['2019']; const tp=yt.f/y19.f*100, cp=yt.c/y19.c*100, fmt=n=>(n>=100?n.toFixed(0):n.toFixed(1))+'%'; document.getElementById('atlas-metrics').innerHTML=`<div class="metric"><div class="m-info"><div class="m-lbl">Traffic vs 2019</div><div class="m-sub">ECAC cruise-phase flights</div></div><div class="m-val" style="color:${tp>=100?'var(--red)':'var(--blue)'}">${fmt(tp)}</div></div><div class="metric"><div class="m-info"><div class="m-lbl">CO₂ vs 2019</div><div class="m-sub">${cp>=100?'+':''}${(cp-100).toFixed(0)} pp vs traffic</div></div><div class="m-val" style="color:${cp>=100?'var(--red)':'var(--blue)'}">${fmt(cp)}</div></div><div class="metric"><div class="m-info"><div class="m-lbl">Carbon Bill</div><div class="m-sub">${(yt.bill/y19.bill*100).toFixed(0)}% of 2019</div></div><div class="m-val" style="color:var(--red)">€${(yt.bill/1e9).toFixed(1)}bn</div></div>`;
+    spokes.transition().duration(420).attr('x2',d=>d.px).attr('y2',d=>d.py).attr('stroke',d=>d.rate<100?'#9fb7c4':'#cba09d');
+    shapeGroups.transition().duration(420).attr('transform',function(d){return `translate(${d.px},${d.py}) scale(${this._scale||1})`;}).each(function(){ d3.select(this).select('path,circle').transition().duration(420).attr('fill',d=>color(d.rate)); });
+    labels.transition().duration(420).attr('x',d=>d.px).attr('y',d=>d.py);
+    document.getElementById('year-disp').textContent=year; setCaption(year);
   }
-
-  function updateMetrics(year, yearlyTotals){
-    const yt = yearlyTotals[year];
-    const yt19 = yearlyTotals[2019];
-    const tp = yt.f / yt19.f * 100;
-    const cp = yt.c / yt19.c * 100;
-    const fmt = n => (n >= 100 ? n.toFixed(0) : n.toFixed(1)) + '%';
-    $('atlas-metrics').innerHTML = `
-      <div class="metric">
-        <div class="m-info"><div class="m-lbl">Traffic vs 2019</div><div class="m-sub">ECAC cruise-phase flights</div></div>
-        <div class="m-val" style="color:${tp >= 100 ? 'var(--red)' : 'var(--blue)'}">${fmt(tp)}</div>
-      </div>
-      <div class="metric">
-        <div class="m-info"><div class="m-lbl">CO₂ vs 2019</div><div class="m-sub">${(cp >= 100 ? '+' : '') + (cp - 100).toFixed(0)} pp vs traffic</div></div>
-        <div class="m-val" style="color:${cp >= 100 ? 'var(--red)' : 'var(--blue)'}">${fmt(cp)}</div>
-      </div>
-      <div class="metric">
-        <div class="m-info"><div class="m-lbl">Carbon Bill</div><div class="m-sub">${(yt.bill / yt19.bill * 100).toFixed(0)}% of 2019</div></div>
-        <div class="m-val" style="color:var(--red)">€${(yt.bill / 1e9).toFixed(1)}bn</div>
-      </div>`;
-  }
-
-  function setCaption(year){
-    $('yc-year').textContent = year;
-    $('yc-text').textContent = CAPTIONS[year] || '';
-  }
-
-  try {
-    const { cty, yearlyTotals, worldData } = await loadAllData();
-    prog('Composing compass...');
-    const items = Object.values(cty).map(d => {
-      const b = bearing(...CENTROIDS[d.iso]);
-      const [ax, ay] = polar(b, 100);
-      return { ...d, rate:100, bearing:b, ax, ay, px:ax, py:ay };
-    });
-    const rScale = d3.scaleSqrt().domain([0, d3.max(items, d => d.f24)]).range([10, 54]);
-    runForce(items, rScale);
-
-    const svg = d3.select('#compass-wrap').append('svg').attr('viewBox', [0, 0, SVGW, SVGH]);
-    const defs = svg.append('defs');
-    const g = svg.append('g');
-    drawBackground(g, defs);
-
-    const spokes = g.selectAll('.spoke').data(items).join('line')
-      .attr('x1', CX).attr('y1', CY).attr('x2', d => d.px).attr('y2', d => d.py)
-      .attr('stroke', d => d.rate < 100 ? '#a8b8b8' : '#c8b0b0')
-      .attr('stroke-width', 0.3).attr('opacity', 0.45);
-    const countryShapes = preprocessShapes(worldData, cty);
-    const shapeGroups = renderShapes(g, items, countryShapes, rScale);
-    shapeGroups.transition().duration(800).delay((_, i) => i * 12)
-      .ease(d3.easeBackOut.overshoot(1.8))
-      .attr('transform', function(d){ return `translate(${d.px},${d.py}) scale(${this._scale})`; });
-
-    const labels = g.selectAll('.atlas-lbl').data(items).join('text')
-      .attr('x', d => d.px).attr('y', d => d.py).attr('dy', '0.35em')
-      .attr('text-anchor', 'middle').attr('fill', 'rgba(255,255,255,0.95)')
-      .style('font-family', 'var(--mono)').style('font-weight', '500')
-      .style('font-size', d => Math.max(7, Math.min(rScale(d.f24) * 0.52, 11)) + 'px')
-      .style('letter-spacing', '0.06em').style('pointer-events', 'none')
-      .style('stroke', 'rgba(0,0,0,0.45)').style('stroke-width', '2.5px')
-      .style('stroke-linejoin', 'round').style('paint-order', 'stroke fill').text(d => d.iso);
-
-    let currentYear = 2019;
-    let playTimer = null;
-    let isDragging = false;
-    const tt = $('atlas-tt');
-    const wrap = $('compass-wrap');
-    const slider = $('atlas-year-slider');
-    const btn = $('btn-play');
-    const ICON_PLAY = '<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>';
-    const ICON_PAUSE = '<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><rect x="1.5" y="1" width="2.8" height="8" rx=".5"/><rect x="5.7" y="1" width="2.8" height="8" rx=".5"/></svg>';
-
-    function stopPlay(){
-      if (playTimer) { clearTimeout(playTimer); playTimer = null; }
-      btn.innerHTML = ICON_PLAY;
-    }
-
-    shapeGroups.on('mouseenter', function(e, d){
-      shapeGroups.style('opacity', 0.18);
-      labels.style('opacity', 0.12);
-      spokes.style('opacity', 0.12);
-      d3.select(this).style('opacity', 1).raise();
-      d3.select(this).select('path,circle').attr('stroke-opacity', 0.9).attr('stroke', 'var(--dark)');
-      labels.filter(l => l.iso === d.iso).style('opacity', 1).raise();
-      const flag = d.iso.toUpperCase().replace(/./g, c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65));
-      tt.innerHTML = `
-        <div class="tt-head"><div><div class="tt-name">${COUNTRY_NAMES[d.iso] || d.iso}</div></div><span class="tt-flag">${flag}</span></div>
-        <div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div>
-        <div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div>
-        <div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[currentYear] || 0)}</b></div>`;
-      tt.classList.add('on');
-    }).on('mousemove', function(e){
-      const r = wrap.getBoundingClientRect();
-      tt.style.left = (e.clientX - r.left + 16) + 'px';
-      tt.style.top = (e.clientY - r.top - 55) + 'px';
-    }).on('mouseleave', function(){
-      if (isDragging) return;
-      shapeGroups.style('opacity', 1);
-      labels.style('opacity', 1);
-      spokes.style('opacity', 0.45);
-      d3.select(this).select('path,circle').attr('stroke-opacity', 0.5).attr('stroke', '#fff');
-      tt.classList.remove('on');
-    });
-
-    const svgNode = svg.node();
-    function toSVG(clientX, clientY){
-      const pt = svgNode.createSVGPoint();
-      pt.x = clientX;
-      pt.y = clientY;
-      return pt.matrixTransform(svgNode.getScreenCTM().inverse());
-    }
-    shapeGroups.call(d3.drag()
-      .on('start', function(event, d){
-        isDragging = true;
-        stopPlay();
-        d3.select(this).raise();
-        labels.filter(l => l.iso === d.iso).raise();
-        tt.classList.remove('on');
-      })
-      .on('drag', function(event, d){
-        const p = toSVG(event.sourceEvent.clientX, event.sourceEvent.clientY);
-        const r = Math.hypot(d.ax - CX, d.ay - CY);
-        const angle = Math.atan2(p.x - CX, -(p.y - CY));
-        d.px = CX + r * Math.sin(angle);
-        d.py = CY - r * Math.cos(angle);
-        d3.select(this).attr('transform', `translate(${d.px},${d.py}) scale(${this._scale})`);
-        spokes.filter(s => s.iso === d.iso).attr('x2', d.px).attr('y2', d.py);
-        labels.filter(l => l.iso === d.iso).attr('x', d.px).attr('y', d.py);
-      })
-      .on('end', function(){ isDragging = false; })
-    );
-
-    function update(year){
-      currentYear = year;
-      items.forEach(d => {
-        d.rate = (d.years[year] || 0) / d.years[2019] * 100;
-        const b = bearing(...CENTROIDS[d.iso]);
-        const [ax, ay] = polar(b, d.rate);
-        d.ax = ax;
-        d.ay = ay;
-        d.bearing = b;
-      });
-      runForce(items, rScale);
-      updateMetrics(year, yearlyTotals);
-      spokes.transition().duration(400).ease(d3.easeCubicInOut)
-        .attr('x2', d => d.px).attr('y2', d => d.py)
-        .attr('stroke', d => d.rate < 100 ? '#a8b8b8' : '#c8b0b0');
-      shapeGroups.transition().duration(400).ease(d3.easeCubicInOut)
-        .attr('transform', function(d){ return `translate(${d.px},${d.py}) scale(${this._scale})`; })
-        .each(function(){ d3.select(this).select('path,circle').transition().duration(400).attr('fill', d => bubColor(d.rate)); });
-      labels.data(items).transition().duration(400).ease(d3.easeCubicInOut)
-        .attr('x', d => d.px).attr('y', d => d.py);
-      $('year-disp').textContent = year;
-      setCaption(year);
-    }
-
-    buildLegend(items, rScale);
-    update(2019);
-    loader.style.display = 'none';
-    dash.classList.add('ready');
-
-    slider.addEventListener('input', () => { stopPlay(); update(Number(slider.value)); });
-    const STEP = 1100;
-    function schedule(fromYear){
-      const next = fromYear + 1;
-      if (next > 2024) { stopPlay(); return; }
-      playTimer = setTimeout(() => {
-        slider.value = next;
-        update(next);
-        schedule(next);
-      }, STEP);
-    }
-    btn.addEventListener('click', () => {
-      if (playTimer) stopPlay();
-      else {
-        btn.innerHTML = ICON_PAUSE;
-        if (currentYear >= 2024) {
-          slider.value = 2019;
-          update(2019);
-        }
-        schedule(currentYear);
-      }
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight' && currentYear < 2024) {
-        stopPlay();
-        slider.value = currentYear + 1;
-        update(currentYear + 1);
-        e.preventDefault();
-      } else if (e.key === 'ArrowLeft' && currentYear > 2019) {
-        stopPlay();
-        slider.value = currentYear - 1;
-        update(currentYear - 1);
-        e.preventDefault();
-      }
-    });
-  } catch (err) {
-    console.error(err);
-    if (loader) loader.textContent = 'Error loading compass data: ' + (err.message || String(err));
-  }
+  buildLegend(); update(2019); loader.style.display='none'; dash.classList.add('ready');
+  const slider=document.getElementById('atlas-year-slider'); slider.addEventListener('input',()=>{ stopPlay(); update(+slider.value); });
+  const STEP=1100; function schedule(y){ const next=y+1; if(next>2024){stopPlay();return;} playTimer=setTimeout(()=>{ slider.value=next; update(next); schedule(next); },STEP); }
+  document.getElementById('btn-play').addEventListener('click',()=>{ if(playTimer) stopPlay(); else { document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><rect x="1.5" y="1" width="2.8" height="8" rx=".5"/><rect x="5.7" y="1" width="2.8" height="8" rx=".5"/></svg>'; if(currentYear>=2024){slider.value=2019;update(2019);} schedule(currentYear); } });
 })();
 </script>
 </body>
