@@ -65,18 +65,6 @@ nav{
   padding:126px 30px 82px;
   position:relative;
 }
-.hero::after{
-  content:"";
-  position:absolute;
-  right:6vw; top:18vh;
-  width:33vw; height:33vw;
-  border:1px solid rgba(83,125,150,.22);
-  border-radius:50%;
-  background:
-    radial-gradient(circle, rgba(83,125,150,.08), transparent 62%),
-    conic-gradient(from 18deg, transparent 0 31%, rgba(191,70,70,.18) 31% 33%, transparent 33% 69%, rgba(83,125,150,.2) 69% 71%, transparent 71%);
-  opacity:.9;
-}
 .hero-inner{
   max-width:1240px;margin:0 auto;width:100%;
   display:grid;grid-template-columns:minmax(0,1.15fr) 360px;gap:70px;align-items:end;
@@ -204,35 +192,6 @@ h2{
   position:fixed;top:0;left:0;height:3px;width:100%;z-index:2000;
   background:linear-gradient(90deg,var(--blue),var(--red));
   transform:scaleX(0);transform-origin:left center;
-}
-.airline-trace{
-  width:min(560px,80vw);
-  height:46px;
-  position:relative;
-  margin:0 0 16px;
-  color:var(--blue);
-}
-.airline-trace::before{
-  content:"";
-  position:absolute;left:0;right:0;top:24px;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(83,125,150,.55),rgba(191,70,70,.35),transparent);
-}
-.airline-trace::after{
-  content:"";
-  position:absolute;left:19%;top:20px;width:8px;height:8px;border-radius:50%;
-  background:var(--blue);box-shadow:150px 0 0 rgba(44,47,51,.28),310px 0 0 var(--red);
-}
-.hero-plane{
-  position:absolute;left:0;top:2px;
-  font-size:22px;line-height:1;
-  color:var(--dark);
-  filter:drop-shadow(0 8px 12px rgba(36,38,40,.14));
-  animation:heroPlaneFloat 5.8s ease-in-out infinite;
-}
-@keyframes heroPlaneFloat{
-  0%,100%{transform:translate(0,6px) rotate(7deg)}
-  45%{transform:translate(430px,-2px) rotate(7deg)}
-  55%{transform:translate(430px,-2px) rotate(7deg)}
 }
 .story-flow{
   position:relative;
@@ -383,8 +342,7 @@ h2{
 .leg-title,.m-lbl{font-family:var(--atlas-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--atlas-muted);font-weight:400;margin-bottom:8px;text-align:center}
 .leg-bar{height:8px;border-radius:3px;margin-bottom:5px}
 .leg-ticks{display:flex;justify-content:space-between}
-.leg-ticks span,.m-sub,.leg-size-label{font-family:var(--atlas-mono);font-size:.68rem;color:#8a7e70}
-.leg-size-row{display:flex;align-items:center;gap:7px;margin:3px 0}
+.leg-ticks span,.m-sub{font-family:var(--atlas-mono);font-size:.68rem;color:#8a7e70}
 .metric{background:none;padding:10px 0;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;border-top:0;border-bottom:1px solid color-mix(in oklch, var(--atlas-border), transparent 50%)}
 .m-info{flex:1;min-width:0}
 .m-val{font-family:var(--atlas-display);font-size:1.4rem;font-weight:500;letter-spacing:0;color:var(--atlas-fg);line-height:1;flex-shrink:0;text-align:right}
@@ -617,11 +575,6 @@ h2{
 .finding p,.conclusion-text{font-size:.9rem;line-height:1.75;color:rgba(255,255,255,.6)}
 .conclusion-text{max-width:780px;border-top:1px solid rgba(255,255,255,.14);padding-top:34px}
 .conclusion-text strong{color:#fff}
-@media (max-width:860px){
-.airline-trace{width:100%;height:36px}
-  @keyframes heroPlaneFloat{0%,100%{transform:translate(0,4px) rotate(7deg)}45%,55%{transform:translate(220px,-1px) rotate(7deg)}}
-}
-
 @media(max-width:960px){
   nav{inset:12px 12px auto}
 
@@ -636,7 +589,7 @@ h2{
   }
   .nav-links a{white-space:nowrap;padding:8px 9px}
     .hero-inner,.intro-grid,.viz-head{grid-template-columns:1fr;gap:28px}
-  .hero{padding:110px 20px 70px}.hero::after{display:none}
+  .hero{padding:110px 20px 70px}
   .page,.conclusion-inner{padding:0 20px}
   .ds-grid,.findings,.ethics-grid{grid-template-columns:1fr}
   .viz-block.horizontal{width:auto;margin-left:0}
@@ -672,7 +625,6 @@ h2{
   <div class="hero-inner">
     <div>
       <p class="eyebrow">Data Visualisation 2026 | Group Project</p>
-      <div class="airline-trace" aria-hidden="true"><span class="hero-plane">✈</span></div>
       <h1>Did European Aviation Recover <em>Sustainably</em>?</h1>
     </div>
   </div>
@@ -1256,11 +1208,11 @@ document.querySelectorAll(".viz-block").forEach(block => revealObserver.observe(
   fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json').then(r=>r.ok?r.json():null).then(topo=>{ if(topo && window.topojson) applyCountryShapes(preprocessShapes(topojson.feature(topo, topo.objects.countries))); }).catch(()=>{});
   const labels=g.selectAll('.atlas-lbl').data(items).join('text').attr('x',d=>d.px).attr('y',d=>d.py).attr('dy','.35em').attr('text-anchor','middle').attr('fill','rgba(255,255,255,.95)').style('font-family','var(--atlas-mono)').style('font-weight',500).style('font-size',d=>Math.max(7,Math.min(rScale(d.f24)*.52,11))+'px').style('letter-spacing','.06em').style('pointer-events','none').style('stroke','rgba(0,0,0,.45)').style('stroke-width','2.5px').style('stroke-linejoin','round').style('paint-order','stroke fill').text(d=>d.iso);
   const tt=document.getElementById('atlas-tt'), wrap=document.getElementById('compass-wrap');
-  shapeGroups.on('mouseenter',function(e,d){ shapeGroups.style('opacity',.18); labels.style('opacity',.12); spokes.style('opacity',.12); d3.select(this).style('opacity',1).raise(); d3.select(this).select('path,circle').attr('stroke-opacity',.9).attr('stroke','#2d2418'); labels.filter(l=>l.iso===d.iso).style('opacity',1).raise(); const flag=d.iso.toUpperCase().replace(/./g,c=>String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65)); tt.innerHTML=`<div class="tt-head"><div><div class="tt-name">${countryNames[d.iso]||d.iso}</div><div class="tt-iso">${d.iso}</div></div><span class="tt-flag">${flag}</span></div><div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div><div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div><div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[String(currentYear)]||0)}</b></div>`; tt.classList.add('on'); }).on('mousemove',function(e){ const r=wrap.getBoundingClientRect(); tt.style.left=(e.clientX-r.left+16)+'px'; tt.style.top=(e.clientY-r.top-55)+'px'; }).on('mouseleave',function(){ if(isDragging)return; shapeGroups.style('opacity',1); labels.style('opacity',1); spokes.style('opacity',.45); d3.select(this).select('path,circle').attr('stroke-opacity',.5).attr('stroke','#fff'); tt.classList.remove('on'); });
+  shapeGroups.on('mouseenter',function(e,d){ shapeGroups.style('opacity',.18); labels.style('opacity',.12); spokes.style('opacity',.12); d3.select(this).style('opacity',1).raise(); d3.select(this).select('path,circle').attr('stroke-opacity',.9).attr('stroke','#2d2418'); labels.filter(l=>l.iso===d.iso).style('opacity',1).raise(); const flag=d.iso.toUpperCase().replace(/./g,c=>String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65)); const selectedYearRow=currentYear===2019?'':`<div class="tt-row">${currentYear} flights: <b>${d3.format(',')(d.years[String(currentYear)]||0)}</b></div>`; tt.innerHTML=`<div class="tt-head"><div><div class="tt-name">${countryNames[d.iso]||d.iso}</div><div class="tt-iso">${d.iso}</div></div><span class="tt-flag">${flag}</span></div><div class="tt-row">Traffic recovery (${currentYear}): <b>${d.rate.toFixed(1)}%</b></div><div class="tt-row">2019 flights: <b>${d3.format(',')(d.f19)}</b></div>${selectedYearRow}`; tt.classList.add('on'); }).on('mousemove',function(e){ const r=wrap.getBoundingClientRect(); tt.style.left=(e.clientX-r.left+16)+'px'; tt.style.top=(e.clientY-r.top-55)+'px'; }).on('mouseleave',function(){ if(isDragging)return; shapeGroups.style('opacity',1); labels.style('opacity',1); spokes.style('opacity',.45); d3.select(this).select('path,circle').attr('stroke-opacity',.5).attr('stroke','#fff'); tt.classList.remove('on'); });
   const svgNode=svg.node(); function toSVG(clientX,clientY){ const pt=svgNode.createSVGPoint(); pt.x=clientX; pt.y=clientY; return pt.matrixTransform(svgNode.getScreenCTM().inverse()); }
   function stopPlay(){ if(playTimer){clearTimeout(playTimer);playTimer=null;} document.getElementById('btn-play').innerHTML='<svg viewBox="0 0 10 10" width="11" height="11" fill="currentColor"><polygon points="2,1 9,5 2,9"/></svg>'; }
   shapeGroups.call(d3.drag().on('start',function(event,d){ isDragging=true; stopPlay(); d3.select(this).raise(); labels.filter(l=>l.iso===d.iso).raise(); tt.classList.remove('on'); }).on('drag',function(event,d){ const p=toSVG(event.sourceEvent.clientX,event.sourceEvent.clientY); const r=Math.hypot(d.ax-CX,d.ay-CY); const angle=Math.atan2(p.x-CX,-(p.y-CY)); d.px=CX+r*Math.sin(angle); d.py=CY-r*Math.cos(angle); d3.select(this).attr('transform',`translate(${d.px},${d.py}) scale(${this._scale||1})`); spokes.filter(s=>s.iso===d.iso).attr('x2',d.px).attr('y2',d.py); labels.filter(l=>l.iso===d.iso).attr('x',d.px).attr('y',d.py); }).on('end',()=>{ isDragging=false; }));
-  function buildLegend(){ const vals=[0,50,100,150,200], flights=items.map(d=>d.f24), szVals=[d3.quantile(flights,.25),d3.median(flights),d3.quantile(flights,.75)].filter(v=>v!=null), maxR=d3.max(szVals,s=>rScale(s))||1; const szHtml=szVals.map((s,i)=>{ const r=rScale(s), overlap=i===0?0:-Math.round(r*.55); return `<div class="leg-size-row" style="margin-top:${overlap}px"><svg width="${maxR*2+2}" height="${r*2+2}" style="overflow:visible;flex-shrink:0"><circle cx="${maxR+1}" cy="${r+1}" r="${r}" fill="none" stroke="#b0a594" stroke-width="0.5"/></svg><span class="leg-size-label">${d3.format('.2s')(s)}</span></div>`; }).join(''); document.getElementById('atlas-legend').innerHTML=`<div class="leg-block"><div class="leg-title">Recovery</div><div class="leg-bar" style="background:linear-gradient(90deg,${vals.map(color).join(',')})"></div><div class="leg-ticks">${vals.map(v=>`<span>${v}%</span>`).join('')}</div></div><div class="leg-block"><div class="leg-title">Traffic (2024)</div><div style="display:flex;flex-direction:column;align-items:center;padding-left:28px">${szHtml}</div></div>`; }
+  function buildLegend(){ const vals=[0,50,100,150,200]; document.getElementById('atlas-legend').innerHTML=`<div class="leg-block"><div class="leg-title">Recovery</div><div class="leg-bar" style="background:linear-gradient(90deg,${vals.map(color).join(',')})"></div><div class="leg-ticks">${vals.map(v=>`<span>${v}%</span>`).join('')}</div></div>`; }
   const CAPTIONS={2019:'The baseline. European aviation at its pre-pandemic peak: 10.7 million cruise-phase flights across ECAC airspace.',2020:'COVID-19 collapses air traffic. Borders close overnight. Some states see traffic fall below 10% of 2019 levels.',2021:'A fragile restart. Vaccinations unlock leisure travel but business routes stay grounded and restrictions linger.',2022:'Pent-up demand surges. Southern Europe bounces past 2019. Ukraine war reroutes eastern corridors permanently.',2023:'Recovery consolidates. Turkey, North Africa and the Gulf corridor become new growth engines for the network.',2024:'Most of Europe has recovered: but not equally. Eastern states and smaller markets still trail their 2019 baselines.'};
   function setCaption(y){ document.getElementById('yc-year').textContent=y; document.getElementById('yc-text').textContent=CAPTIONS[y]||''; }
   function update(year){ currentYear=year; items.forEach(d=>{ d.rate=(d.years[String(year)]||0)/d.years['2019']*100; const b=bearing(...centroids[d.iso]); const [ax,ay]=polar(b,d.rate); d.ax=ax; d.ay=ay; }); runForce(); const yt=EMBEDDED_YEARLY_TOTALS[String(year)], y19=EMBEDDED_YEARLY_TOTALS['2019']; const tp=yt.f/y19.f*100, cp=yt.c/y19.c*100, fmt=n=>(n>=100?n.toFixed(0):n.toFixed(1))+'%'; document.getElementById('atlas-metrics').innerHTML=`<div class="metric"><div class="m-info"><div class="m-lbl">Traffic vs 2019</div><div class="m-sub">ECAC cruise-phase flights</div></div><div class="m-val" style="color:${tp>=100?'var(--red)':'var(--blue)'}">${fmt(tp)}</div></div><div class="metric"><div class="m-info"><div class="m-lbl">CO₂ vs 2019</div><div class="m-sub">${cp>=100?'+':''}${(cp-100).toFixed(0)} pp vs traffic</div></div><div class="m-val" style="color:${cp>=100?'var(--red)':'var(--blue)'}">${fmt(cp)}</div></div><div class="metric"><div class="m-info"><div class="m-lbl">Carbon Bill</div><div class="m-sub">${(yt.bill/y19.bill*100).toFixed(0)}% of 2019</div></div><div class="m-val" style="color:var(--red)">€${(yt.bill/1e9).toFixed(1)}bn</div></div>`;

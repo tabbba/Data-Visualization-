@@ -38,6 +38,8 @@ def clean_carbon_prices(raw_dir: Path, clean_dir: Path) -> Path:
         raw_dir,
         "Carbon Emissions Futures Historical Data.csv",
         encoding="utf-8-sig",
+        sep=";",
+        skiprows=1,
     )
     df = df.drop(columns=["Open", "High", "Low", "Vol.", "Change %"], errors="ignore")
     df["Date"] = pd.to_datetime(df["Date"], format="%m/%d/%Y")
@@ -63,6 +65,9 @@ def clean_carbon_prices(raw_dir: Path, clean_dir: Path) -> Path:
 
 def clean_emissions(raw_dir: Path, clean_dir: Path) -> list[Path]:
     df = load_csv(raw_dir, "g2g_emissions.csv")
+    df.columns = df.columns.str.strip()
+    text_columns = df.select_dtypes(include="str").columns
+    df[text_columns] = df[text_columns].apply(lambda column: column.str.strip())
     df = df.drop(columns=["FOCUS_TYPE"], errors="ignore")
     df["CO2_KG"] = df["CO2_TONS"] * 1000
     df = df.drop(columns=["CO2_TONS"])
@@ -79,7 +84,7 @@ def clean_emissions(raw_dir: Path, clean_dir: Path) -> list[Path]:
 
 
 def clean_passengers(raw_dir: Path, clean_dir: Path) -> Path:
-    df = load_csv(raw_dir, "passenger.csv", encoding="utf-8-sig")
+    df = load_csv(raw_dir, "passenger.csv", encoding="utf-8-sig", sep=";", skiprows=5)
     empty_columns = [column for column in df.columns if df[column].isna().all()]
     df = df.drop(columns=empty_columns)
     df = df.dropna(thresh=45)
