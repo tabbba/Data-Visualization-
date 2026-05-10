@@ -1,2 +1,5 @@
 / *.DS_Store
 *.png
+!figures/carbon_receipt_6years.png
+!figures/blackhat_yearly_co2_per_flight_truncated_axis.png
+!figures/whitehat_yearly_co2_per_flight.png
