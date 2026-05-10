@@ -87,8 +87,8 @@ nav{
   font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)
 }
 .hero h1{
-  font-size:clamp(3.6rem,8vw,8.6rem);
-  line-height:.82;
+  font-size:clamp(3rem,6.8vw,7.4rem);
+  line-height:.92;
   letter-spacing:-.085em;
   font-weight:700;
   color:var(--dark);
@@ -554,7 +554,7 @@ h2{
   grid-template-columns:1fr;
   gap:30px;
   margin-top:30px;
-  max-width:1040px;
+  max-width:820px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -739,15 +739,15 @@ h2{
   </section>
 
   <div class="divider" id="data" style="padding-top:60px; padding-bottom:40px;"><div class="divider-line"></div><span class="divider-label">Data Sources</span><div class="divider-line"></div></div>
-    <h2>Four Datasets, One Story</h2>
-    <p style="margin-top:16px;">Public data covering European aviation activity, emissions, and carbon pricing from 2019 to 2024. Cleaned and integrated using Python.</p>
+    <h2>Four Data Sources, One Story</h2>
+    <p style="margin-top:16px;">Public data covering European aviation activity, modelled emissions, and carbon pricing from 2019 to 2024. Raw CSV files were cleaned, harmonised by month and year, and integrated using Python.</p>
     <div class="ds-grid">
-      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>Airport Traffic</h3><span class="ds-file">airport_clean.csv</span><p>Daily flight movements for 400+ airports across ECAC member states.</p><div class="ds-meta"><span>EUROCONTROL</span></div></div>
-      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></div><h3>Network Emissions</h3><span class="ds-file">emission_network_clean.csv</span><p>Monthly CO₂ by market segment and flight phase at ECAC level.</p><div class="ds-meta"><span>EUROCONTROL EIA</span></div></div>
-      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/></svg></div><h3>State Emissions</h3><span class="ds-file">emission_state_clean.csv</span><p>Emissions disaggregated by country for cross-national analysis.</p><div class="ds-meta"><span>Country level</span></div></div>
-      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>EU Carbon Price</h3><span class="ds-file">carbon_price_monthly.csv</span><p>Monthly EUA prices used to assess the influence of carbon-market signals.</p><div class="ds-meta"><span>ICE / Investing.com</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><h3>Airport Traffic</h3><span class="ds-file">EUROCONTROL traffic data</span><p>Daily IFR flight movements for 400+ airports across ECAC member states.</p><div class="ds-meta"><span>Raw input: airport traffic</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg></div><h3>Network Emissions</h3><span class="ds-file">EUROCONTROL EIA</span><p>Monthly ECAC-level CO₂, flights, market segment, flight type, and flight phase.</p><div class="ds-meta"><span>Network subset</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18"/></svg></div><h3>State Emissions</h3><span class="ds-file">EUROCONTROL EIA</span><p>The same emissions source disaggregated by country for cross-national recovery analysis.</p><div class="ds-meta"><span>State subset</span></div></div>
+      <div class="ds-card"><div class="ds-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>EU Carbon Price</h3><span class="ds-file">EUA futures prices</span><p>Daily carbon-market prices aggregated to monthly averages for comparison with aviation emissions.</p><div class="ds-meta"><span>ICE / Investing.com</span></div></div>
     </div>
-    <div class="limits"><h4>Data Limitations</h4><ul><li>Emission figures are model-based EUROCONTROL estimates, not direct aircraft measurements.</li><li>Airport data covers IFR flights only.</li><li>Carbon price reflects market prices, not necessarily the effective cost paid by each airline.</li><li>Passenger load factor is unavailable at this granularity.</li></ul></div>
+    <div class="limits"><h4>Data Limitations</h4><ul><li>Emission figures are EUROCONTROL model estimates, not direct aircraft-level measurements.</li><li>Traffic coverage is based on IFR flight movements, so it does not represent every aviation activity in Europe.</li><li>Efficiency is measured per flight, not per passenger, because load-factor data is not available at the same monthly and country-level granularity.</li><li>EUA prices are used as a carbon-market signal, not as the exact carbon cost paid by each airline.</li></ul></div>
   </section>
 </div>
 </div><!-- end overview -->
@@ -777,7 +777,7 @@ h2{
 
 
 
-  <div class="viz-block horizontal" id="viz-dashboard" data-step="02">
+  <div class="viz-block horizontal" id="viz-dashboard" data-step="03">
     <div class="viz-head">
       <div>
         <span class="viz-tag">03: A Deeper View</span>
@@ -790,18 +790,16 @@ h2{
       </div>
     </div>
     <div class="tableau-frame dashboard-frame" style="width:min(1400px, calc(100vw - 48px)); margin-left:calc(50% - min(700px, calc(50vw - 24px)));">
-      <div class='tableauPlaceholder' id='viz1778319861679' style='position: relative'>
+      <div class='tableauPlaceholder' id='viz1778396471937' style='position: relative'>
         <noscript>
-          <a href='#'><img alt='Dashboard ' src='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/Dashboard/1_rss.png' style='border: none' /></a>
+          <a href='#'><img alt='Dashboard ' src='https://public.tableau.com/static/images/HX/HXZQK2BCP/1_rss.png' style='border: none' /></a>
         </noscript>
         <object class='tableauViz' style='display:none;'>
           <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
           <param name='embed_code_version' value='3' />
-          <param name='site_root' value='' />
-          <param name='name' value='Data_Visualization_Tableau_17780729875790/Dashboard' />
-          <param name='tabs' value='no' />
+          <param name='path' value='shared/HXZQK2BCP' />
           <param name='toolbar' value='yes' />
-          <param name='static_image' value='https://public.tableau.com/static/images/Da/Data_Visualization_Tableau_17780729875790/Dashboard/1.png' />
+          <param name='static_image' value='https://public.tableau.com/static/images/HX/HXZQK2BCP/1.png' />
           <param name='animate_transition' value='yes' />
           <param name='display_static_image' value='yes' />
           <param name='display_spinner' value='yes' />
@@ -884,9 +882,20 @@ h2{
       </article>
     </div>
 
-<div class="ethics-note" style="margin-top:50px; margin-bottom:120px;">
+    <div class="ethics-note" style="margin-top:50px; margin-bottom:70px;">
       <h4>Is it the real story?</h4>
-      <p>Not quite, compare it with the chart below. </p>
+      <p>Not quite. The first chart is deliberately dramatic; the next one uses the same data with a proportional axis.</p>
+    </div>
+
+  </div>
+
+  <div class="viz-block" id="viz-ethics-white" data-step="06">
+    <div class="viz-head" style="grid-template-columns:1fr;">
+      <div>
+        <span class="viz-tag">06: Or maybe not?</span>
+        <h2>Or Maybe Not?</h2>
+        <p class="viz-desc">The same data tells a more measured story when the axis is no longer truncated.</p>
+      </div>
     </div>
 
     <div class="ethics-grid">
@@ -913,8 +922,8 @@ h2{
 </div>
 
 <div class="page">
-<div class="viz-block" id="viz-compass" data-step="06">
-    <div class="viz-head"><div><span class="viz-tag">06: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative. Take your time to grasp the many insights this visualisation reveals.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
+<div class="viz-block" id="viz-compass" data-step="07">
+    <div class="viz-head"><div><span class="viz-tag">07: Country Recovery Patterns</span><h2>Europe’s Aviation Recovery Compass</h2><p class="viz-desc">The compass adds movement to the geographic story. It shows which countries moved beyond the 2019 baseline and which remained below it, making the recovery pattern more spatial and comparative. Take your time to grasp the many insights this visualisation reveals.</p></div><div class="insight"><h4>Why It Matters</h4><p>This view turns recovery into a spatial object: countries that exceed 2019 move outward, while countries still below baseline stay inside the ring.</p></div></div>
     <div class="atlas-card" style="width:min(1400px, calc(100vw - 48px)); margin-left:calc(50% - min(700px, calc(50vw - 24px)));">
       <div class="atlas-shell">
         <div class="atlas-header"><div class="atlas-title"><h3>Europe's Aviation Recovery Compass</h3><p>Each country silhouette is scaled by its 2024 cruise-flight volume. Its angle preserves geographic bearing from central Europe. Its distance from the 100% ring shows whether traffic <span style="color:#BF4646;font-weight:500">rose</span> or <span style="color:#537D96;font-weight:500">sank</span> relative to 2019.</p></div></div>
@@ -934,10 +943,10 @@ h2{
 
 <div id="findings">
 <div class="page">
-  <div class="viz-block is-visible" id="viz-plain" data-step="07" style="padding-top:100px;">
+  <div class="viz-block is-visible" id="viz-plain" data-step="08" style="padding-top:100px;">
     <div class="viz-head">
       <div>
-        <span class="viz-tag">07: One last look — at the end, what really matters</span>
+        <span class="viz-tag">08: One last look — at the end, what really matters</span>
         <h2>The Recovery Gap, Without the Jargon</h2>
         <p class="viz-desc">This opening view is built for a non-expert audience. Move the year slider and compare two simple quantities: how much flying returned, and how much CO₂ returned with it.</p>
       </div>
@@ -1024,7 +1033,7 @@ const EMBEDDED_COUNTRY_DATA = {"AL":{"iso":"AL","years":{"2019":223138.0,"2020":
 const EMBEDDED_YEARLY_TOTALS = {"2019":{"f":69827668,"c":1049608679900.008,"bill":27528710217.751217},"2020":{"f":30824703,"c":446293891600.0005,"bill":11420967515.633017},"2021":{"f":39330358,"c":570174280500.0027,"bill":32684573237.493156},"2022":{"f":59893287,"c":924801720500.0059,"bill":74832975656.23146},"2023":{"f":65763738,"c":1048550343200.0077,"bill":88755532713.74765},"2024":{"f":69367672,"c":1141751365900.008,"bill":76202774118.79852}};
 
 const TABLEAU_RATIOS = {
-  viz1778319861679: { ratio: 0.75, min: 820, mobile: 1677 },
+  viz1778396471937: { ratio: 0.62, min: 640, mobile: 1320 },
   viz1778317854774: { ratio: 0.32, min: 360 },
   viz1778324972719: { ratio: 0.28, min: 300 }
 };
